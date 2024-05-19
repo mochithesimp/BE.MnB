@@ -1,9 +1,11 @@
 ﻿using API.Data;
 using API.DTOs;
 using API.Entities;
+using API.Extensions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.OpenApi.Validations;
 using System.Linq;
 
 namespace API.Controllers
@@ -21,16 +23,26 @@ namespace API.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<List<ProductDTO>>> GetProducts()
+        public async Task<ActionResult<List<Product>>> GetProducts(
+                        string? orderBy, 
+                        string? search,
+                        int categoryId,
+                        int brandId)
         {
-            var list = await _context.Products.ToListAsync();
+            var querry = _context.Products
+                .Sort(orderBy)
+                .Search(search)
+                .FilterCategory(categoryId, brandId)
+                //.FilterBrand(brandId)
+                .AsQueryable();
+
+            var list = await querry.ToListAsync();
             var products = new List<ProductDTO>();
             foreach (var product in list.Where(product => product.IsActive))
             {
                 ProductDTO productDTO = toProductDTO(product);
                 products.Add(productDTO);
             }
-
             return Ok(products);
         }
 
@@ -43,21 +55,6 @@ namespace API.Controllers
             var productDTO = toProductDTO(product);
 
             return Ok(productDTO);
-        }
-
-        [HttpGet("searchProduct/{name}")]
-        public async Task<ActionResult<List<ProductDTO>>> GetProductByCategory(string name)
-        {
-            var list = await _context.Products.ToListAsync();
-            var products = new List<ProductDTO>();
-
-            foreach (var product in list.Where(p => p.Name.ToLower().Contains(name.ToLower())))
-            {
-                ProductDTO productDTO = toProductDTO(product);
-                products.Add(productDTO);
-            }
-            if (products.Count > 0) return Ok(products);
-            return NotFound();
         }
 
         [HttpGet("byCategoryID/{CategoryId}")]
