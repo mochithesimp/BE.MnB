@@ -4,6 +4,7 @@ using API.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace API.Migrations
 {
     [DbContext(typeof(StoreContext))]
-    partial class StoreContextModelSnapshot : ModelSnapshot
+    [Migration("20240519084343_ChangeDatabase")]
+    partial class ChangeDatabase
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -40,7 +43,7 @@ namespace API.Migrations
 
                     b.HasKey("BrandId");
 
-                    b.ToTable("Brand");
+                    b.ToTable("Brands");
                 });
 
             modelBuilder.Entity("API.Entities.Category", b =>
@@ -61,7 +64,7 @@ namespace API.Migrations
 
                     b.HasKey("CategoryId");
 
-                    b.ToTable("Category");
+                    b.ToTable("Categories");
                 });
 
             modelBuilder.Entity("API.Entities.ForAge", b =>
@@ -78,7 +81,7 @@ namespace API.Migrations
 
                     b.HasKey("ForAgeId");
 
-                    b.ToTable("ForAge");
+                    b.ToTable("ForAges");
                 });
 
             modelBuilder.Entity("API.Entities.ImageProduct", b =>
@@ -100,7 +103,7 @@ namespace API.Migrations
 
                     b.HasIndex("ProductId");
 
-                    b.ToTable("ImageProduct");
+                    b.ToTable("ImageProducts");
                 });
 
             modelBuilder.Entity("API.Entities.Order", b =>
@@ -141,7 +144,7 @@ namespace API.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Order");
+                    b.ToTable("Orders");
                 });
 
             modelBuilder.Entity("API.Entities.OrderDetail", b =>
@@ -215,7 +218,7 @@ namespace API.Migrations
 
                     b.HasIndex("ForAgeId");
 
-                    b.ToTable("Product");
+                    b.ToTable("Products");
                 });
 
             modelBuilder.Entity("API.Entities.Review", b =>

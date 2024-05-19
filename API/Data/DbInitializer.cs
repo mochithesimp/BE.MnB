@@ -8,129 +8,138 @@ namespace API.Data
         public static void Initialize(StoreContext context)
         {
             //insert category
-            //if (!context.categories.Any())
-            //{
-            //    var categories = new List<Category>
-            //    {
-            //        new Category
-            //        {
-            //            Name = "Sữa bột",
-            //        },
-            //        new Category
-            //        {
-            //            Name = "Sữa hạt",
-            //        },
-            //        new Category
-            //        {
-            //            Name = "Thức uống dinh dưỡng",
-            //        },
-            //        new Category
-            //        {
-            //            Name = "Sữa tươi, sữa chua",
-            //        }
-            //    };
-            //    foreach (var category in categories)
-            //    {
-            //        context.categories.Add(category);
-            //    }
-            //    context.SaveChanges();
-            //}
+            if (!context.Categories.Any())
+            {
+                var categories = new List<Category>
+                {
+                    new Category
+                    {
+                        Name = "Sữa bột",
+                        Description = ""
+                    },
+                    new Category
+                    {
+                        Name = "Sữa hạt",
+                        Description = ""
+                    },
+                    new Category
+                    {
+                        Name = "Thức uống dinh dưỡng",
+                        Description = ""
+                    },
+                    new Category
+                    {
+                        Name = "Sữa tươi, sữa chua",
+                        Description = ""
+                    }
+                };
+                foreach (var category in categories)
+                {
+                    context.Categories.Add(category);
+                }
+                context.SaveChanges();
+            }
 
-            ////insert forAge
-            //if (!context.forAges.Any())
-            //{
-            //    var forAges = new List<ForAge>
-            //    {
-            //        new ForAge
-            //        {
-            //            Name = "0 - 6 Tháng tuổi"
-            //        },
-            //        new ForAge
-            //        {
-            //            Name = "6 - 12 Tháng tuổi"
-            //        },
-            //        new ForAge
-            //        {
-            //            Name = "0 - 1 Tuổi"
-            //        },
-            //        new ForAge
-            //        {
-            //            Name = "1 - 2 Tuổi"
-            //        },
-            //        new ForAge
-            //        {
-            //            Name = "Từ 2 Tuổi trờ lên"
-            //        }
-            //    };
-            //    foreach (var forAge in forAges)
-            //    {
-            //        context.forAges.Add(forAge);
-            //    }
-            //    context.SaveChanges();
-            //}
+            //insert forAge
+            if (!context.ForAges.Any())
+            {
+                var forAges = new List<ForAge>
+                {
+                    new ForAge
+                    {
+                        Name = "0 - 6 Tháng tuổi"
+                    },
+                    new ForAge
+                    {
+                        Name = "6 - 12 Tháng tuổi"
+                    },
+                    new ForAge
+                    {
+                        Name = "0 - 1 Tuổi"
+                    },
+                    new ForAge
+                    {
+                        Name = "1 - 2 Tuổi"
+                    },
+                    new ForAge
+                    {
+                        Name = "Từ 2 Tuổi trờ lên"
+                    }
+                };
+                foreach (var forAge in forAges)
+                {
+                    context.ForAges.Add(forAge);
+                }
+                context.SaveChanges();
+            }
 
-            ////insert brand
-            //if (!context.Brands.Any())
-            //{
-            //    var brands = new List<Brand>
-            //    {
-            //        new Brand
-            //        {
-            //            Name = "Meiji",
-            //            ImageBrandUrl = "/images/brands/meiji.jpg"
-            //        },
-            //        new Brand
-            //        {
-            //            Name = "TH True Milk",
-            //            ImageBrandUrl = "/images/brands/thtruemilk.jpg"
-            //        },
-            //        new Brand
-            //        {
-            //            Name = "Sahmyook",
-            //            ImageBrandUrl = "/images/brands/Sahmyook.jpg"
-            //        },
-            //        new Brand
-            //        {
-            //            Name = "137 Degrees",
-            //            ImageBrandUrl = "/images/brands/137degree.jpg"
-            //        },
-            //        new Brand
-            //        {
-            //            Name = "Nestle",
-            //            ImageBrandUrl = "/images/brands/Nestle.jpg"
-            //        },
-            //        new Brand
-            //        {
-            //            Name = "HOFF",
-            //            ImageBrandUrl = "/images/brands/HOFF.jpg"
-            //        },
-            //        new Brand
-            //        {
-            //            Name = "Yakult",
-            //            ImageBrandUrl = "/images/brands/Yakult.jpg"
-            //        },
-            //        new Brand
-            //        {
-            //            Name = "Vinamilk",
-            //            ImageBrandUrl = "/images/brands/Vinamilk.jpg"
-            //        },
-            //        new Brand
-            //        {
-            //            Name = "PediaSure",
-            //            ImageBrandUrl = "/images/brands/PediaSure.jpg"
-            //        },
-            //        new Brand
-            //        {
-            //            Name = "Similac",
-            //            ImageBrandUrl = "/images/brands/Similac.jpg"
-            //        },
-            //    };
-            //    foreach(var brand in brands)
-            //    {
-            //        context.Brands.Add(brand);
-            //    }
-            //    context.SaveChanges();
-            //}
+            //insert brand
+            if (!context.Brands.Any())
+            {
+                var brands = new List<Brand>
+                {
+                    new Brand
+                    {
+                        Name = "Meiji",
+                        ImageBrandUrl = "/images/brands/meiji.jpg"
+                    },
+                    new Brand
+                    {
+                        Name = "TH True Milk",
+                        ImageBrandUrl = "/images/brands/thtruemilk.jpg"
+                    },
+                    new Brand
+                    {
+                        Name = "Fruto Nyanyan",
+                        ImageBrandUrl = "/images/brands/FrutoNyanya.jpg"
+                    },
+                    new Brand
+                    {
+                        Name = "Sahmyook",
+                        ImageBrandUrl = "/images/brands/Sahmyook.jpg"
+                    },
+                    new Brand
+                    {
+                        Name = "137 Degrees",
+                        ImageBrandUrl = "/images/brands/137degree.jpg"
+                    },
+                    new Brand
+                    {
+                        Name = "Nestle",
+                        ImageBrandUrl = "/images/brands/Nestle.jpg"
+                    },
+                    new Brand
+                    {
+                        Name = "HOFF",
+                        ImageBrandUrl = "/images/brands/HOFF.jpg"
+                    },
+                    new Brand
+                    {
+                        Name = "Yakult",
+                        ImageBrandUrl = "/images/brands/Yakult.jpg"
+                    },
+                    new Brand
+                    {
+                        Name = "Vinamilk",
+                        ImageBrandUrl = "/images/brands/Vinamilk.jpg"
+                    },
+                    new Brand
+                    {
+                        Name = "PediaSure",
+                        ImageBrandUrl = "/images/brands/PediaSure.jpg"
+                    },
+                    new Brand
+                    {
+                        Name = "Similac",
+                        ImageBrandUrl = "/images/brands/Similac.jpg"
+                    },
+                };
+                foreach (var brand in brands)
+                {
+                    context.Brands.Add(brand);
+                }
+                context.SaveChanges();
+            }
 
             //insert product
             if (!context.Products.Any())
