@@ -9,8 +9,11 @@ namespace API.Data
         {
 
         }
-
+        public DbSet<ForAge> forAges { get; set; }
+        public DbSet<Brand> Brands { get; set; }
+        public DbSet<Category> categories { get; set; }
         public DbSet<Product> Products { get; set; }
+        public DbSet<ImageProduct> imageProducts { get; set; }
         public DbSet<Order> Orders { get; set; }
     }
 }
