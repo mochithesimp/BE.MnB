@@ -18,48 +18,13 @@ namespace API.Controllers
             _context = context;
         }
 
-        //[HttpGet(Name = "GetOrder")]
-        //public async Task<ActionResult<OrderDto>> GetOrder()
+        //[HttpPost]
+        //public async Task<ActionResult> CreateOrder(List<CartDTO> cart, UserDTO user)
         //{
-        //    var order = await RetrieveOrder();
+        //    if (user == null) return BadRequest();
+        //    if (cart == null) return BadRequest();
 
-        //    if(order == null) return NotFound();
-
-        //    return
-        //}
-
-        //private async Task<Order> RetrieveOrder()
-        //{
-        //    return await _context.Orders
-        //        .Include(i => i.OrderDetails)
-        //        .ThenInclude(p => p.Product)
-        //        .FirstOrDefaultAsync(x => x.UserId == Request.Cookies["userId"]);
-        //}
-
-        //private OrderDto MapOrderToDto(Order order)
-        //{
-        //    return new OrderDto
-        //    {
-        //        OrderId = order.OrderId,
-        //        UserId = order.UserId,
-        //        OrderDate = order.OrderDate,
-        //        Address = order.Address,
-        //        PaymentMethod = order.PaymentMethod,
-        //        ShippingMethod = order.ShippingMethod,
-        //        Total = order.Total,
-        //        OrderStatus = order.OrderStatus,
-
-        //        OrderDetails = order.OrderDetails.Select(item => new OrderDetailDto
-        //        {
-        //            ForAgeId = item.ForAgeId,
-        //            CategoryId = item.Product.CategoryId,
-        //            Price = item.Product.Price,
-        //            PictureUrl = item.Product.PictureUrl,
-        //            Type = item.Product.Type,
-        //            Brand = item.Product.Brand,
-        //            Quantity = item.Quantity
-        //        }).ToList()
-        //    };
+        //    return Ok(cart);
         //}
     }
 }

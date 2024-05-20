@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using API.Entities;
+using System.ComponentModel.DataAnnotations;
 
 namespace API.DTOs
 {
@@ -26,6 +27,8 @@ namespace API.DTOs
 
         [Required]
         public int Stock { get; set; }
+
+        public List<ImageProductDTO>? ImageProducts { get; set; }
 
         [Required]
         public bool IsActive { get; set; }
