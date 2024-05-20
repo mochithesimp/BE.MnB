@@ -13,7 +13,7 @@ namespace API.Entities
         public int RoleId { get; set; }
 
         [Required]
-        public string Avatar { get; set; }
+        public string Name { get; set; }
 
         [Required]
         public string Email { get; set; }

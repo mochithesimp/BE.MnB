@@ -395,6 +395,215 @@ namespace API.Data
 
                 context.SaveChanges();
             }
+
+            //insert ImageProduct
+            if (!context.ImageProducts.Any())
+            {
+                var imageProdcucts = new List<ImageProduct>
+                {
+                    new ImageProduct
+                    {
+                        ProductId = 1,
+                        ImageUrl = "/images/products/sua1.jpg"
+                    },
+                    new ImageProduct
+                    {
+                        ProductId = 2,
+                        ImageUrl = "/images/products/sua2.jpg"
+                    },
+                    new ImageProduct
+                    {
+                        ProductId = 3,
+                        ImageUrl = "/images/products/sua3.jpg"
+                    },
+                    new ImageProduct
+                    {
+                        ProductId = 4,
+                        ImageUrl = "/images/products/sua4.jpg"
+                    },
+                    new ImageProduct
+                    {
+                        ProductId = 5,
+                        ImageUrl = "/images/products/sua5.jpg"
+                    },
+                    new ImageProduct
+                    {
+                        ProductId = 6,
+                        ImageUrl = "/images/products/sua6.jpg"
+                    },
+                    new ImageProduct
+                    {
+                        ProductId = 7,
+                        ImageUrl = "/images/products/sua7.jpg"
+                    },
+                    new ImageProduct
+                    {
+                        ProductId = 8,
+                        ImageUrl = "/images/products/sua8.jpg"
+                    },
+                    new ImageProduct
+                    {
+                        ProductId = 9,
+                        ImageUrl = "/images/products/sua9.jpg"
+                    },
+                    new ImageProduct
+                    {
+                        ProductId = 10,
+                        ImageUrl = "/images/products/sua10.jpg"
+                    },
+                    new ImageProduct
+                    {
+                        ProductId = 11,
+                        ImageUrl = "/images/products/sua11.jpg"
+                    },
+                    new ImageProduct
+                    {
+                        ProductId = 12,
+                        ImageUrl = "/images/products/sua12.jpg"
+                    },
+                    new ImageProduct
+                    {
+                        ProductId = 13,
+                        ImageUrl = "/images/products/sua13.jpg"
+                    },
+                    new ImageProduct
+                    {
+                        ProductId = 14,
+                        ImageUrl = "/images/products/sua14.jpg"
+                    },
+                    new ImageProduct
+                    {
+                        ProductId = 15,
+                        ImageUrl = "/images/products/sua15.jpg"
+                    },
+                    new ImageProduct
+                    {
+                        ProductId = 16,
+                        ImageUrl = "/images/products/sua16.jpg"
+                    },
+                    new ImageProduct
+                    {
+                        ProductId = 17,
+                        ImageUrl = "/images/products/sua17.jpg"
+                    },
+                    new ImageProduct
+                    {
+                        ProductId = 18,
+                        ImageUrl = "/images/products/sua18.jpg"
+                    },
+                    new ImageProduct
+                    {
+                        ProductId = 19,
+                        ImageUrl = "/images/products/sua19.jpg"
+                    },
+                    new ImageProduct
+                    {
+                        ProductId = 20,
+                        ImageUrl = "/images/products/sua20.jpg"
+                    },
+                };
+
+                foreach (var image in imageProdcucts)
+                {
+                    context.ImageProducts.Add(image);
+                }
+
+                context.SaveChanges();
+
+            }
+
+            //insert Method
+            if(!context.shippingMethods.Any())
+            {
+                var shippingMethods = new List<ShippingMethod>
+                {
+                    new ShippingMethod
+                    {
+                        Name = "Giao hàng tiết kiệm",
+                        ShippingPrice = 30000,
+                    },
+                    new ShippingMethod
+                    {
+                        Name = "Giao hàng thường",
+                        ShippingPrice = 50000,
+                    },
+                    new ShippingMethod
+                    {
+                        Name = "Giao hỏa tốc",
+                        ShippingPrice = 120000,
+                    },
+                };
+                foreach(var shippingMethod in shippingMethods)
+                {
+                    context.shippingMethods.Add(shippingMethod);
+                }
+                context.SaveChanges();
+            }
+
+            //insert role
+            if (!context.Roles.Any())
+            {
+                var roles = new List<Role>
+                {
+                    new Role
+                    {
+                        RoleName = "User"
+                    },
+                    new Role
+                    {
+                        RoleName = "Staff"
+                    },
+                    new Role
+                    {
+                        RoleName = "Admin"
+                    },
+                };
+                foreach (var role in roles)
+                {
+                    context.Roles.Add(role);
+                }
+                context.SaveChanges();
+            }
+
+            //insert user
+            if (!context.Users.Any())
+            {
+                var users = new List<User>
+                {
+                    new User
+                    {
+                        RoleId = 1,
+                        Email = "vu@vu.com",
+                        Name = "Thanh Vũ",
+                        Password = "123",
+                        PhoneNumber = "1234567890",
+                        Address = "Viet Nam"
+                    },
+                    new User
+                    {
+                        RoleId = 2,
+                        Email = "tin@tin.com",
+                        Name = "Quốc Tín",
+                        Password = "123",
+                        PhoneNumber = "0909090909",
+                        Address = "Hà Nội"
+                    },
+                    new User
+                    {
+                        RoleId = 1,
+                        Email = "admin@admin.com",
+                        Name = "admin",
+                        Password = "123",
+                        PhoneNumber = "0808080808",
+                        Address = "Viet Nam"
+                    },
+                };
+                foreach (var user in users)
+                {
+                    context.Users.Add(user);
+                }
+                context.SaveChanges();
+            }
         }
     }
 }
