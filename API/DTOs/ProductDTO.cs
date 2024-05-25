@@ -1,10 +1,12 @@
 ﻿using API.Entities;
 using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 
 namespace API.DTOs
 {
     public class ProductDTO
     {
+        [JsonIgnore]
         public int ProductId { get; set; }
 
         [Required]
