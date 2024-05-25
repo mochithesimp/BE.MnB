@@ -3,10 +3,8 @@ using System.Text.Json.Serialization;
 
 namespace API.DTOs
 {
-    public class UserDTO
+    public class UpdateUserDTO
     {
-        public int UserId { get; set; }
-
         [Required]
         public int RoleId { get; set; }
 
@@ -20,7 +18,7 @@ namespace API.DTOs
         [JsonIgnore]
         public string Password { get; set; } = "***";
 
- 
+
         public string? PhoneNumber { get; set; }
 
 

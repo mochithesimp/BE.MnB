@@ -1,12 +1,9 @@
-﻿using API.Entities;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace API.DTOs
 {
-    public class ProductDTO
+    public class CreateProductDTO
     {
-        public int ProductId { get; set; }
-
         [Required]
         public int ForAgeId { get; set; }
 
