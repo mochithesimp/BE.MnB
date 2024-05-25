@@ -42,5 +42,12 @@ namespace API.Extensions
             return querry;
         }
 
+        public static IQueryable<Product> FilterAge(this IQueryable<Product> querry, int forAgeId)
+        {
+
+            querry = querry.Where(p => forAgeId == 0 || p.ForAgeId == forAgeId);
+            return querry;
+        }
+
     }
 }

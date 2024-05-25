@@ -5,6 +5,7 @@ using API.Extensions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Query;
 using Microsoft.OpenApi.Validations;
 using System.Linq;
 using static System.Net.Mime.MediaTypeNames;
@@ -28,13 +29,14 @@ namespace API.Controllers
                         string? orderBy,
                         string? search,
                         int categoryId,
-                        int brandId)
+                        int brandId,
+                        int forAgeId)
         {
             var querry = _context.Products
                 .Sort(orderBy)
                 .Search(search)
                 .FilterCategory(categoryId, brandId)
-                //.FilterBrand(brandId)
+                .FilterAge(forAgeId)
                 .AsQueryable();
 
             var list = await querry.ToListAsync();
@@ -122,6 +124,98 @@ namespace API.Controllers
             if (products.Count > 0) return Ok(products);
             return NotFound();
         }
+
+        [HttpPost]
+        public async Task<ActionResult<ProductDTO>> CreateProduct(CreateProductDTO productDto)
+        {
+            var product = new Product
+            {
+                ForAgeId = productDto.ForAgeId,
+                CategoryId = productDto.CategoryId,
+                BrandId = productDto.BrandId,
+                Name = productDto.Name,
+                Description = productDto.Description,
+                Price = productDto.Price,
+                Stock = productDto.Stock,
+                IsActive = true
+            };
+
+            _context.Products.Add(product);
+            await _context.SaveChangesAsync();
+
+            var createdProductDto = new ProductDTO
+            {
+                Name = product.Name,
+                Description = product.Description,
+                Price = product.Price,
+                Stock = product.Stock,
+                CategoryId = product.CategoryId,
+                BrandId = product.BrandId,
+                ForAgeId = product.ForAgeId,
+                IsActive = product.IsActive
+            };
+
+            return CreatedAtAction(nameof(GetProduct), new { id = createdProductDto.ProductId }, createdProductDto);
+        }
+
+        [HttpPut("{id}")]
+        public async Task<ActionResult<ProductDTO>> UpdateProduct(int id, ProductDTO productDto)
+        {
+            var product = await _context.Products.FindAsync(id);
+
+            if (product == null)
+            {
+                return NotFound();
+            }
+
+            product.ForAgeId = productDto.ForAgeId;
+            product.CategoryId = productDto.CategoryId;
+            product.BrandId = productDto.BrandId;
+            product.Name = productDto.Name;
+            product.Description = productDto.Description;
+            product.Price = productDto.Price;
+            product.Stock = productDto.Stock;
+            product.IsActive = productDto.IsActive;
+
+            await _context.SaveChangesAsync();
+
+            var updatedProductDto = new ProductDTO
+            {
+                ProductId = product.ProductId,
+                Name = product.Name,
+                Description = product.Description,
+                Price = product.Price,
+                Stock = product.Stock,
+                CategoryId = product.CategoryId,
+                BrandId = product.BrandId,
+                ForAgeId = product.ForAgeId,
+                IsActive = product.IsActive
+            };
+
+            return updatedProductDto;
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<ActionResult> DeleteProduct(int id)
+        {
+            var product = await _context.Products.FindAsync(id);
+
+            if (product == null)
+            {
+                return NotFound();
+            }
+
+            product.IsActive = false;
+            var result = await _context.SaveChangesAsync() > 0;
+
+            if (result) return Ok();
+
+            return BadRequest(new ProblemDetails { Title = "Problem deleting product" });
+        }
+
+
+
+
 
         private static ProductDTO toProductDTO(Product? product, List<ImageProductDTO> listImages)
         {

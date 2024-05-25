@@ -9,7 +9,6 @@ namespace API.Entities
         [Key]
         public int ReviewId { get; set; }
 
-        [Required]
         public int UserId { get; set; }
 
         [Required]
@@ -27,7 +26,7 @@ namespace API.Entities
         [Required]
         public string Comment { get; set; }
 
-        public User User { get; set; }
+        public User? User { get; set; }
         public OrderDetail OrderDetail { get; set; }
 
         [ForeignKey("ProductId")]
