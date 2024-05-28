@@ -127,7 +127,7 @@ namespace API.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<ProductDTO>> CreateProduct(ProductDTO productDto)
+        public async Task<ActionResult<ProductDTO>> CreateProduct(CreateProductDTO productDto)
         {
             var product = new Product
             {

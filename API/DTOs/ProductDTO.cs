@@ -6,7 +6,6 @@ namespace API.DTOs
 {
     public class ProductDTO
     {
-        [JsonIgnore]
         public int ProductId { get; set; }
 
         [Required]
