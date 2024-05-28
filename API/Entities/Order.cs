@@ -12,7 +12,7 @@ namespace API.Entities
         public int UserId { get; set; }
 
         [Required]
-        public DateTime OrderDate { get; set; }
+        public DateTime OrderDate { get; set; } = DateTime.UtcNow;
 
         [Required]
         public string Address { get; set; }
@@ -33,23 +33,5 @@ namespace API.Entities
         public ShippingMethod ShippingMethod { get; set; }
         public List<OrderDetail> OrderDetails { get; set; }
 
-        public void AddItem(Product product, int quantity)
-        {
-            if (OrderDetails.All(item => item.ProductId != product.ProductId))
-            {
-                OrderDetails.Add(new OrderDetail { Product = product, Quantity = quantity });
-            }
-
-            var existingItem = OrderDetails.FirstOrDefault(item => item.ProductId == product.ProductId);
-            if (existingItem != null) existingItem.Quantity += quantity;
-        }
-
-        public void RemoveItem(int productId, int quantity)
-        {
-            var item = OrderDetails.FirstOrDefault(item => item.ProductId == productId);
-            if (item == null) return;
-            item.Quantity -= quantity;
-            if (item.Quantity == 0) OrderDetails.Remove(item);
-        }
     }
 }

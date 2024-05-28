@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Security.Claims;
+using Microsoft.AspNetCore.Authorization;
 
 namespace API.Controllers
 {
@@ -19,17 +20,11 @@ namespace API.Controllers
     {
         private readonly StoreContext _context;
         private readonly IConfiguration _configuration;
-        //private readonly UserManager<User> _userManager;
 
         public AccountController(StoreContext context, IConfiguration configuration)
         {
             _context = context;
             _configuration = configuration;
-        }
-        public class LoginResponse
-        {
-            public string Token { get; set; }
-            public UserDTO User { get; set; }
         }
 
         [HttpPost("Login")]
@@ -38,24 +33,20 @@ namespace API.Controllers
             if (!string.IsNullOrEmpty(loginDTO.Email) && !string.IsNullOrEmpty(loginDTO.Password))
             {
                 var user = await _context.Users
-                    .FirstOrDefaultAsync(u => u.Email == loginDTO.Email);
+                    .FirstOrDefaultAsync(u => u.Email == loginDTO.Email && u.Password == loginDTO.Password);
 
-                var listUserDTO = new List<UserDTO>();
-                if (user != null) //&& VerifyPassword(loginDTO.Password, user.Password))
+                if (user != null) // && VerifyPassword(loginDTO.Password, user.Password))
                 {
-
                     UserDTO userDTO = toUserDTO(user);
                     var token = GenerateToken(userDTO);
 
                     var loginResponse = new LoginResponse
                     {
                         Token = token,
-                        User = userDTO
                     };
                     return Ok(loginResponse);
                 }
             }
-
             return BadRequest();
         }
 
@@ -70,7 +61,7 @@ namespace API.Controllers
                     RoleId = 1,
                     Email = registerDTO.Email,
                     Password = registerDTO.Password,
-                    
+
                 };
 
                 _context.Users.Add(user);
@@ -83,11 +74,32 @@ namespace API.Controllers
             return BadRequest();
         }
 
+        [HttpGet("currentUser")]
+        public async Task<ActionResult<UserDTO>> GetCurrentUser()
+        {
+            var emailClaim = User.Claims.FirstOrDefault(c => c.Type == "email");
+            if (emailClaim != null)
+            {
+                var userEmail = emailClaim.Value;
+                var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == userEmail);
+
+                if (user != null)
+                {
+                    var userDTO = toUserDTO(user);
+                    return Ok(userDTO);
+                }
+            }
+
+            return Unauthorized();
+        }
+
+
+
         private string GenerateToken(UserDTO user)
         {
             var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]));
 
-            // Lỗi Key generate vượt quá Kiểu Bytes
+            // Ensure the security key size is adequate for the chosen algorithm
             if (securityKey.KeySize < 384)
             {
                 var currentKey = securityKey.Key;
@@ -99,15 +111,18 @@ namespace API.Controllers
 
             var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha384);
 
-            var token = new JwtSecurityToken(
-                _configuration["Jwt:Issuer"],
-                _configuration["Jwt:Audience"],
-                new[]
-                {
+            var claims = new[]
+            {
+            new Claim("userId", user.UserId.ToString()),
             new Claim("email", user.Email),
-            new Claim("roleId", user.RoleId.ToString())//Đặt chủ sở hữu Cookie
-                },
-                expires: DateTime.Now.AddMinutes(1),
+            new Claim("roleId", user.RoleId.ToString())
+            };
+
+            var token = new JwtSecurityToken(
+                issuer: _configuration["Jwt:Issuer"],
+                audience: _configuration["Jwt:Audience"],
+                claims: claims,
+                expires: DateTime.Now.AddMinutes(30),
                 signingCredentials: credentials);
 
             return new JwtSecurityTokenHandler().WriteToken(token);
