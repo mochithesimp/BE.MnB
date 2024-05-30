@@ -14,5 +14,7 @@ namespace API.Entities
 
         [Required]
         public string ImageBrandUrl { get; set; }
+
+        public bool IsActive { get; set; }
     }
 }

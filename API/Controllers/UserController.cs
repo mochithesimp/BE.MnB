@@ -18,7 +18,7 @@ namespace API.Controllers
 
         }
 
-        [HttpPut("{id}")]
+        [HttpPut("Update")]
         public async Task<ActionResult<UserDTO>> UpdateUser(int id, UpdateUserDTO userDto)
         {
             var user = await _context.Users.FindAsync(id);
@@ -49,20 +49,5 @@ namespace API.Controllers
             return updatedUserDto;
         }
 
-        [HttpDelete("{id}")]
-        public async Task<ActionResult> DeleteUser(int id)
-        {
-            var user = await _context.Users.FindAsync(id);
-
-            if (user == null)
-            {
-                return NotFound();
-            }
-
-            _context.Users.Remove(user);
-            await _context.SaveChangesAsync();
-
-            return NoContent();
-        }
     }
 }

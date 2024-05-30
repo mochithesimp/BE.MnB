@@ -6,6 +6,7 @@ namespace API.DTOs
     public class UpdateUserDTO
     {
         [Required]
+        [JsonIgnore]
         public int RoleId { get; set; }
 
 
