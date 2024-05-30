@@ -29,6 +29,8 @@ namespace API.Entities
 
         public string? Address { get; set; }
 
+        public bool IsActive { get; set; }
+
         public Role? Role { get; set; }
         public List<Review>? Reviews { get; set; }
         public List<Order>? Orders { get; set; }

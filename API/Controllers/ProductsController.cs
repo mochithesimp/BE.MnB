@@ -126,7 +126,7 @@ namespace API.Controllers
             return NotFound();
         }
 
-        [HttpPost]
+        [HttpPost("Create")]
         public async Task<ActionResult<ProductDTO>> CreateProduct(CreateProductDTO productDto)
         {
             var product = new Product
@@ -159,7 +159,7 @@ namespace API.Controllers
             return CreatedAtAction(nameof(GetProduct), new { id = createdProductDto.ProductId }, createdProductDto);
         }
 
-        [HttpPut("{id}")]
+        [HttpPut("Update")]
         public async Task<ActionResult<ProductDTO>> UpdateProduct(int id, ProductDTO productDto)
         {
             var product = await _context.Products.FindAsync(id);
@@ -196,7 +196,7 @@ namespace API.Controllers
             return updatedProductDto;
         }
 
-        [HttpDelete("{id}")]
+        [HttpDelete("Delete")]
         public async Task<ActionResult> DeleteProduct(int id)
         {
             var product = await _context.Products.FindAsync(id);

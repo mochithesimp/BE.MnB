@@ -14,5 +14,8 @@ namespace API.DTOs
 
         [Required]
         public string ImageBrandUrl { get; set; }
+
+        public bool IsActive { get; set; }
+
     }
 }

@@ -33,9 +33,7 @@ namespace API.Controllers
             return BadRequest();
         }
 
-
-
-        [HttpPut("{id}")]
+        [HttpPut("Update")]
         public async Task<ActionResult<Brand>> UpdateBrand(int id, BrandDTO updateBrand)
         {
             var oldBrand = await _context.Brands.FirstOrDefaultAsync(b => b.BrandId == id);
@@ -43,19 +41,21 @@ namespace API.Controllers
 
             oldBrand.Name = updateBrand.Name;
             oldBrand.ImageBrandUrl = updateBrand.ImageBrandUrl;
+            oldBrand.IsActive = updateBrand.IsActive;
 
             await _context.SaveChangesAsync();
 
             return Ok(oldBrand);
         }
 
-        [HttpPost]
+        [HttpPost("Create")]
         public async Task<ActionResult<Brand>> CreateBrand(BrandDTO newBrand)
         {
             var brand = new Brand
             {
                 Name = newBrand.Name,
                 ImageBrandUrl = newBrand.ImageBrandUrl,
+                IsActive = true,
             };
 
             _context.Brands.Add(brand);
@@ -63,5 +63,23 @@ namespace API.Controllers
 
             return CreatedAtAction(nameof(GetBrand), new { id = brand.BrandId }, brand);
         }
+
+        [HttpDelete("Delete")]
+        public async Task<ActionResult> DeleteBrand(int id)
+        {
+            var brand =  await _context.Brands.FindAsync(id);
+
+            if(brand == null)
+            {
+                return NotFound();
+            }
+            
+            brand.IsActive = false;
+            var result =  await _context.SaveChangesAsync() > 0;
+            if (result) return Ok();
+
+            return BadRequest(new ProblemDetails { Title = "Problem deleting brand" });
+        }
+
     }
 }
