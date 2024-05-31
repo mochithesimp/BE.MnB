@@ -1,19 +1,15 @@
 ﻿using API.Data;
 using API.DTOs;
 using API.Entities;
-using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
-using System;
 using System.IdentityModel.Tokens.Jwt;
 using System.Text;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using System.Collections.Generic;
 using System.Security.Claims;
-using Microsoft.AspNetCore.Authorization;
 using API.Extensions;
 using API.Token;
-using Azure.Core;
+using System.Security.Cryptography;
 
 namespace API.Controllers
 {
@@ -33,7 +29,7 @@ namespace API.Controllers
         }
 
         [HttpPost("Login")]
-        public async Task<ActionResult<AuthResponseDTO>> Login(LoginDTO loginDTO)
+        public async Task<ActionResult<TokenDTO>> Login(LoginDTO loginDTO)
         {
             if (!string.IsNullOrEmpty(loginDTO.Email) && !string.IsNullOrEmpty(loginDTO.Password))
             {
@@ -52,7 +48,7 @@ namespace API.Controllers
                 new Claim(ClaimTypes.MobilePhone, user.PhoneNumber),
                 new Claim(ClaimTypes.Role, string.Join(";",roles)),
                 new Claim(ClaimTypes.StreetAddress, user.Address)
-            };
+                    };
 
                     var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]));
                     var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
@@ -70,6 +66,10 @@ namespace API.Controllers
                     (
                         issuer: _configuration["Jwt:Issuer"],
                         audience: _configuration["Jwt:Issuer"],
+                        claims: new[]
+                        {
+                            new Claim(ClaimTypes.NameIdentifier, user.UserId.ToString()),
+                        },
                         expires: DateTime.Now.AddDays(7), // Set a longer expiry time for the refresh token
                         signingCredentials: creds
                     );
@@ -77,13 +77,13 @@ namespace API.Controllers
                     var accessTokenString = new JwtSecurityTokenHandler().WriteToken(token);
                     var refreshTokenString = new JwtSecurityTokenHandler().WriteToken(refreshToken);
 
-                    var response = new AuthResponseDTO
+                    TokenDTO tokenDTO = new TokenDTO()
                     {
                         token = accessTokenString,
                         RefreshToken = refreshTokenString
                     };
 
-                    return Ok(response);
+                    return Ok(tokenDTO);
                 }
             }
 
@@ -91,37 +91,80 @@ namespace API.Controllers
         }
 
         [HttpPost("RefreshToken")]
-        public async Task<ActionResult<AuthResponseDTO>> RefreshToken(RefreshTokenDTO refreshTokenDTO)
+        public async Task<ActionResult<ResponseDTO>> RefreshToken(TokenDTO TokenDTO)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]));
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+            var tokenValidateParam = new TokenValidationParameters
+            {
+                ValidateIssuerSigningKey = true,
+                IssuerSigningKey = key,
+                ValidateIssuer = true,
+                ValidIssuer = _configuration["Jwt:Issuer"],
+                ValidateAudience = true,
+                ValidAudience = _configuration["Jwt:Issuer"],
+                ValidateLifetime = false
+            };
 
             try
             {
-                var principal = tokenHandler.ValidateToken(refreshTokenDTO.RefreshToken, new TokenValidationParameters
-                {
-                    ValidateIssuerSigningKey = true,
-                    IssuerSigningKey = key,
-                    ValidateIssuer = true,
-                    ValidIssuer = _configuration["Jwt:Issuer"],
-                    ValidateAudience = true,
-                    ValidAudience = _configuration["Jwt:Issuer"],
-                    ValidateLifetime = false 
-                }, out SecurityToken validatedToken);
+                //check accessToken valid format and refresh token
+                var principal = tokenHandler.ValidateToken(TokenDTO.token, tokenValidateParam, out SecurityToken validatedToken);
+                var principalRefreshToken = tokenHandler.ValidateToken(TokenDTO.RefreshToken, tokenValidateParam, out SecurityToken validatedRefreshToken);
 
+                //check accessToken alg
                 var jwtToken = validatedToken as JwtSecurityToken;
                 if (jwtToken == null || !jwtToken.Header.Alg.Equals(SecurityAlgorithms.HmacSha256, StringComparison.InvariantCultureIgnoreCase))
                 {
-                    return Unauthorized("Invalid token");
+                    return Unauthorized(new ResponseDTO
+                    {
+                        IsSuccess = false,
+                        Message = "Invalid Token"
+                    });
+                }
+
+                //check accessToken expire?
+                var utcExpireDate = long.Parse(principal.Claims.FirstOrDefault(x => x.Type == JwtRegisteredClaimNames.Exp).Value);
+                var expireDate = ConvertUnixTimeToDateTime(utcExpireDate);
+                if (expireDate > DateTime.UtcNow)
+                {
+                    return Unauthorized(new ResponseDTO
+                    {
+                        IsSuccess = false,
+                        Message = "Access token has not yet expired"
+                    });
+                }
+
+                //check refreshToken expired?
+                utcExpireDate = long.Parse(principalRefreshToken.Claims.FirstOrDefault(x => x.Type == JwtRegisteredClaimNames.Exp).Value);
+                expireDate = ConvertUnixTimeToDateTime(utcExpireDate);
+                if (expireDate < DateTime.UtcNow)
+                {
+                    return Unauthorized(new ResponseDTO
+                    {
+                        IsSuccess = false,
+                        Message = "Refresh token has expired"
+                    });
+                }
+
+                // check accessToken userId == refreshtoken userId
+                var accessTokenUserId = principal.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+                var refreshTokenUserId = principalRefreshToken.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+                if (accessTokenUserId != refreshTokenUserId)
+                {
+                    return Unauthorized(new ResponseDTO
+                    {
+                        IsSuccess = false,
+                        Message = "token doesn't match"
+                    });
                 }
 
                 // Extract user claims from the refresh token
-                var userId = principal.FindFirst(ClaimTypes.NameIdentifier)?.Value;
                 var userRoles = principal.FindFirst(ClaimTypes.Role)?.Value;
 
                 // Retrieve user information from the database or any other source
-                var user = await _context.Users.FindAsync(int.Parse(userId));
+                var user = await _context.Users.FindAsync(int.Parse(accessTokenUserId));
                 if (user == null)
                 {
                     return Unauthorized("Invalid token");
@@ -143,23 +186,32 @@ namespace API.Controllers
                     issuer: _configuration["Jwt:Issuer"],
                     audience: _configuration["Jwt:Issuer"],
                     claims: userClaims,
-                    expires: DateTime.Now.AddHours(1),
+                    expires: DateTime.Now.AddMinutes(15),
                     signingCredentials: creds
                 );
 
                 var accessTokenString = new JwtSecurityTokenHandler().WriteToken(accessToken);
 
-                var response = new AuthResponseDTO
+                var response = new ResponseDTO
                 {
-                    token = accessTokenString,
-                    RefreshToken = refreshTokenDTO.RefreshToken
+                    IsSuccess = true,
+                    Message = "refresh token Successfully",
+                    data = new TokenDTO
+                    {
+                        token = accessTokenString,
+                        RefreshToken = TokenDTO.RefreshToken
+                    }
                 };
 
                 return Ok(response);
             }
             catch (Exception)
             {
-                return Unauthorized("Invalid token");
+                return Unauthorized(new ResponseDTO
+                {
+                    IsSuccess = false,
+                    Message = "wrong format token"
+                });
             }
         }
 
@@ -210,6 +262,12 @@ namespace API.Controllers
             userDTO.Address = user.Address;
 
             return userDTO;
+        }
+
+        private DateTime ConvertUnixTimeToDateTime(long utcExpireDate)
+        {
+            DateTimeOffset dateTimeOffset = DateTimeOffset.FromUnixTimeSeconds(utcExpireDate);
+            return dateTimeOffset.UtcDateTime;
         }
     }
 }
