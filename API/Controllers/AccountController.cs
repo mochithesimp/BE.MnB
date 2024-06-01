@@ -43,12 +43,14 @@ namespace API.Controllers
                     var userClaims = new[]
                     {
                 new Claim(ClaimTypes.NameIdentifier, user.UserId.ToString()),
-                new Claim(ClaimTypes.Name, user.Name),
-                new Claim(ClaimTypes.Email, user.Email),
-                new Claim(ClaimTypes.MobilePhone, user.PhoneNumber),
+                new Claim(ClaimTypes.Name, user?.Name),
+                new Claim(ClaimTypes.Email, user?.Email),
+                new Claim(ClaimTypes.MobilePhone, user?.PhoneNumber),
                 new Claim(ClaimTypes.Role, string.Join(";",roles)),
-                new Claim(ClaimTypes.StreetAddress, user.Address)
-                    };
+
+                new Claim(ClaimTypes.StreetAddress, user?.Address)
+            };
+
 
                     var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]));
                     var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
@@ -58,7 +60,7 @@ namespace API.Controllers
                         issuer: _configuration["Jwt:Issuer"],
                         audience: _configuration["Jwt:Issuer"],
                         claims: userClaims,
-                        expires: DateTime.Now.AddHours(1),
+                        expires: DateTime.Now.AddSeconds(10),
                         signingCredentials: creds
                     );
 
@@ -74,13 +76,14 @@ namespace API.Controllers
                         signingCredentials: creds
                     );
 
+
                     var accessTokenString = new JwtSecurityTokenHandler().WriteToken(token);
-                    var refreshTokenString = new JwtSecurityTokenHandler().WriteToken(refreshToken);
+                    //var refreshTokenString = new JwtSecurityTokenHandler().WriteToken(refreshToken);
 
                     TokenDTO tokenDTO = new TokenDTO()
                     {
                         token = accessTokenString,
-                        RefreshToken = refreshTokenString
+                        RefreshToken = ""
                     };
 
                     return Ok(tokenDTO);
@@ -174,11 +177,9 @@ namespace API.Controllers
                 var userClaims = new[]
                 {
             new Claim(ClaimTypes.NameIdentifier, user.UserId.ToString()),
-            new Claim(ClaimTypes.Name, user.Name),
             new Claim(ClaimTypes.Email, user.Email),
-            new Claim(ClaimTypes.MobilePhone, user.PhoneNumber),
             new Claim(ClaimTypes.Role, userRoles),
-            new Claim(ClaimTypes.StreetAddress, user.Address)
+
         };
 
                 var accessToken = new JwtSecurityToken
@@ -239,7 +240,7 @@ namespace API.Controllers
             return BadRequest();
         }
 
-        [HttpGet("resetPassword")]
+        [HttpPost("resetPassword")]
         public async Task<ActionResult<UserDTO>> GetForgetPasswordUser(string email)
         {
             var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == email);
@@ -250,6 +251,23 @@ namespace API.Controllers
             }
             return NotFound();
         }
+
+        [HttpPost("changePassword")]
+        public async Task<ActionResult> ChangePassword(string email, string password)
+        {
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == email);
+
+            if (user != null)
+            {
+                user.Password = password;
+                await _context.SaveChangesAsync();
+                return Ok();
+            }
+
+            return NotFound();
+        }
+
+
 
         public static UserDTO toUserDTO(User? user)
         {

@@ -218,7 +218,7 @@ namespace API.Controllers
 
 
 
-        private static ProductDTO toProductDTO(Product? product, List<ImageProductDTO> listImages)
+        public static ProductDTO toProductDTO(Product? product, List<ImageProductDTO> listImages)
         {
             ProductDTO productDTO = new ProductDTO();
             productDTO.ProductId = product.ProductId;
@@ -241,7 +241,7 @@ namespace API.Controllers
             return productDTO;
         }
 
-        private static ImageProductDTO toImageDTO(ImageProduct? image)
+        public static ImageProductDTO toImageDTO(ImageProduct? image)
         {
             ImageProductDTO imageProductDTO = new ImageProductDTO();
             imageProductDTO.ImageId = image.ImageId;
