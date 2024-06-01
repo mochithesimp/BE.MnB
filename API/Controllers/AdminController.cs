@@ -75,6 +75,152 @@ namespace API.Controllers
             return BadRequest(new ProblemDetails { Title = "Problem deleting user" });
         }
 
+        [HttpGet("getBestBuyer")]
+        public async Task<ActionResult<List<UserDTO>>> GetBestBuyerUsers()
+        {
+            var orders = await _context.Orders.ToListAsync();
+
+            var userTotals = orders
+                .GroupBy(o => o.UserId)
+                .Select(g => new
+                {
+                    UserId = g.Key,
+                    Total = g.Sum(o => o.Total)
+                })
+                .OrderByDescending(u => u.Total)
+                .Take(5) 
+                .ToList();
+
+            var bestBuyerUserIds = userTotals.Select(u => u.UserId).ToList();
+
+            var bestBuyerUsers = await _context.Users
+                .Where(u => bestBuyerUserIds.Contains(u.UserId))
+                .ToListAsync();
+
+            if (bestBuyerUsers.Count > 0)
+            {
+                var bestBuyerUserDTOs = bestBuyerUsers.Select(user => AccountController.toUserDTO(user)).ToList();
+                return Ok(bestBuyerUserDTOs);
+            }
+            else
+            {
+                return NotFound();
+            }
+        }
+
+        [HttpGet("getBestSellerProducts")]
+        public async Task<ActionResult<List<ProductDTO>>> GetBestSellerProducts()
+        {
+            var orderDetails = await _context.orderDetails.ToListAsync();
+
+            var productCounts = orderDetails
+                .GroupBy(od => od.ProductId)
+                .Select(g => new
+                {
+                    ProductId = g.Key,
+                    Count = g.Count()
+                })
+                .OrderByDescending(pc => pc.Count)
+                .ToList();
+
+            var bestSellerProductIds = productCounts
+                .Take(10)
+                .Select(pc => pc.ProductId)
+                .ToList();
+
+            var bestSellerProducts = await _context.Products
+                .Where(p => bestSellerProductIds.Contains(p.ProductId))
+                .ToListAsync();
+
+            if (bestSellerProducts.Count > 0)
+            {
+                var bestSellerProductDTOs = new List<ProductDTO>();
+
+                foreach (var product in bestSellerProducts)
+                {
+                    var imageProducts = await _context.ImageProducts
+                        .Where(ip => ip.ProductId == product.ProductId)
+                        .ToListAsync();
+
+                    var imageProductDTOs = imageProducts.Select(ip => ProductsController.toImageDTO(ip)).ToList();
+
+                    var productDTO = ProductsController.toProductDTO(product, imageProductDTOs);
+
+                    bestSellerProductDTOs.Add(productDTO);
+                }
+
+                return Ok(bestSellerProductDTOs);
+            }
+            else
+            {
+                return NotFound();
+            }
+        }
+
+        [HttpGet("getTotalUser")]
+        public async Task<ActionResult<int>> GetTotalUser()
+        {
+            var userCount = await _context.Users.CountAsync();
+            return Ok(userCount);
+        }
+
+        [HttpGet("getTotalProduct")]
+        public async Task<ActionResult<int>> GetTotalProduct()
+        {
+            var productCount = await _context.Products.CountAsync();
+            return Ok(productCount);
+        }
+
+        [HttpGet("getTotalOrder")]
+        public async Task<ActionResult<int>> getTotalOrder()
+        {
+            var orderCount = await _context.Orders.CountAsync();
+            return Ok(orderCount);
+        }
+
+        [HttpGet("getTotalProfit")]
+        public async Task<ActionResult<decimal>> getTotalProfit()
+        {
+            var totalOrderCount = await _context.Orders.SumAsync(o => o.Total);
+            return Ok(totalOrderCount);
+        }
+
+        //[HttpGet("salesByDate")]
+        //public async Task<ActionResult<List<SalesByDateDTO>>> GetSalesByDate()
+        //{
+        //    var salesByDate = await _context.orderDetails
+        //        .GroupBy(od => od.Order.OrderDate.Date)
+        //        .Select(g => new SalesByDateDTO
+        //        {
+        //            Date = g.Key,
+        //            ProductCount = g.Sum(od => od.Quantity),
+        //            TotalPrice = g.Sum(od => od.Quantity * od.Price)
+        //        })
+        //        .ToListAsync();
+
+        //    return Ok(salesByDate);
+        //}
+
+        [HttpGet("salesByDate")]
+        public async Task<ActionResult<List<SalesByDateDTO>>> GetSalesByDate()
+        {
+            var currentDate = DateTime.UtcNow.Date;
+            var startDate = currentDate.AddDays(-6); // Start date is 7 days ago
+
+            var salesByDate = await _context.orderDetails
+                .Where(od => od.Order.OrderDate.Date >= startDate && od.Order.OrderDate.Date <= currentDate)
+                .GroupBy(od => od.Order.OrderDate.Date)
+                .Select(g => new SalesByDateDTO
+                {
+                    Date = g.Key,
+                    ProductCount = g.Sum(od => od.Quantity),
+                    TotalPrice = g.Sum(od => od.Quantity * od.Price)
+                })
+                .ToListAsync();
+
+            return Ok(salesByDate);
+        }
+
 
 
         public static OrderDto toOrderDTO(Order? order)

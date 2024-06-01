@@ -20,7 +20,7 @@ public class OrderController : ControllerBase
     {
         try
         {
-            if(orderDto == null)
+            if (orderDto == null)
             {
                 return BadRequest();
             }
@@ -32,16 +32,29 @@ public class OrderController : ControllerBase
                 Address = "",        // taken from web later
                 PaymentMethod = orderDto.PaymentMethod, // taken from web later
                 ShippingMethodId = orderDto.ShippingMethodId,
-                OrderStatus = "Pending", 
-                Total = orderDto.Products.Sum(p => p.Total) 
+                OrderStatus = "Pending",
+                Total = orderDto.Products.Sum(p => p.Total)
             };
 
             _context.Orders.Add(order);
             await _context.SaveChangesAsync();
 
-
             foreach (var productDto in orderDto.Products)
             {
+                var product = await _context.Products.FindAsync(productDto.ProductId);
+
+                if (product == null)
+                {
+                    return BadRequest("Product not found");
+                }
+
+                if (product.Stock < productDto.Quantity)
+                {
+                    return BadRequest("Insufficient product quantity");
+                }
+
+                product.Stock -= productDto.Quantity;
+
                 var orderDetail = new OrderDetail
                 {
                     OrderId = order.OrderId,

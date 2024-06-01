@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.Extensions.Hosting;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace API.Entities
@@ -29,15 +30,14 @@ namespace API.Entities
 
         [Required]
         public int Stock { get; set; }
-
         [Required]
         public bool IsActive { get; set; }
-
         public ForAge ForAge { get; set; }
         public Category Category { get; set; }
         public Brand Brand { get; set; }
         public List<ImageProduct> ImageProducts { get; set; }
         public List<Review> Reviews { get; set; }
         public List<OrderDetail> OrderDetails { get; set; }
+        public List<Blog> Blogs { get; set; }
     }
 }
