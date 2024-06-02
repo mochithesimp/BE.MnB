@@ -67,7 +67,7 @@ namespace API.Controllers
             return NotFound();
         }
 
-        [HttpDelete("Delete")]
+        [HttpDelete("DeleteUser")]
         public async Task<ActionResult> DeleteUser(int id)
         {
             var user = await _context.Users.FirstOrDefaultAsync(u => u.UserId == id && u.IsActive && u.RoleId == 1);
@@ -85,5 +85,52 @@ namespace API.Controllers
             else
                 return BadRequest(new ProblemDetails { Title = "Problem deleting user" });
         }
+
+        [HttpPut("submitOrder")]
+        public async Task<IActionResult> SubmitOrder(int orderId)
+        {
+            try
+            {
+                var order = await _context.Orders.FirstOrDefaultAsync(o => o.OrderId == orderId);
+
+                if (order == null)
+                {
+                    return NotFound("Order not found");
+                }
+
+                order.OrderStatus = "Submitted";
+                await _context.SaveChangesAsync();
+
+                return Ok("Order canceled successfully");
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, "Failed to cancel order. " + ex.InnerException?.Message);
+            }
+        }
+
+        [HttpDelete("cancelOrder")]
+        public async Task<IActionResult> CancelOrder(int orderId)
+        {
+            try
+            {
+                var order = await _context.Orders.FirstOrDefaultAsync(o => o.OrderId == orderId);
+
+                if (order == null)
+                {
+                    return NotFound("Order not found");
+                }
+
+                order.OrderStatus = "Canceled";
+                await _context.SaveChangesAsync();
+
+                return Ok("Order canceled successfully");
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, "Failed to cancel order. " + ex.InnerException?.Message);
+            }
+        }
+
     }
 }
