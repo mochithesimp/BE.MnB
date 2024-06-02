@@ -29,7 +29,7 @@ public class OrderController : ControllerBase
             {
                 UserId = orderDto.UserId,
                 OrderDate = orderDto.OrderDate,
-                Address = "",        // taken from web later
+                Address = orderDto.Address,        // taken from web later
                 PaymentMethod = orderDto.PaymentMethod, // taken from web later
                 ShippingMethodId = orderDto.ShippingMethodId,
                 OrderStatus = "Pending",
