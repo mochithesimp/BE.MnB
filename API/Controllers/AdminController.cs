@@ -185,22 +185,6 @@ namespace API.Controllers
             return Ok(totalOrderCount);
         }
 
-        //[HttpGet("salesByDate")]
-        //public async Task<ActionResult<List<SalesByDateDTO>>> GetSalesByDate()
-        //{
-        //    var salesByDate = await _context.orderDetails
-        //        .GroupBy(od => od.Order.OrderDate.Date)
-        //        .Select(g => new SalesByDateDTO
-        //        {
-        //            Date = g.Key,
-        //            ProductCount = g.Sum(od => od.Quantity),
-        //            TotalPrice = g.Sum(od => od.Quantity * od.Price)
-        //        })
-        //        .ToListAsync();
-
-        //    return Ok(salesByDate);
-        //}
-
         [HttpGet("salesByDate")]
         public async Task<ActionResult<List<SalesByDateDTO>>> GetSalesByDate()
         {
