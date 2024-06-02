@@ -263,6 +263,20 @@ namespace API.Data
                         IsActive = true,
                     },
 
+                    new Brand
+                    {
+                        Name = "ColosBaby",
+                        ImageBrandUrl = "/images/brands/colosbaby.jpg",
+                        IsActive = true,
+                    },
+
+                    new Brand
+                    {
+                        Name = "Bubs",
+                        ImageBrandUrl = "/images/brands/bubs.jpg",
+                        IsActive = true,
+                    }
+
                 };
                 foreach (var brand in brands)
                 {
@@ -518,9 +532,9 @@ namespace API.Data
 
                 new Product
                 { //21
-                    ForAgeId = 1,   
-                    CategoryId = 1, 
-                    BrandId = 12,    
+                    ForAgeId = 1,
+                    CategoryId = 1,
+                    BrandId = 12,
                     Name = "Sữa Nan Optipro PLUS 1 800g",
                     Description = "Sữa Nan Optipro PLUS 1 800g, với 5HMO, sản xuất tại Thụy Sỹ (0-6 tháng)",
                     Price = 549000,
@@ -1056,6 +1070,42 @@ namespace API.Data
                     IsActive = true,
                 },
 
+                new Product
+                { //66
+                    ForAgeId = 5,
+                    CategoryId = 1,
+                    BrandId = 31,
+                    Name = "Sữa ColosBaby Gold Pedia 800g",
+                    Description = "Sữa ColosBaby Gold Pedia 800g (1 - 10 tuổi)",
+                    Price = 615000,
+                    Stock = 40,
+                    IsActive = true,
+                },
+
+                new Product
+                { //67
+                    ForAgeId = 1,
+                    CategoryId = 1,
+                    BrandId = 32,
+                    Name = "Sữa Bubs Organic Bovine số 1 800g",
+                    Description = "Sữa Bubs Organic Bovine số 1 800g (0-6 tháng)",
+                    Price = 695000,
+                    Stock = 30,
+                    IsActive = true,
+                },
+
+                new Product
+                { //68
+                    ForAgeId = 2,
+                    CategoryId = 1,
+                    BrandId = 32,
+                    Name = "Sữa Bubs Organic Bovine số 2 800g",
+                    Description = "Sữa Bubs Organic Bovine số 2 800g (6-12 tháng)",
+                    Price = 695000,
+                    Stock = 50,
+                    IsActive = true,
+                },
+
             };
 
                 foreach (var product in products)
@@ -1398,6 +1448,24 @@ namespace API.Data
                         ImageUrl = "/images/products/sua65.jpg"
                     },
 
+                    new ImageProduct
+                    {
+                        ProductId = 66,
+                        ImageUrl = "/images/products/sua66.jpg"
+                    },
+
+                    new ImageProduct
+                    {
+                        ProductId = 67,
+                        ImageUrl = "/images/products/sua67.jpg"
+                    },
+
+                    new ImageProduct
+                    {
+                        ProductId = 68,
+                        ImageUrl = "/images/products/sua68.jpg"
+                    },
+
                 };
 
                 foreach (var image in imageProdcucts)
@@ -1410,7 +1478,7 @@ namespace API.Data
             }
 
             //insert Method
-            if(!context.shippingMethods.Any())
+            if (!context.shippingMethods.Any())
             {
                 var shippingMethods = new List<ShippingMethod>
                 {
@@ -1430,7 +1498,7 @@ namespace API.Data
                         ShippingPrice = 120000,
                     },
                 };
-                foreach(var shippingMethod in shippingMethods)
+                foreach (var shippingMethod in shippingMethods)
                 {
                     context.shippingMethods.Add(shippingMethod);
                 }
@@ -1504,6 +1572,97 @@ namespace API.Data
                 }
                 context.SaveChanges();
             }
+
+            if (!context.Blogs.Any())
+            {
+                var blogs = new List<Blog>
+                {
+                    new Blog
+                    {
+                        Title = "Review dòng sữa cao cấp Meiji: Chất lượng có xứng với giá tiền?",
+                        Content = "Thị trường phân phối sữa bột cho bé hiện đang ngày càng trở nên đa dạng. Vậy nên, các mẹ cũng trở nên khắt khe hơn trong vấn đề chọn sữa cho bé để đảm bảo đó phải là loại sữa bột tốt nhất, đáp ứng đủ các tiêu chí mẹ đề ra như phát triển trí não, chiều cao, cân nặng, có sức đề kháng tốt, hỗ trợ tiêu hoá khoẻ, tránh táo bón,... Những tiêu chí trên cũng chính là xu hướng khi chọn sữa cho bé của bất kỳ mẹ nào.\n\nVì lẽ đó mà sữa Nhật Meiji, với thành phần dinh dưỡng cân bằng, giúp trẻ phát triển toàn diện và ổn định từ thể chất tới trí não đã trở thành lựa chọn số 1 của các mẹ.Đặc biệt, sữa Nhật Meiji còn được chia theo từng giai đoạn phát triển của bé, bao gồm:\n\nMeiji Infant Formula (dành cho bé từ 0-1 tuổi): Tập trung đến sự phát triển não bộ của trẻ, chú trọng đến khả năng miễn dịch, cân nhắc đến tình trạng tiêu hoá và hấp thu để điều chỉnh tình trạng phân của bé.\nNhìn chung, sữa Nhật Meiji trở thành xu hướng là nhờ đáp ứng đúng nhu cầu mà các mẹ hướng đến khi chọn mua sữa bột cho bé yêu. Bên cạnh đó, Meiji còn mang đến những sản phẩm hết sức tiện dụng khiến các mẹ càng hài lòng hơn. Một khi con đường chinh phục trái tim các mẹ đã thành công thì giá tiền với mẹ không còn là vấn đề nữa, bởi lẽ người mẹ nào không muốn đem những điều tốt đẹp nhất trên đời dành cho bé cưng của mẹ?",
+                        Author = "Johnny D Vũ Lê",
+                        ProductId = 1,
+                        UploadDate = DateTime.Now,
+                        UpdateDate = DateTime.Now,
+                        View = 0,
+                        Like = 0,
+                        ImageUrl = "/images/blogs/blog1.jpg"
+                    },
+
+                    new Blog
+                    {
+                        Title = "Vì sao ba mẹ nên chọn sữa Famna cho bé?",
+                        Content = "Sữa Famna được sản xuất 100% tại Thụy Điển. Quốc gia này hội tụ nhiều chuyên gia dinh dưỡng và các nhà cung cấp nguyên liệu sạch hàng đầu Châu  u như: BASF (Đức), Lonza & Chr. Hansen (Đan Mạch),...\n\nThành phần Sữa Famna chứa hệ 2’-FL HMO, hay còn được biết đến là hoạt chất Prebiotics. Hoạt chất này có cấu trúc tương tự như dưỡng chất được tìm thấy trong sữa mẹ, giúp hình thành và nuôi dưỡng các loại vi khuẩn có lợi cho đường ruột của bé. Đồng thời, thành phần này cũng hỗ trợ ngăn chặn sự bám dính của các mầm bệnh trong đường ruột. Sức khỏe hệ tiêu hóa của bé nhờ vậy được tăng cường một cách đáng kể.\n\nSữa Famna bổ sung các thành phần hỗ trợ bé tăng cường sức đề kháng hiệu quả bao gồm: 2’-FL HMO và các loại Vitamin A, E, C. Các thành phần này được kết hợp với nhau theo một tỷ lệ hợp lý, giúp bé khỏe mạnh hơn và tránh được các bệnh nhiễm khuẩn thường gặp như: cảm, cúm, tiêu chảy,...\n\nMột công dụng tuyệt vời khác của dòng sữa này chính là giúp bé phát triển trí não tối ưu. Sữa Famna có thể mang lại công dụng này là nhờ chứa 100% DHA từ tảo tinh khiết, kết hợp cùng các dưỡng chất như: ARA, Axit Linoleic, Alpha Linolenic, Taurin, Lutein, Choline, I ốt, Sắt,... Các dưỡng chất này vừa giúp bé tăng cường khả năng nhận thức và ghi nhớ, vừa giúp bé cải thiện khả năng học tập một cách hiệu quả hơn.\n\nVới thành phần Canxi, Kẽm và Vitamin D3, sữa Famna giúp hệ xương và răng của bé phát triển chắc khỏe. Cũng chính nhờ những dưỡng chất này mà bé đạt được chiều cao lý tưởng theo chuẩn độ tuổi.\n\nKhông chỉ hỗ trợ bé phát triển chiều cao, sữa Famna còn nhận được nhiều lời khen của ba mẹ về công dụng giúp bé tăng cân hiệu quả. Để phát huy được công dụngnày thì không thể không nhắc đến các loại axit amin có nguồn gốc từ đạm sữa, chất béo và một số khoáng chất thiết yếu khác như: Kẽm, Magie,...",
+                        Author = "Daniel V Tín Lê",
+                        ProductId = 29,
+                        UploadDate = DateTime.Now,
+                        UpdateDate = DateTime.Now,
+                        View = 0,
+                        Like = 0,
+                        ImageUrl = "/images/blogs/blog2.jpg"
+                    },
+
+                    new Blog
+                    {
+                        Title = "Khám phá thành phần sữa ColosBaby Gold Pedia nào đặc biệt tốt cho trẻ suy dinh dưỡng, thấp còi",
+                        Content = "Được sản xuất bởi Công Ty Cổ Phần Sữa VitaDairy Việt Nam, sữa ColosBaby Gold Pedia chứa thành phần sữa non ColosIgG 24h với hàm lượng kháng thể IgG cao. Nguyên liệu sữa non này được VitaDairy nhập khẩu độc quyền từ Tập đoàn PantheryX (Mỹ). Ngoài sữa non nhập khẩu từ Mỹ, các nguyên liệu còn lại được nhập khẩu trực tiếp từ New Zealand. Hơn nữa, sản phẩm còn được sản xuất trên dây chuyền công nghệ hiện đại. Do đó, ba mẹ hoàn toàn có thể an tâm về chất lượng tuyệt vời và sự an toàn khi cho bé sử dụng sữa non ColosBaby Gold Pedia.,\r\n  \r\n  Cụ thể, sữa ColosBaby Gold Pedia chứa đạm whey thuỷ phân, đạm whey cô đặc và đạm sữa giúp bé hấp thu dễ dàng. Hệ đạm này đậm độ chuẩn 1.0 kcal/ml, giúp cung cấp tới 600 kcal/ngày. Nhờ đó có thể bù đắp năng lượng thiếu hụt để trẻ tăng cân nhanh và bền vững.\r\n\r\nĐặc biệt, sản phẩm được bổ sung lợi khuẩn Bifidobacterium và chất xơ hoà tan FOS/Inulin. Bé vì vậy có thể tiêu hóa tốt lượng đạm trên. Còn đường tiêu hóa thì hoạt động khỏe mạnh, cân bằng và phòng ngừa táo bón hiệu quả.\r\n\r\nĐáng chú ý hơn khi vitamin K2 trong sữa ColosBaby Gold Pedia là loại vitamin K2 duy nhất có nguồn gốc từ thiên nhiên - MK7. Với MK7, khả năng định hướng được canxi vào xương trở nên hiệu quả, từ đó giúp cho xương chắc khỏe hơn. Hơn nữa, sữa ColosBaby Gold Pedia còn tích hợp thêm Photpho và Magie nên công dụng giúp bé phát triển chiều cao càng hiệu quả.\r\n\r\nTuy không tác động trực tiếp đến khả năng tăng trưởng chiều cao và cân nặng, song kháng thể IgG giúp hệ miễn dịch của bé trở nên mạnh mẽ hơn. IgG tạo hàng rào bảo vệ hệ hô hấp, hệ tiêu hóa, giúp tiêu diệt và ngăn chặn các yếu tố gây bệnh như vi khuẩn, virus. Cơ thể khỏe mạnh cũng là điều kiện cần cho việc phát triển chiều cao và tăng trưởng cân nặng. \r\n\r\nBổ sung kháng thể IgG từ sữa non ColosIgG 24h là cách tăng cường miễn dịch trực tiếp để bảo vệ cơ thể khỏi các tác nhân gây bệnh, giúp bé luôn khỏe mạnh. Thêm nữa, việc kết hợp Lactoferrin - là một dưỡng chất tự nhiên được tìm thấy trong sữa mẹ có khả năng gắn kết phân tử sắt - giúp tăng khả năng tiêu diệt vi khuẩn, tăng cường miễn dịch.\r\n",
+                        Author = "Edward M Nhân Đụt",
+                        ProductId = 66,
+                        UploadDate = DateTime.Now,
+                        UpdateDate = DateTime.Now,
+                        View = 0,
+                        Like = 0,
+                        ImageUrl = "/images/blogs/blog3.jpg"
+                    },
+
+                    new Blog
+                    {
+                        Title = "Vì sao ba mẹ nên chọn sữa Friso Gold cho bé tiêu hóa kém?",
+                        Content = "Đến từ Hà Lan, sữa Friso Gold thuộc tập đoàn FrieslandCampina - một tập đoàn sữa liên hợp lớn nhất trên thế giới với hơn 150 năm kinh nghiệm. Các sản phẩm của tập đoàn này đã có mặt ở hơn 100 quốc gia trên thế giới, trong đó có Việt Nam. \r\n\r\nĐến Việt Nam từ năm 1995, các sản phẩm của FrieslandCampina đang ngày càng được người tiêu dùng Việt tin chọn bởi uy tín của tập đoàn và chất lượng của sản phẩm. Tất cả sản phẩm đều được cam kết về chất lượng, đảm bảo đạt tiêu chuẩn của Cục vệ sinh an toàn thực phẩm và của Bộ Y Tế.\r\n\r\nBa mẹ có biết, sức khỏe của hệ tiêu hóa liên quan mật thiết tới chế độ dinh dưỡng và khẩu phần ăn uống. Đối với trẻ sơ sinh và trẻ nhỏ, sữa là thức ăn có giá trị dinh dưỡng cao, đáp ứng tốt nhu cầu phát triển của trẻ. \r\n\r\nTuy nhiên, hệ tiêu hóa của trẻ lúc này còn non yếu và chưa hoàn thiện về mặt chức năng. Do đó, trẻ khó có thể dung nạp đầy đủ các dưỡng chất từ sữa. Nhưng nếu sữa có cấu trúc đạm mềm nhỏ và dễ tiêu, thì việc dung nạp dưỡng chất từ sữa sẽ dễ dàng hơn, từ đó giúp con phát triển cả về thể chất và tinh thần trong giai đoạn “vàng” đầu đời.\r\n\r\nNhờ có nguồn gốc xuất xứ và quy trình xử lý đặc biệt, nên thành phần đạm trong sữa Friso Gold rất tốt cho hệ tiêu hóa của trẻ sơ sinh và trẻ nhỏ. Cụ thể hơn:\r\n\r\n.Sữa Friso Gold được làm từ 100% nguồn sữa từ chính các trang trại tại Hà Lan - giống bò thuần chủng nhất Châu  u. Đây là nguồn sữa NOVAS Signature Milk, chứa loại đạm mềm, nhỏ và hoàn toàn tự nhiên. \r\n\r\nSữa Friso Gold ứng dụng quy trình xử lý một lần nhiệt - Một cách đơn giản, sữa được vận chuyển trực tiếp từ trang trại của tập đoàn về nhà máy sản xuất, nên nguồn sữa chỉ cần được sấy khô một lần duy nhất, mà không phải trải qua nhiều quy trình sấy nhiệt. Quy trình độc đáo này giúp bảo toàn 90% đạm mềm nhỏ và dễ tiêu trong quá trình xử lý nhiệt, tránh tuyệt đối tình trạng đạm biến tính, vón cục gây khó tiêu.  \r\n\r\nBên cạnh thành phần đạm đặc biệt như Con Cưng đã trình bày ở trên, sữa Friso Gold còn chứa chất xơ GOS với hàm lượng cao giúp tăng cường lợi khuẩn Bifidus và cải thiện hệ tiêu hóa của trẻ. Thêm nữa, sữa Friso Gold không chứa đường Sucrose nên có vị thanh nhạt và tự nhiên. Bé nhờ vậy mà dễ dàng làm quen và tiếp nhận hơn. Với những ưu điểm vượt trội này, sữa Friso Gold đã nằm trong top các dòng sữa dành cho trẻ táo bón được ưa chọn hàng đầu hiện nay.\r\n",
+                        Author = "Vigor H Đạt NG",
+                        ProductId = 56,
+                        UploadDate = DateTime.Now,
+                        UpdateDate = DateTime.Now,
+                        View = 0,
+                        Like = 0,
+                        ImageUrl = "/images/blogs/blog4.jpg"
+                    },
+
+                    new Blog
+                    {
+                        Title = "Review sữa Hikid dê có tốt cho bé không? Giá bao nhiêu?",
+                        Content = "Sữa Hikid dê bổ sung cho bé thành phần Arginine, chất tăng trưởng CBP, IgF, Canxi và vitamin K2 giúp bé phát triển chiều cao tối đa. Đặc biệt, thành phần Canxi trong sữa Hikid dê có hàm lượng cao 600mg/100gr bột sữa, giúp đáp ứng đủ 100% nhu cầu hàng ngày của bé 5 tuổi.\n\nBên cạnh công dụng phát triển chiều cao, sữa Hikid dê còn hỗ trợ bé tăng trưởng về cân nặng. Như đã đề cập, sữa Hikid dê chứa tới 45 dưỡng chất cần thiết được phối trộn theo công thức độc quyền của Ildong. Công thức này tập trung tối ưu khả năng chuyển hóa để cơ thể bé hấp thu được nhiều dưỡng chất nhất, từ đó tăng cân khỏe mạnh.\n\nChưa hết, sữa Hikid dê có nguồn gốc từ sữa dê nên rất dễ tiêu hóa và hấp thu. Đặc điểm này có được là bởi kích thước phân tử đạm và chất béo trong sữa dê nhỏ gấp 20 lần so với trong sữa bò. Theo đó, sữa Hikid dê đặc biệt phù hợp cho các bé kém hấp thu, nhẹ cân, thấp còi, suy dinh dưỡng, giúp bé nhanh chóng bắt kịp đà tăng trưởng.\n\nNgoài ra, sữa Hikid dê còn giúp tăng cường sức đề kháng khỏe mạnh nhờ chứa thành phần sữa non. Hàm lượng sữa non này cung cấp các yếu tố miễn dịch tự nhiên như IgG, IgF, TgF và slgA, hỗ trợ tạo hàng rào miễn dịch cho cơ thể bé. Chưa hết, sữa Hikid dê còn chứa các chất chống Oxy hóa gồm: glutathione, senlium, Beta Caroten giúp ngăn chặn mầm bệnh và giữ cho tế bào khỏe mạnh.\n\nSữa Hikid dê cung cấp bộ 10 vi chất phát triển trí não cho bé gồm: DHA, Taurin, Choline, Lecithin, Alpha linoleic axit, Phosphatidylcoline, phosphatidylethanolamine, phosphatidylinositol, Inositol, Linoleic axit. Sự kết hợp của các thành phần này cùng với Kẽm hỗ trợ tăng cấu tạo chất xám, tăng liên kết thần kinh giúp bé nhận thức nhanh và ghi nhớ lâu.\n\nĐể sữa phát huy tốt các công dụng, ba mẹ nên cho bé uống 3 ly sữa mỗi ngày vào buổi sáng, buổi chiều sau khi vận động và buổi tối trước khi đi ngủ. Một tin vui cho các mẹ thích dòng sữa dê, sữa Hikid dê phiên bản Nâng cấp 2023 đã được xử lý mùi tự nhiên nên có hương vị nguyên kem thơm ngon và dễ uống. Ba mẹ yêu thích sữa dê có thể yên tâm chọn cho bé yêu nhé.",
+                        Author = "Vigor H Đạt NG",
+                        ProductId = 40,
+                        UploadDate = DateTime.Now,
+                        UpdateDate = DateTime.Now,
+                        View = 0,
+                        Like = 0,
+                        ImageUrl = "/images/blogs/blog5.jpg"
+                    },
+
+                    new Blog
+                    {
+                        Title = "Khám phá 3 lý do mẹ nên cho bé uống sữa Bubs Organic số 2",
+                        Content = "Nguồn nguyên liệu của sữa Bubs Organic số 2 được thu từ đàn bò tại Úc và Newzealand. Điều đặc biệt nằm ở chỗ đàn bò này được chăn nuôi bằng phương pháp hữu cơ tại các trang trại sạch bậc nhất ở 2 đất nước trên. Cụ thể hơn, đàn bò nơi đây được nuôi hoàn toàn bằng cỏ tự nhiên trên cánh đồng cỏ đạt tiêu chí 3 không: không sử dụng hóa chất, thuốc trừ sâu; không dùng phân bón hóa học; không sử dụng hạt giống biến đổi gen. Bên cạnh đó, đàn bò còn được chăm sóc rất cẩn thận từ khâu vệ sinh đến các hoạt động thư giãn... để cho ra chất lượng sữa tốt nhất.  \r\n\r\nChưa kể, quy trình sản xuất sữa Bubs Organic số 2 cũng được kiểm soát nghiêm ngặt từ nguyên liệu đầu vào đến các khâu chế biến, đóng gói, bảo quản, phân phối… Tất cả các khâu đều đáp ứng nghiêm ngặt tiêu chuẩn chất lượng cũng như vấn đề vệ sinh an toàn thực phẩm. \r\n\r\nChính nhờ những ưu điểm kể trên, sữa Bubs Organic số 2 vinh dự đạt được chứng nhận NASAA, ACO và Clean Label Project™ nổi tiếng trên thế giới. Theo đó, sản phẩm đảm bảo không chứa kim loại nặng, kháng sinh, chất bảo quản hay thành phần gây biến đổi gen (Non-GMO). Vì vậy, sữa Bubs Organic số 2 là dòng sữa an toàn cho bé mà ba mẹ không nên bỏ qua. \r\n\r\nƯu điểm nổi bật tiếp theo của sản phẩm là về thành phần. Thành phần dưỡng chất của sữa Bubs Organic số 2 rất đa dạng, đảm bảo cung cấp đầy đủ dinh dưỡng cần thiết cho sự phát triển toàn diện của trẻ. Cụ thể:\r\n\r\n. Canxi, vitamin D, A, C, kẽm, sắt, iốt,... giúp hệ xương, răng phát triển chắc khỏe và tăng khả năng miễn dịch. \r\n\r\n. Omega-3 DHA và Omega-6 ARA giúp bé phát triển trí não và thông minh hơn;\r\n\r\n. Prebiotic GOS và Probiotics BB536 giúp hệ vi sinh đường ruột cân bằng và phát triển khoẻ mạnh. \r\n\r\n. Hàm lượng CLA (Omega-6) nhiều hơn 500% so với sữa bò thông thường. Đây là loại chất béo chuyển hóa tự nhiên có trong các thực phẩm lành mạnh, có tác dụng giúp bé tăng cường hệ miễn dịch. \r\n\r\nBa mẹ biết không, DHA là dưỡng chất quan trọng góp phần phát triển trí não, trí thông minh của trẻ, nhất là trong giai đoạn 1000 ngày đầu đời. Không chỉ vậy, DHA chiếm tỉ trọng rất cao trong võng mạc (gần 60%), nên rất cần thiết cho sự phát triển chức năng nhìn của mắt. Thành phần này cũng có trong công thức sữa Bubs Organic số 2, DHA trong sữa Bubs Organic số 2 còn đặc biệt hơn nhiều vì được chiết xuất từ nguồn gốc thực vật, cụ thể là tảo biển. \r\n\r\nSo với DHA có nguồn gốc từ động vật, thì nguồn DHA từ tảo biển không có vị hay mùi tanh, nên bé dễ uống và dễ dung nạp hơn. Cũng nhờ đặc điểm nầy, bé có thể tránh được tình trạng nôn trớ khi uống sữa. Càng yên tâm hơn khi tảo được nuôi trồng và chiết xuất trực tiếp nên đảm bảo không bị nhiễm kim loại nặng hay thuỷ ngân. Vì vậy, bé hoàn toàn nhận được những dưỡng chất sạch và an toàn khi sử dụng sữa Bubs Organic số 2.\r\n",
+                        Author = "Extonaldo Meverlyn",
+                        ProductId = 68,
+                        UploadDate = DateTime.Now,
+                        UpdateDate = DateTime.Now,
+                        View = 0,
+                        Like = 0,
+                        ImageUrl = "/images/blogs/blog6.jpg"
+                    },
+
+                };
+                foreach (var blog in blogs)
+                {
+                    context.Blogs.Add(blog);
+                }
+                context.SaveChanges();
+            }
+
         }
     }
 }
