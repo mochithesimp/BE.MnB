@@ -10,6 +10,7 @@ using System.Security.Claims;
 using API.Extensions;
 using API.Token;
 using System.Security.Cryptography;
+using System.Data;
 
 namespace API.Controllers
 {
@@ -47,7 +48,6 @@ namespace API.Controllers
                 new Claim(ClaimTypes.Email, user?.Email),
                 new Claim(ClaimTypes.MobilePhone, user?.PhoneNumber),
                 new Claim(ClaimTypes.Role, string.Join(";",roles)),
-
                 new Claim(ClaimTypes.StreetAddress, user?.Address)
             };
 
@@ -60,7 +60,7 @@ namespace API.Controllers
                         issuer: _configuration["Jwt:Issuer"],
                         audience: _configuration["Jwt:Issuer"],
                         claims: userClaims,
-                        expires: DateTime.Now.AddSeconds(10),
+                        expires: DateTime.Now.AddMinutes(15),
                         signingCredentials: creds
                     );
 
@@ -78,12 +78,12 @@ namespace API.Controllers
 
 
                     var accessTokenString = new JwtSecurityTokenHandler().WriteToken(token);
-                    //var refreshTokenString = new JwtSecurityTokenHandler().WriteToken(refreshToken);
+                    var refreshTokenString = new JwtSecurityTokenHandler().WriteToken(refreshToken);
 
                     TokenDTO tokenDTO = new TokenDTO()
                     {
                         token = accessTokenString,
-                        RefreshToken = ""
+                        RefreshToken = refreshTokenString
                     };
 
                     return Ok(tokenDTO);
@@ -170,17 +170,19 @@ namespace API.Controllers
                 var user = await _context.Users.FindAsync(int.Parse(accessTokenUserId));
                 if (user == null)
                 {
-                    return Unauthorized("Invalid token");
+                    return Unauthorized("not find user");
                 }
 
                 // Generate a new access token with the user claims
                 var userClaims = new[]
-                {
-            new Claim(ClaimTypes.NameIdentifier, user.UserId.ToString()),
-            new Claim(ClaimTypes.Email, user.Email),
-            new Claim(ClaimTypes.Role, userRoles),
-
-        };
+                    {
+                new Claim(ClaimTypes.NameIdentifier, user.UserId.ToString()),
+                new Claim(ClaimTypes.Name, user?.Name),
+                new Claim(ClaimTypes.Email, user?.Email),
+                new Claim(ClaimTypes.MobilePhone, user?.PhoneNumber),
+                new Claim(ClaimTypes.Role, userRoles),
+                new Claim(ClaimTypes.StreetAddress, user?.Address)
+            };
 
                 var accessToken = new JwtSecurityToken
                 (
@@ -219,25 +221,63 @@ namespace API.Controllers
         [HttpPost("Register")]
         public async Task<ActionResult<UserDTO>> Register(RegisterDTO registerDTO)
         {
-            if (!string.IsNullOrEmpty(registerDTO.Email) && !string.IsNullOrEmpty(registerDTO.Password))
+            //check filled in
+            if (string.IsNullOrEmpty(registerDTO.Email) && string.IsNullOrEmpty(registerDTO.Password) && string.IsNullOrEmpty(registerDTO.Name)
+                && string.IsNullOrEmpty(registerDTO.Address) && string.IsNullOrEmpty(registerDTO.PhoneNumber))
             {
-
-                var user = new User
+                return BadRequest(new ResponseDTO()
                 {
-                    RoleId = 1,
-                    Email = registerDTO.Email,
-                    Password = registerDTO.Password,
-                    IsActive = true,
-                };
-
-                _context.Users.Add(user);
-                await _context.SaveChangesAsync();
-
-                var userDTO = toUserDTO(user);
-                return Ok(userDTO);
+                    IsSuccess = false,
+                    Message = "Some boxes are not completely filled in"
+                });
+            }
+            //check duplicate email
+            var userEmail = await _context.Users.FirstOrDefaultAsync(u => u.Email.Equals(registerDTO.Email));
+            if (userEmail != null)
+            {
+                return BadRequest(new ResponseDTO()
+                {
+                    IsSuccess = false,
+                    Message = "duplicate email"
+                });
             }
 
-            return BadRequest();
+            var user = new User
+            {
+                RoleId = 1,
+                Name = registerDTO.Name,
+                Email = registerDTO.Email,
+                Password = registerDTO.Password,
+                Address = registerDTO.Address,
+                PhoneNumber = registerDTO.PhoneNumber,
+                IsActive = true,
+            };
+
+            _context.Users.Add(user);
+            await _context.SaveChangesAsync();
+
+            var userDTO = toUserDTO(user);
+            return Ok(new ResponseDTO()
+            {
+                IsSuccess = true,
+                Message = "Create successfully"
+            });
+        }
+
+        [HttpPost("checkMail")]
+        public async Task<ActionResult<UserDTO>> checkMail(string email)
+        {
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == email);
+
+            if (user == null)
+            {
+                return Ok();
+            }
+            return BadRequest( new ResponseDTO
+            {
+                IsSuccess = false,
+                Message = "this mail exist in data"
+            });
         }
 
         [HttpPost("resetPassword")]
@@ -274,7 +314,7 @@ namespace API.Controllers
             UserDTO userDTO = new UserDTO();
             userDTO.UserId = user.UserId;
             userDTO.RoleId = user.RoleId;
-            user.Name = userDTO.Name;
+            userDTO.Name = user.Name;
             userDTO.Email = user.Email;
             userDTO.PhoneNumber = user.PhoneNumber;
             userDTO.Address = user.Address;
