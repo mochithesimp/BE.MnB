@@ -29,5 +29,22 @@ namespace API.Extensions
 
             return querry;
         }
+
+        public static IQueryable<Order> Sort(this IQueryable<Order> querry, string? orderBy)
+        {
+            if (string.IsNullOrEmpty(orderBy)) return querry;
+
+            querry = orderBy switch
+            {
+                "price" => querry.OrderBy(p => p.Total),
+                "priceDesc" => querry.OrderByDescending(p => p.Total),
+                "date" => querry.OrderBy(p => p.OrderDate),
+                "dateDesc" => querry.OrderByDescending(p => p.OrderDate),
+                _ => querry.OrderBy(p => p.User),
+            };
+
+            return querry;
+        }
+
     }
 }

@@ -1,6 +1,7 @@
 ﻿using API.Data;
 using API.DTOs;
 using API.Entities;
+using API.Extensions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -19,9 +20,20 @@ namespace API.Controllers
         }
 
         [HttpGet("GetAllUsers")]
-        public async Task<ActionResult<List<User>>> GetUsers()
+        public async Task<ActionResult<List<UserDTO>>> GetUsers(
+                        string? searchName,
+                        string? searchEmail,
+                        int roleId,
+                        string? orderBy
+                        )
         {
-            var list = await _context.Users.ToListAsync();
+            var query = _context.Users
+                .SearchName(searchName)
+                .SearchEmail(searchEmail)
+                .FilterRole(roleId)
+                .Sort(orderBy);
+
+            var list = await query.ToListAsync();
 
             var users = new List<UserDTO>();
             foreach (var user in list.Select(user => user).ToList())
