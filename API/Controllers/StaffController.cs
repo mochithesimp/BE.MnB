@@ -5,6 +5,7 @@ using API.Extensions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Diagnostics.Tracing;
 
 namespace API.Controllers
 {
@@ -21,12 +22,24 @@ namespace API.Controllers
         }
 
         [HttpGet("GetAllUsers")]
-        public async Task<ActionResult<List<UserDTO>>> GetUsers()
+        public async Task<ActionResult<List<UserDTO>>> GetUsers(
+                        string? searchName,
+                        string? searchEmail,
+                        int roleId,
+                        string? orderBy
+                        )
         {
-            var list = await _context.Users.ToListAsync();
+
+            var query = _context.Users
+                .SearchName(searchName)
+                .SearchEmail(searchEmail)
+                .FilterRole(roleId)
+                .Sort(orderBy);
+
+            var list = await query.ToListAsync();
 
             var users = new List<UserDTO>();
-            foreach (var user in list.Where(u => u.RoleId == 1))
+            foreach (var user in list.Where(u => u.RoleId == 1 || u.RoleId == 2))
             {
                 UserDTO userDTO = AccountController.toUserDTO(user);
                 users.Add(userDTO);
@@ -57,9 +70,13 @@ namespace API.Controllers
         }
 
         [HttpGet("GetOrders")]
-        public async Task<ActionResult<List<Order>>> GetOrders(int status)
+        public async Task<ActionResult<List<Order>>> GetOrders(
+                    int status, 
+                    string? orderBy)
         {
-            var querry = _context.Orders.FilterStatus(status);
+            var querry = _context.Orders
+                .FilterStatus(status)
+                .Sort(orderBy);
 
             var list = await querry.ToListAsync();
 
