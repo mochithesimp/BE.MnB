@@ -36,6 +36,19 @@ namespace API.Controllers
             return NotFound();
         }
 
+        [HttpGet("{id}")]
+        public async Task<ActionResult<BlogDTO>> GetBlog(int id)
+        {
+            var blog = await _context.Blogs.FindAsync(id);
+
+
+            if (blog == null ) return NotFound();
+
+            var blogDTO = toBlogDTO(blog);
+
+            return Ok(blogDTO);
+        }
+
         [HttpPost("Create")]
         public async Task<ActionResult<BlogDTO>> GetBlogs(BlogDTO blogDTO)
         {
