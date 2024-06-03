@@ -126,7 +126,9 @@ namespace API.Controllers
             return NotFound();
         }
 
+
         [HttpPost("Create")]
+        [Authorize(Roles = "Staff, Admin")]
         public async Task<ActionResult<ProductDTO>> CreateProduct(CreateProductDTO productDto)
         {
             var product = new Product
