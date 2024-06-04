@@ -5,6 +5,7 @@ namespace API.DTOs
 {
     public class BlogDTO
     {
+        public int BlogId { get; set; }
         public string Title { get; set; }
 
         public string Content { get; set; }
