@@ -54,6 +54,7 @@ namespace API.Controllers
         {
             var blog = new Blog
             {
+                BlogId = blogDTO.BlogId,
                 Title = blogDTO.Title,
                 Content = blogDTO.Content,
                 ImageUrl = blogDTO.ImageUrl,
@@ -81,6 +82,7 @@ namespace API.Controllers
                 return NotFound();
             }
 
+            blog.BlogId = blogId;
             blog.Title = blogDTO.Title;
             blog.Content = blogDTO.Content;
             blog.ImageUrl = blogDTO.ImageUrl;
@@ -117,6 +119,7 @@ namespace API.Controllers
         public static BlogDTO toBlogDTO(Blog? blog) 
         { 
             BlogDTO blogDTO = new BlogDTO();
+            blogDTO.BlogId = blog.BlogId;
             blogDTO.Title = blog.Title;
             blogDTO.Content = blog.Content;
             blogDTO.ImageUrl = blog.ImageUrl;

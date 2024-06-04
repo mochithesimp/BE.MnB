@@ -215,7 +215,7 @@ namespace API.Controllers
                 order.OrderStatus = "Completed";
                 await _context.SaveChangesAsync();
 
-                return Ok("Order canceled successfully");
+                return Ok("Order completed successfully");
             }
             catch (Exception ex)
             {
