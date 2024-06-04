@@ -228,14 +228,31 @@ namespace API.Controllers
         {
             try
             {
-                var order = await _context.Orders.FirstOrDefaultAsync(o => o.UserId == userId && o.OrderId == orderId);
+                var order = await _context.Orders
+                    .Include(o => o.OrderDetails)
+                    .FirstOrDefaultAsync(o => o.UserId == userId && o.OrderId == orderId);
 
                 if (order == null)
                 {
                     return NotFound("Order not found");
                 }
 
+                if (order.OrderStatus == "Canceled")
+                {
+                    return BadRequest("Order is already canceled");
+                }
+
                 order.OrderStatus = "Canceled";
+
+                foreach (var orderDetail in order.OrderDetails)
+                {
+                    var product = await _context.Products.FindAsync(orderDetail.ProductId);
+                    if (product != null)
+                    {
+                        product.Stock += orderDetail.Quantity;
+                    }
+                }
+
                 await _context.SaveChangesAsync();
 
                 return Ok("Order canceled successfully");
