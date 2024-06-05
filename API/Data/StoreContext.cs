@@ -20,7 +20,6 @@ namespace API.Data
         public DbSet<Blog> Blogs { get; set; }
         public DbSet<OrderDetail> orderDetails { get; set; }
         public DbSet<ShippingMethod> shippingMethods { get; set; }
-
-
+        public DbSet<Notification> Notifications { get; set; }
     }
 }

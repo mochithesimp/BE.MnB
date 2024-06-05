@@ -118,6 +118,19 @@ namespace API.Controllers
                 order.OrderStatus = "Submitted";
                 await _context.SaveChangesAsync();
 
+                var notification = new Notification
+                {
+                    UserId = order.UserId,
+                    Header = "Order Submitted",
+                    Content = $"Your recent order with ID {order.OrderId} has been submitted!",
+                    IsRead = false,
+                    IsRemoved = false,
+                    CreatedDate = DateTime.Now
+                };
+
+                _context.Notifications.Add(notification);
+                await _context.SaveChangesAsync();
+
                 return Ok("Order submited successfully");
             }
             catch (Exception ex)

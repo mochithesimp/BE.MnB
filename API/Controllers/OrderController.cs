@@ -2,6 +2,7 @@
 using API.DTOs;
 using API.Entities;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
 
 [ApiController]
@@ -64,6 +65,24 @@ public class OrderController : ControllerBase
                 };
 
                 _context.orderDetails.Add(orderDetail);
+                await _context.SaveChangesAsync();
+            }
+
+            var staffUser = await _context.Users.Where(u => u.RoleId == 2).ToListAsync();
+
+            foreach (var user in staffUser)
+            {
+                var notification = new Notification
+                {
+                    UserId = user.UserId,
+                    Header = "New Order!",
+                    Content = $"User {user.UserId} has just placed an Order with ID {order.OrderId}! Please Confirm it!",
+                    IsRead = false,
+                    IsRemoved = false,
+                    CreatedDate = DateTime.Now
+                };
+
+                _context.Notifications.Add(notification);
             }
 
             await _context.SaveChangesAsync();
