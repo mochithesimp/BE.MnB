@@ -115,7 +115,7 @@ namespace API.Controllers
             return NoContent();
         }
 
-        [HttpPost("IncreaseView")]
+        [HttpPost("increaseView")]
         public async Task<IActionResult> IncreaseViewCount(int userId, int blogId)
         {
             var user = await _context.Users.FindAsync(userId);
@@ -154,7 +154,7 @@ namespace API.Controllers
             return Ok();
         }
 
-        [HttpPost("IncreaseLike")]
+        [HttpPost("increaseLike")]
         public async Task<IActionResult> IncreaseLikeCount(int userId, int blogId)
         {
             var user = await _context.Users.FindAsync(userId);
@@ -186,6 +186,44 @@ namespace API.Controllers
 
             blog.Like++;
             userBlogView.Like++;
+
+            await _context.SaveChangesAsync();
+
+            return Ok();
+        }
+
+        [HttpPost("cancelLike")]
+        public async Task<IActionResult> CancelLike(int userId, int blogId)
+        {
+            var user = await _context.Users.FindAsync(userId);
+
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            var userBlogView = await _context.userBlogViews
+                .FirstOrDefaultAsync(ubv => ubv.UserId == userId && ubv.BlogId == blogId);
+
+            if (userBlogView == null)
+            {
+                return BadRequest("The user has not viewed the blog.");
+            }
+
+            if (userBlogView.Like == 0)
+            {
+                return BadRequest("The user has not liked the blog.");
+            }
+
+            var blog = await _context.Blogs.FindAsync(blogId);
+
+            if (blog == null)
+            {
+                return NotFound();
+            }
+
+            blog.Like--;
+            userBlogView.Like--;
 
             await _context.SaveChangesAsync();
 
