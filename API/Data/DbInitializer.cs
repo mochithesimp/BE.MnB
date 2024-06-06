@@ -1127,325 +1127,1559 @@ namespace API.Data
                         ProductId = 1,
                         ImageUrl = "/images/products/sua1.jpg"
                     },
+
+                    new ImageProduct
+                    {
+                        ProductId = 1,
+                        ImageUrl = "/images/products/sua1-1.jpg"
+                    },
+
+                    new ImageProduct
+                    {
+                        ProductId = 1,
+                        ImageUrl = "/images/products/sua1-2.jpg"
+                    },
+
+                    new ImageProduct
+                    {
+                        ProductId = 1,
+                        ImageUrl = "/images/products/sua1-3.jpg"
+                    },
+
                     new ImageProduct
                     {
                         ProductId = 2,
                         ImageUrl = "/images/products/sua2.jpg"
                     },
+
+                    new ImageProduct
+                    {
+                        ProductId = 2,
+                        ImageUrl = "/images/products/sua2-1.jpg"
+                    },
+
+                    new ImageProduct
+                    {
+                        ProductId = 2,
+                        ImageUrl = "/images/products/sua2-2.jpg"
+                    },
+
+                    new ImageProduct
+                    {
+                        ProductId = 2,
+                        ImageUrl = "/images/products/sua2-3.jpg"
+                    },
+
                     new ImageProduct
                     {
                         ProductId = 3,
                         ImageUrl = "/images/products/sua3.jpg"
                     },
+
+                    new ImageProduct
+                    {
+                        ProductId = 3,
+                        ImageUrl = "/images/products/sua3-1.jpg"
+                    },
+
+                    new ImageProduct
+                    {
+                        ProductId = 3,
+                        ImageUrl = "/images/products/sua3-2.jpg"
+                    },
+
+                    new ImageProduct
+                    {
+                        ProductId = 3,
+                        ImageUrl = "/images/products/sua3-3.jpg"
+                    },
+
                     new ImageProduct
                     {
                         ProductId = 4,
                         ImageUrl = "/images/products/sua4.jpg"
                     },
+
+                    new ImageProduct
+                    {
+                        ProductId = 4,
+                        ImageUrl = "/images/products/sua4-1.jpg"
+                    },
+
+                    new ImageProduct
+                    {
+                        ProductId = 4,
+                        ImageUrl = "/images/products/sua4-2.jpg"
+                    },
+
+                    new ImageProduct
+                    {
+                        ProductId = 4,
+                        ImageUrl = "/images/products/sua4-3.jpg"
+                    },
+
                     new ImageProduct
                     {
                         ProductId = 5,
                         ImageUrl = "/images/products/sua5.jpg"
                     },
+
+                    new ImageProduct
+                    {
+                        ProductId = 5,
+                        ImageUrl = "/images/products/sua5-1.jpg"
+                    },
+
+                    new ImageProduct
+                    {
+                        ProductId = 5,
+                        ImageUrl = "/images/products/sua5-2.jpg"
+                    },
+
+                    new ImageProduct
+                    {
+                        ProductId = 5,
+                        ImageUrl = "/images/products/sua5-3.jpg"
+                    },
+
                     new ImageProduct
                     {
                         ProductId = 6,
                         ImageUrl = "/images/products/sua6.jpg"
                     },
+
+                    new ImageProduct
+                    {
+                        ProductId = 6,
+                        ImageUrl = "/images/products/sua6-1.jpg"
+                    },
+
+                    new ImageProduct
+                    {
+                        ProductId = 6,
+                        ImageUrl = "/images/products/sua6-2.jpg"
+                    },
+
+                    new ImageProduct
+                    {
+                        ProductId = 6,
+                        ImageUrl = "/images/products/sua6-3.jpg"
+                    },
+
                     new ImageProduct
                     {
                         ProductId = 7,
                         ImageUrl = "/images/products/sua7.jpg"
                     },
+
+                    new ImageProduct
+                    {
+                        ProductId = 7,
+                        ImageUrl = "/images/products/sua7-1.jpg"
+                    },
+
+                    new ImageProduct
+                    {
+                        ProductId = 7,
+                        ImageUrl = "/images/products/sua7-2.jpg"
+                    },
+
+                    new ImageProduct
+                    {
+                        ProductId = 7,
+                        ImageUrl = "/images/products/sua7-3.jpg"
+                    },
+
                     new ImageProduct
                     {
                         ProductId = 8,
                         ImageUrl = "/images/products/sua8.jpg"
                     },
+
+                    new ImageProduct
+                    {
+                        ProductId = 8,
+                        ImageUrl = "/images/products/sua8-1.jpg"
+                    },
+
+                    new ImageProduct
+                    {
+                        ProductId = 8,
+                        ImageUrl = "/images/products/sua8-2.jpg"
+                    },
+
+                    new ImageProduct
+                    {
+                        ProductId = 8,
+                        ImageUrl = "/images/products/sua8-3.jpg"
+                    },
+
                     new ImageProduct
                     {
                         ProductId = 9,
                         ImageUrl = "/images/products/sua9.jpg"
                     },
+
+                    new ImageProduct
+                    {
+                        ProductId = 9,
+                        ImageUrl = "/images/products/sua9-1.jpg"
+                    },
+
+                    new ImageProduct
+                    {
+                        ProductId = 9,
+                        ImageUrl = "/images/products/sua9-2.jpg"
+                    },
+
+                    new ImageProduct
+                    {
+                        ProductId = 9,
+                        ImageUrl = "/images/products/sua9-3.jpg"
+                    },
+
                     new ImageProduct
                     {
                         ProductId = 10,
                         ImageUrl = "/images/products/sua10.jpg"
                     },
+
+                    new ImageProduct
+                    {
+                        ProductId = 10,
+                        ImageUrl = "/images/products/sua10-1.jpg"
+                    },
+
+                    new ImageProduct
+                    {
+                        ProductId = 10,
+                        ImageUrl = "/images/products/sua10-2.jpg"
+                    },
+
+                    new ImageProduct
+                    {
+                        ProductId = 10,
+                        ImageUrl = "/images/products/sua10-3.jpg"
+                    },
+
                     new ImageProduct
                     {
                         ProductId = 11,
                         ImageUrl = "/images/products/sua11.jpg"
                     },
+
+                    new ImageProduct
+                    {
+                        ProductId = 11,
+                        ImageUrl = "/images/products/sua11-1.jpg"
+                    },
+
+                    new ImageProduct
+                    {
+                        ProductId = 11,
+                        ImageUrl = "/images/products/sua11-2.jpg"
+                    },
+
+                    new ImageProduct
+                    {
+                        ProductId = 11,
+                        ImageUrl = "/images/products/sua11-3.jpg"
+                    },
+
                     new ImageProduct
                     {
                         ProductId = 12,
                         ImageUrl = "/images/products/sua12.jpg"
                     },
+
+                    new ImageProduct
+                    {
+                        ProductId = 12,
+                        ImageUrl = "/images/products/sua12-1.jpg"
+                    },
+
+                    new ImageProduct
+                    {
+                        ProductId = 12,
+                        ImageUrl = "/images/products/sua12-2.jpg"
+                    },
+
+                    new ImageProduct
+                    {
+                        ProductId = 12,
+                        ImageUrl = "/images/products/sua12-3.jpg"
+                    },
+
                     new ImageProduct
                     {
                         ProductId = 13,
                         ImageUrl = "/images/products/sua13.jpg"
                     },
+
+                    new ImageProduct
+                    {
+                        ProductId = 13,
+                        ImageUrl = "/images/products/sua13-1.jpg"
+                    },
+
+                    new ImageProduct
+                    {
+                        ProductId = 13,
+                        ImageUrl = "/images/products/sua13-2.jpg"
+                    },
+
+                    new ImageProduct
+                    {
+                        ProductId = 13,
+                        ImageUrl = "/images/products/sua13-3.jpg"
+                    },
+
                     new ImageProduct
                     {
                         ProductId = 14,
                         ImageUrl = "/images/products/sua14.jpg"
                     },
+
+                    new ImageProduct
+                    {
+                        ProductId = 14,
+                        ImageUrl = "/images/products/sua14-1.jpg"
+                    },
+
+                    new ImageProduct
+                    {
+                        ProductId = 14,
+                        ImageUrl = "/images/products/sua14-2.jpg"
+                    },
+
+                    new ImageProduct
+                    {
+                        ProductId = 14,
+                        ImageUrl = "/images/products/sua14-3.jpg"
+                    },
+
                     new ImageProduct
                     {
                         ProductId = 15,
                         ImageUrl = "/images/products/sua15.jpg"
                     },
+
+                    new ImageProduct
+                    {
+                        ProductId = 15,
+                        ImageUrl = "/images/products/sua15-1.jpg"
+                    },
+
+                    new ImageProduct
+                    {
+                        ProductId = 15,
+                        ImageUrl = "/images/products/sua15-2.jpg"
+                    },
+
+                    new ImageProduct
+                    {
+                        ProductId = 15,
+                        ImageUrl = "/images/products/sua15-3.jpg"
+                    },
+
                     new ImageProduct
                     {
                         ProductId = 16,
                         ImageUrl = "/images/products/sua16.jpg"
                     },
+
+                    new ImageProduct
+                    {
+                        ProductId = 16,
+                        ImageUrl = "/images/products/sua16-1.jpg"
+                    },
+
+                    new ImageProduct
+                    {
+                        ProductId = 16,
+                        ImageUrl = "/images/products/sua16-2.jpg"
+                    },
+
+                    new ImageProduct
+                    {
+                        ProductId = 16,
+                        ImageUrl = "/images/products/sua16-3.jpg"
+                    },
+
                     new ImageProduct
                     {
                         ProductId = 17,
                         ImageUrl = "/images/products/sua17.jpg"
                     },
+
+                    new ImageProduct
+                    {
+                        ProductId = 17,
+                        ImageUrl = "/images/products/sua17-1.jpg"
+                    },
+
+                    new ImageProduct
+                    {
+                        ProductId = 17,
+                        ImageUrl = "/images/products/sua17-2.jpg"
+                    },
+
+                    new ImageProduct
+                    {
+                        ProductId = 17,
+                        ImageUrl = "/images/products/sua17-3.jpg"
+                    },
+
                     new ImageProduct
                     {
                         ProductId = 18,
                         ImageUrl = "/images/products/sua18.jpg"
                     },
+
+                    new ImageProduct
+                    {
+                        ProductId = 18,
+                        ImageUrl = "/images/products/sua18-1.jpg"
+                    },
+
+                    new ImageProduct
+                    {
+                        ProductId = 18,
+                        ImageUrl = "/images/products/sua18-2.jpg"
+                    },
+
+                    new ImageProduct
+                    {
+                        ProductId = 18,
+                        ImageUrl = "/images/products/sua18-3.jpg"
+                    },
+
                     new ImageProduct
                     {
                         ProductId = 19,
                         ImageUrl = "/images/products/sua19.jpg"
                     },
+
+                    new ImageProduct
+                    {
+                        ProductId = 19,
+                        ImageUrl = "/images/products/sua19-1.jpg"
+                    },
+
+                    new ImageProduct
+                    {
+                        ProductId = 19,
+                        ImageUrl = "/images/products/sua19-2.jpg"
+                    },
+
+                    new ImageProduct
+                    {
+                        ProductId = 19,
+                        ImageUrl = "/images/products/sua19-3.jpg"
+                    },
+
                     new ImageProduct
                     {
                         ProductId = 20,
                         ImageUrl = "/images/products/sua20.jpg"
                     },
+
+                    new ImageProduct
+                    {
+                        ProductId = 20,
+                        ImageUrl = "/images/products/sua20-1.jpg"
+                    },
+
+                    new ImageProduct
+                    {
+                        ProductId = 20,
+                        ImageUrl = "/images/products/sua20-2.jpg"
+                    },
+
+                    new ImageProduct
+                    {
+                        ProductId = 20,
+                        ImageUrl = "/images/products/sua20-3.jpg"
+                    },
+
                     new ImageProduct
                     {
                         ProductId = 21,
                         ImageUrl = "/images/products/sua21.jpg"
                     },
+
+                    new ImageProduct
+                    {
+                        ProductId = 21,
+                        ImageUrl = "/images/products/sua21-1.jpg"
+                    },
+
+                    new ImageProduct
+                    {
+                        ProductId = 21,
+                        ImageUrl = "/images/products/sua21-2.jpg"
+                    },
+
+                    new ImageProduct
+                    {
+                        ProductId = 21,
+                        ImageUrl = "/images/products/sua21-3.jpg"
+                    },
+
                     new ImageProduct
                     {
                         ProductId = 22,
                         ImageUrl = "/images/products/sua22.jpg"
                     },
+
+                    new ImageProduct
+                    {
+                        ProductId = 22,
+                        ImageUrl = "/images/products/sua22-1.jpg"
+                    },
+
+                    new ImageProduct
+                    {
+                        ProductId = 22,
+                        ImageUrl = "/images/products/sua22-2.jpg"
+                    },
+
+                    new ImageProduct
+                    {
+                        ProductId = 22,
+                        ImageUrl = "/images/products/sua22-3.jpg"
+                    },
+
                     new ImageProduct
                     {
                         ProductId = 23,
                         ImageUrl = "/images/products/sua23.jpg"
                     },
+
+                    new ImageProduct
+                    {
+                        ProductId = 23,
+                        ImageUrl = "/images/products/sua23-1.jpg"
+                    },
+
+                    new ImageProduct
+                    {
+                        ProductId = 23,
+                        ImageUrl = "/images/products/sua23-2.jpg"
+                    },
+
+                    new ImageProduct
+                    {
+                        ProductId = 23,
+                        ImageUrl = "/images/products/sua23-3.jpg"
+                    },
+
                     new ImageProduct
                     {
                         ProductId = 24,
                         ImageUrl = "/images/products/sua24.jpg"
                     },
+
+                    new ImageProduct
+                    {
+                        ProductId = 24,
+                        ImageUrl = "/images/products/sua24-1.jpg"
+                    },
+
+                    new ImageProduct
+                    {
+                        ProductId = 24,
+                        ImageUrl = "/images/products/sua24-2.jpg"
+                    },
+
+                    new ImageProduct
+                    {
+                        ProductId = 24,
+                        ImageUrl = "/images/products/sua24-3.jpg"
+                    },
+
                     new ImageProduct
                     {
                         ProductId = 25,
                         ImageUrl = "/images/products/sua25.jpg"
                     },
+
+                    new ImageProduct
+                    {
+                        ProductId = 25,
+                        ImageUrl = "/images/products/sua25-1.jpg"
+                    },
+
+                    new ImageProduct
+                    {
+                        ProductId = 25,
+                        ImageUrl = "/images/products/sua25-2.jpg"
+                    },
+
+                    new ImageProduct
+                    {
+                        ProductId = 25,
+                        ImageUrl = "/images/products/sua25-3.jpg"
+                    },
+
                     new ImageProduct
                     {
                         ProductId = 26,
                         ImageUrl = "/images/products/sua26.jpg"
                     },
+
+                    new ImageProduct
+                    {
+                        ProductId = 26,
+                        ImageUrl = "/images/products/sua26-1.jpg"
+                    },
+
+                    new ImageProduct
+                    {
+                        ProductId = 26,
+                        ImageUrl = "/images/products/sua26-2.jpg"
+                    },
+
+                    new ImageProduct
+                    {
+                        ProductId = 26,
+                        ImageUrl = "/images/products/sua26-3.jpg"
+                    },
+
                     new ImageProduct
                     {
                         ProductId = 27,
                         ImageUrl = "/images/products/sua27.jpg"
                     },
+
+                    new ImageProduct
+                    {
+                        ProductId = 27,
+                        ImageUrl = "/images/products/sua27-1.jpg"
+                    },
+
+                    new ImageProduct
+                    {
+                        ProductId = 27,
+                        ImageUrl = "/images/products/sua27-2.jpg"
+                    },
+
+                    new ImageProduct
+                    {
+                        ProductId = 27,
+                        ImageUrl = "/images/products/sua27-3.jpg"
+                    },
+
                     new ImageProduct
                     {
                         ProductId = 28,
                         ImageUrl = "/images/products/sua28.jpg"
                     },
+
+                    new ImageProduct
+                    {
+                        ProductId = 28,
+                        ImageUrl = "/images/products/sua28-1.jpg"
+                    },
+
+                    new ImageProduct
+                    {
+                        ProductId = 28,
+                        ImageUrl = "/images/products/sua28-2.jpg"
+                    },
+
+                    new ImageProduct
+                    {
+                        ProductId = 28,
+                        ImageUrl = "/images/products/sua28-3.jpg"
+                    },
+
                     new ImageProduct
                     {
                         ProductId = 29,
                         ImageUrl = "/images/products/sua29.jpg"
                     },
+
+                    new ImageProduct
+                    {
+                        ProductId = 29,
+                        ImageUrl = "/images/products/sua29-1.jpg"
+                    },
+
+                    new ImageProduct
+                    {
+                        ProductId = 29,
+                        ImageUrl = "/images/products/sua29-2.jpg"
+                    },
+
+                    new ImageProduct
+                    {
+                        ProductId = 29,
+                        ImageUrl = "/images/products/sua29-3.jpg"
+                    },
+
                     new ImageProduct
                     {
                         ProductId = 30,
                         ImageUrl = "/images/products/sua30.jpg"
                     },
+
+                    new ImageProduct
+                    {
+                        ProductId = 30,
+                        ImageUrl = "/images/products/sua30-1.jpg"
+                    },
+
+                    new ImageProduct
+                    {
+                        ProductId = 30,
+                        ImageUrl = "/images/products/sua30-2.jpg"
+                    },
+
+                    new ImageProduct
+                    {
+                        ProductId = 30,
+                        ImageUrl = "/images/products/sua30-3.jpg"
+                    },
+
                     new ImageProduct
                     {
                         ProductId = 31,
                         ImageUrl = "/images/products/sua31.jpg"
                     },
+
+                    new ImageProduct
+                    {
+                        ProductId = 31,
+                        ImageUrl = "/images/products/sua31-1.jpg"
+                    },
+
+                    new ImageProduct
+                    {
+                        ProductId = 31,
+                        ImageUrl = "/images/products/sua31-2.jpg"
+                    },
+
+                    new ImageProduct
+                    {
+                        ProductId = 31,
+                        ImageUrl = "/images/products/sua31-3.jpg"
+                    },
+
                     new ImageProduct
                     {
                         ProductId = 32,
                         ImageUrl = "/images/products/sua32.jpg"
                     },
+
+                    new ImageProduct
+                    {
+                        ProductId = 32,
+                        ImageUrl = "/images/products/sua32-1.jpg"
+                    },
+
+                    new ImageProduct
+                    {
+                        ProductId = 32,
+                        ImageUrl = "/images/products/sua32-2.jpg"
+                    },
+
+                    new ImageProduct
+                    {
+                        ProductId = 32,
+                        ImageUrl = "/images/products/sua32-3.jpg"
+                    },
+
                     new ImageProduct
                     {
                         ProductId = 33,
                         ImageUrl = "/images/products/sua33.jpg"
                     },
+
+                    new ImageProduct
+                    {
+                        ProductId = 33,
+                        ImageUrl = "/images/products/sua33-1.jpg"
+                    },
+
+                    new ImageProduct
+                    {
+                        ProductId = 33,
+                        ImageUrl = "/images/products/sua33-2.jpg"
+                    },
+
+                    new ImageProduct
+                    {
+                        ProductId = 33,
+                        ImageUrl = "/images/products/sua33-3.jpg"
+                    },
+
                     new ImageProduct
                     {
                         ProductId = 34,
                         ImageUrl = "/images/products/sua34.jpg"
                     },
+
+                    new ImageProduct
+                    {
+                        ProductId = 34,
+                        ImageUrl = "/images/products/sua34-1.jpg"
+                    },
+
+                    new ImageProduct
+                    {
+                        ProductId = 34,
+                        ImageUrl = "/images/products/sua34-2.jpg"
+                    },
+
+                    new ImageProduct
+                    {
+                        ProductId = 34,
+                        ImageUrl = "/images/products/sua34-3.jpg"
+                    },
+
                     new ImageProduct
                     {
                         ProductId = 35,
                         ImageUrl = "/images/products/sua35.jpg"
                     },
+
+                    new ImageProduct
+                    {
+                        ProductId = 35,
+                        ImageUrl = "/images/products/sua35-1.jpg"
+                    },
+
+                    new ImageProduct
+                    {
+                        ProductId = 35,
+                        ImageUrl = "/images/products/sua35-2.jpg"
+                    },
+
+                    new ImageProduct
+                    {
+                        ProductId = 35,
+                        ImageUrl = "/images/products/sua35-3.jpg"
+                    },
+
                     new ImageProduct
                     {
                         ProductId = 36,
                         ImageUrl = "/images/products/sua36.jpg"
                     },
+
+                    new ImageProduct
+                    {
+                        ProductId = 36,
+                        ImageUrl = "/images/products/sua36-1.jpg"
+                    },
+
+                    new ImageProduct
+                    {
+                        ProductId = 36,
+                        ImageUrl = "/images/products/sua36-2.jpg"
+                    },
+
+                    new ImageProduct
+                    {
+                        ProductId = 36,
+                        ImageUrl = "/images/products/sua36-3.jpg"
+                    },
+
                     new ImageProduct
                     {
                         ProductId = 37,
                         ImageUrl = "/images/products/sua37.jpg"
                     },
+
+                    new ImageProduct
+                    {
+                        ProductId = 37,
+                        ImageUrl = "/images/products/sua37-1.jpg"
+                    },
+
+                    new ImageProduct
+                    {
+                        ProductId = 37,
+                        ImageUrl = "/images/products/sua37-2.jpg"
+                    },
+
+                    new ImageProduct
+                    {
+                        ProductId = 37,
+                        ImageUrl = "/images/products/sua37-3.jpg"
+                    },
+
                     new ImageProduct
                     {
                         ProductId = 38,
                         ImageUrl = "/images/products/sua38.jpg"
                     },
+
+                    new ImageProduct
+                    {
+                        ProductId = 38,
+                        ImageUrl = "/images/products/sua38-1.jpg"
+                    },
+
+                    new ImageProduct
+                    {
+                        ProductId = 38,
+                        ImageUrl = "/images/products/sua38-2.jpg"
+                    },
+
+                    new ImageProduct
+                    {
+                        ProductId = 38,
+                        ImageUrl = "/images/products/sua38-3.jpg"
+                    },
+
                     new ImageProduct
                     {
                         ProductId = 39,
                         ImageUrl = "/images/products/sua39.jpg"
                     },
+
+                    new ImageProduct
+                    {
+                        ProductId = 39,
+                        ImageUrl = "/images/products/sua39-1.jpg"
+                    },
+
+                    new ImageProduct
+                    {
+                        ProductId = 39,
+                        ImageUrl = "/images/products/sua39-2.jpg"
+                    },
+
+                    new ImageProduct
+                    {
+                        ProductId = 39,
+                        ImageUrl = "/images/products/sua39-3.jpg"
+                    },
+
                     new ImageProduct
                     {
                         ProductId = 40,
                         ImageUrl = "/images/products/sua40.jpg"
                     },
+
+                    new ImageProduct
+                    {
+                        ProductId = 40,
+                        ImageUrl = "/images/products/sua40-1.jpg"
+                    },
+
+                    new ImageProduct
+                    {
+                        ProductId = 40,
+                        ImageUrl = "/images/products/sua40-2.jpg"
+                    },
+
+                    new ImageProduct
+                    {
+                        ProductId = 40,
+                        ImageUrl = "/images/products/sua40-3.jpg"
+                    },
+
                     new ImageProduct
                     {
                         ProductId = 41,
                         ImageUrl = "/images/products/sua41.jpg"
                     },
+
+                    new ImageProduct
+                    {
+                        ProductId = 41,
+                        ImageUrl = "/images/products/sua41-1.jpg"
+                    },
+
+                    new ImageProduct
+                    {
+                        ProductId = 41,
+                        ImageUrl = "/images/products/sua41-2.jpg"
+                    },
+
+                    new ImageProduct
+                    {
+                        ProductId = 41,
+                        ImageUrl = "/images/products/sua41-3.jpg"
+                    },
+
                     new ImageProduct
                     {
                         ProductId = 42,
                         ImageUrl = "/images/products/sua42.jpg"
                     },
+
+                    new ImageProduct
+                    {
+                        ProductId = 42,
+                        ImageUrl = "/images/products/sua42-1.jpg"
+                    },
+
+                    new ImageProduct
+                    {
+                        ProductId = 42,
+                        ImageUrl = "/images/products/sua42-2.jpg"
+                    },
+
+                    new ImageProduct
+                    {
+                        ProductId = 42,
+                        ImageUrl = "/images/products/sua42-3.jpg"
+                    },
+
                     new ImageProduct
                     {
                         ProductId = 43,
                         ImageUrl = "/images/products/sua43.jpg"
                     },
+
+                    new ImageProduct
+                    {
+                        ProductId = 43,
+                        ImageUrl = "/images/products/sua43-1.jpg"
+                    },
+
+                    new ImageProduct
+                    {
+                        ProductId = 43,
+                        ImageUrl = "/images/products/sua43-2.jpg"
+                    },
+
+                    new ImageProduct
+                    {
+                        ProductId = 43,
+                        ImageUrl = "/images/products/sua43-3.jpg"
+                    },
+
                     new ImageProduct
                     {
                         ProductId = 44,
                         ImageUrl = "/images/products/sua44.jpg"
                     },
+
+                    new ImageProduct
+                    {
+                        ProductId = 44,
+                        ImageUrl = "/images/products/sua44-1.jpg"
+                    },
+
+                    new ImageProduct
+                    {
+                        ProductId = 44,
+                        ImageUrl = "/images/products/sua44-2.jpg"
+                    },
+
+                    new ImageProduct
+                    {
+                        ProductId = 44,
+                        ImageUrl = "/images/products/sua44-3.jpg"
+                    },
+
                     new ImageProduct
                     {
                         ProductId = 45,
                         ImageUrl = "/images/products/sua45.jpg"
                     },
+
+                    new ImageProduct
+                    {
+                        ProductId = 45,
+                        ImageUrl = "/images/products/sua45-1.jpg"
+                    },
+
+                    new ImageProduct
+                    {
+                        ProductId = 45,
+                        ImageUrl = "/images/products/sua45-2.jpg"
+                    },
+
+                    new ImageProduct
+                    {
+                        ProductId = 45,
+                        ImageUrl = "/images/products/sua45-3.jpg"
+                    },
+
                     new ImageProduct
                     {
                         ProductId = 46,
                         ImageUrl = "/images/products/sua46.jpg"
                     },
+
+                    new ImageProduct
+                    {
+                        ProductId = 46,
+                        ImageUrl = "/images/products/sua46-1.jpg"
+                    },
+
+                    new ImageProduct
+                    {
+                        ProductId = 46,
+                        ImageUrl = "/images/products/sua46-2.jpg"
+                    },
+
+                    new ImageProduct
+                    {
+                        ProductId = 46,
+                        ImageUrl = "/images/products/sua46-3.jpg"
+                    },
+
                     new ImageProduct
                     {
                         ProductId = 47,
                         ImageUrl = "/images/products/sua47.jpg"
                     },
+
+                    new ImageProduct
+                    {
+                        ProductId = 47,
+                        ImageUrl = "/images/products/sua47-1.jpg"
+                    },
+
+                    new ImageProduct
+                    {
+                        ProductId = 47,
+                        ImageUrl = "/images/products/sua47-2.jpg"
+                    },
+
+                    new ImageProduct
+                    {
+                        ProductId = 47,
+                        ImageUrl = "/images/products/sua47-3.jpg"
+                    },
+
                     new ImageProduct
                     {
                         ProductId = 48,
                         ImageUrl = "/images/products/sua48.jpg"
                     },
+
+                    new ImageProduct
+                    {
+                        ProductId = 48,
+                        ImageUrl = "/images/products/sua48-1.jpg"
+                    },
+
+                    new ImageProduct
+                    {
+                        ProductId = 48,
+                        ImageUrl = "/images/products/sua48-2.jpg"
+                    },
+
+                    new ImageProduct
+                    {
+                        ProductId = 48,
+                        ImageUrl = "/images/products/sua48-3.jpg"
+                    },
+
                     new ImageProduct
                     {
                         ProductId = 49,
                         ImageUrl = "/images/products/sua49.jpg"
                     },
+
+                    new ImageProduct
+                    {
+                        ProductId = 49,
+                        ImageUrl = "/images/products/sua49-1.jpg"
+                    },
+
+                    new ImageProduct
+                    {
+                        ProductId = 49,
+                        ImageUrl = "/images/products/sua49-2.jpg"
+                    },
+
+                    new ImageProduct
+                    {
+                        ProductId = 49,
+                        ImageUrl = "/images/products/sua49-3.jpg"
+                    },
+
                     new ImageProduct
                     {
                         ProductId = 50,
                         ImageUrl = "/images/products/sua50.jpg"
                     },
+
+                    new ImageProduct
+                    {
+                        ProductId = 50,
+                        ImageUrl = "/images/products/sua50-1.jpg"
+                    },
+
+                    new ImageProduct
+                    {
+                        ProductId = 50,
+                        ImageUrl = "/images/products/sua50-2.jpg"
+                    },
+
+                    new ImageProduct
+                    {
+                        ProductId = 50,
+                        ImageUrl = "/images/products/sua50-3.jpg"
+                    },
+
                     new ImageProduct
                     {
                         ProductId = 51,
                         ImageUrl = "/images/products/sua51.jpg"
                     },
+
+                    new ImageProduct
+                    {
+                        ProductId = 51,
+                        ImageUrl = "/images/products/sua51-1.jpg"
+                    },
+
+                    new ImageProduct
+                    {
+                        ProductId = 51,
+                        ImageUrl = "/images/products/sua51-2.jpg"
+                    },
+
+                    new ImageProduct
+                    {
+                        ProductId = 51,
+                        ImageUrl = "/images/products/sua51-3.jpg"
+                    },
+
                     new ImageProduct
                     {
                         ProductId = 52,
                         ImageUrl = "/images/products/sua52.jpg"
                     },
+
+                    new ImageProduct
+                    {
+                        ProductId = 52,
+                        ImageUrl = "/images/products/sua52-1.jpg"
+                    },
+
+                    new ImageProduct
+                    {
+                        ProductId = 52,
+                        ImageUrl = "/images/products/sua52-2.jpg"
+                    },
+
+                    new ImageProduct
+                    {
+                        ProductId = 52,
+                        ImageUrl = "/images/products/sua52-3.jpg"
+                    },
+
                     new ImageProduct
                     {
                         ProductId = 53,
                         ImageUrl = "/images/products/sua53.jpg"
                     },
+
+                    new ImageProduct
+                    {
+                        ProductId = 53,
+                        ImageUrl = "/images/products/sua53-1.jpg"
+                    },
+
+                    new ImageProduct
+                    {
+                        ProductId = 53,
+                        ImageUrl = "/images/products/sua53-2.jpg"
+                    },
+
+                    new ImageProduct
+                    {
+                        ProductId = 53,
+                        ImageUrl = "/images/products/sua53-3.jpg"
+                    },
+
                     new ImageProduct
                     {
                         ProductId = 54,
                         ImageUrl = "/images/products/sua54.jpg"
                     },
+
+                    new ImageProduct
+                    {
+                        ProductId = 54,
+                        ImageUrl = "/images/products/sua54-1.jpg"
+                    },
+
+                    new ImageProduct
+                    {
+                        ProductId = 54,
+                        ImageUrl = "/images/products/sua54-2.jpg"
+                    },
+
+                    new ImageProduct
+                    {
+                        ProductId = 54,
+                        ImageUrl = "/images/products/sua54-3.jpg"
+                    },
+
                     new ImageProduct
                     {
                         ProductId = 55,
                         ImageUrl = "/images/products/sua55.jpg"
                     },
+
+                    new ImageProduct
+                    {
+                        ProductId = 55,
+                        ImageUrl = "/images/products/sua55-1.jpg"
+                    },
+
+                    new ImageProduct
+                    {
+                        ProductId = 55,
+                        ImageUrl = "/images/products/sua55-2.jpg"
+                    },
+
+                    new ImageProduct
+                    {
+                        ProductId = 55,
+                        ImageUrl = "/images/products/sua55-3.jpg"
+                    },
+
                     new ImageProduct
                     {
                         ProductId = 56,
                         ImageUrl = "/images/products/sua56.jpg"
                     },
+
+                    new ImageProduct
+                    {
+                        ProductId = 56,
+                        ImageUrl = "/images/products/sua56-1.jpg"
+                    },
+
+                    new ImageProduct
+                    {
+                        ProductId = 56,
+                        ImageUrl = "/images/products/sua56-2.jpg"
+                    },
+
+                    new ImageProduct
+                    {
+                        ProductId = 56,
+                        ImageUrl = "/images/products/sua56-3.jpg"
+                    },
+
                     new ImageProduct
                     {
                         ProductId = 57,
                         ImageUrl = "/images/products/sua57.jpg"
                     },
+
+                    new ImageProduct
+                    {
+                        ProductId = 57,
+                        ImageUrl = "/images/products/sua57-1.jpg"
+                    },
+
+                    new ImageProduct
+                    {
+                        ProductId = 57,
+                        ImageUrl = "/images/products/sua57-2.jpg"
+                    },
+
+                    new ImageProduct
+                    {
+                        ProductId = 57,
+                        ImageUrl = "/images/products/sua57-3.jpg"
+                    },
+
                     new ImageProduct
                     {
                         ProductId = 58,
                         ImageUrl = "/images/products/sua58.jpg"
                     },
+
+                    new ImageProduct
+                    {
+                        ProductId = 58,
+                        ImageUrl = "/images/products/sua58-1.jpg"
+                    },
+
+                    new ImageProduct
+                    {
+                        ProductId = 58,
+                        ImageUrl = "/images/products/sua58-2.jpg"
+                    },
+
+                    new ImageProduct
+                    {
+                        ProductId = 58,
+                        ImageUrl = "/images/products/sua58-3.jpg"
+                    },
+
                     new ImageProduct
                     {
                         ProductId = 59,
                         ImageUrl = "/images/products/sua59.jpg"
                     },
+
+                    new ImageProduct
+                    {
+                        ProductId = 59,
+                        ImageUrl = "/images/products/sua59-1.jpg"
+                    },
+
+                    new ImageProduct
+                    {
+                        ProductId = 59,
+                        ImageUrl = "/images/products/sua59-2.jpg"
+                    },
+
+                    new ImageProduct
+                    {
+                        ProductId = 59,
+                        ImageUrl = "/images/products/sua59-3.jpg"
+                    },
+
                     new ImageProduct
                     {
                         ProductId = 60,
                         ImageUrl = "/images/products/sua60.jpg"
                     },
+
+                    new ImageProduct
+                    {
+                        ProductId = 60,
+                        ImageUrl = "/images/products/sua60-1.jpg"
+                    },
+
+                    new ImageProduct
+                    {
+                        ProductId = 60,
+                        ImageUrl = "/images/products/sua60-2.jpg"
+                    },
+
+                    new ImageProduct
+                    {
+                        ProductId = 60,
+                        ImageUrl = "/images/products/sua60-3.jpg"
+                    },
+
                     new ImageProduct
                     {
                         ProductId = 61,
                         ImageUrl = "/images/products/sua61.jpg"
                     },
+
+                    new ImageProduct
+                    {
+                        ProductId = 61,
+                        ImageUrl = "/images/products/sua61-1.jpg"
+                    },
+
+                    new ImageProduct
+                    {
+                        ProductId = 61,
+                        ImageUrl = "/images/products/sua61-2.jpg"
+                    },
+
+                    new ImageProduct
+                    {
+                        ProductId = 61,
+                        ImageUrl = "/images/products/sua61-3.jpg"
+                    },
+
                     new ImageProduct
                     {
                         ProductId = 62,
                         ImageUrl = "/images/products/sua62.jpg"
                     },
+
+                    new ImageProduct
+                    {
+                        ProductId = 62,
+                        ImageUrl = "/images/products/sua62-1.jpg"
+                    },
+
+                    new ImageProduct
+                    {
+                        ProductId = 62,
+                        ImageUrl = "/images/products/sua62-2.jpg"
+                    },
+
+                    new ImageProduct
+                    {
+                        ProductId = 62,
+                        ImageUrl = "/images/products/sua62-3.jpg"
+                    },
+
                     new ImageProduct
                     {
                         ProductId = 63,
                         ImageUrl = "/images/products/sua63.jpg"
                     },
+
+                    new ImageProduct
+                    {
+                        ProductId = 63,
+                        ImageUrl = "/images/products/sua63-1.jpg"
+                    },
+
+                    new ImageProduct
+                    {
+                        ProductId = 63,
+                        ImageUrl = "/images/products/sua63-2.jpg"
+                    },
+
+                    new ImageProduct
+                    {
+                        ProductId = 63,
+                        ImageUrl = "/images/products/sua63-3.jpg"
+                    },
+
                     new ImageProduct
                     {
                         ProductId = 64,
                         ImageUrl = "/images/products/sua64.jpg"
                     },
+
+                    new ImageProduct
+                    {
+                        ProductId = 64,
+                        ImageUrl = "/images/products/sua64-1.jpg"
+                    },
+
+                    new ImageProduct
+                    {
+                        ProductId = 64,
+                        ImageUrl = "/images/products/sua64-2.jpg"
+                    },
+
+                    new ImageProduct
+                    {
+                        ProductId = 64,
+                        ImageUrl = "/images/products/sua64-3.jpg"
+                    },
+
                     new ImageProduct
                     {
                         ProductId = 65,
                         ImageUrl = "/images/products/sua65.jpg"
+                    },
+
+                    new ImageProduct
+                    {
+                        ProductId = 65,
+                        ImageUrl = "/images/products/sua65-1.jpg"
+                    },
+
+                    new ImageProduct
+                    {
+                        ProductId = 65,
+                        ImageUrl = "/images/products/sua65-2.jpg"
+                    },
+
+                    new ImageProduct
+                    {
+                        ProductId = 65,
+                        ImageUrl = "/images/products/sua65-3.jpg"
                     },
 
                     new ImageProduct
@@ -1456,14 +2690,68 @@ namespace API.Data
 
                     new ImageProduct
                     {
+                        ProductId = 66,
+                        ImageUrl = "/images/products/sua66-1.jpg"
+                    },
+
+                    new ImageProduct
+                    {
+                        ProductId = 66,
+                        ImageUrl = "/images/products/sua66-2.jpg"
+                    },
+
+                    new ImageProduct
+                    {
+                        ProductId = 66,
+                        ImageUrl = "/images/products/sua66-3.jpg"
+                    },
+
+                    new ImageProduct
+                    {
                         ProductId = 67,
                         ImageUrl = "/images/products/sua67.jpg"
                     },
 
                     new ImageProduct
                     {
+                        ProductId = 67,
+                        ImageUrl = "/images/products/sua67-1.jpg"
+                    },
+
+                    new ImageProduct
+                    {
+                        ProductId = 67,
+                        ImageUrl = "/images/products/sua67-2.jpg"
+                    },
+
+                    new ImageProduct
+                    {
+                        ProductId = 67,
+                        ImageUrl = "/images/products/sua67-3.jpg"
+                    },
+
+                    new ImageProduct
+                    {
                         ProductId = 68,
                         ImageUrl = "/images/products/sua68.jpg"
+                    },
+
+                    new ImageProduct
+                    {
+                        ProductId = 68,
+                        ImageUrl = "/images/products/sua68-1.jpg"
+                    },
+
+                    new ImageProduct
+                    {
+                        ProductId = 68,
+                        ImageUrl = "/images/products/sua68-2.jpg"
+                    },
+
+                    new ImageProduct
+                    {
+                        ProductId = 68,
+                        ImageUrl = "/images/products/sua68-3.jpg"
                     },
 
                 };
