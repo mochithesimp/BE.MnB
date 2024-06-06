@@ -32,5 +32,6 @@ namespace API.Entities
         public int Like { get; set; }
 
         public Product Product { get; set; }
+        public List<UserBlogView> UserBlogViews { get; set; }
     }
 }

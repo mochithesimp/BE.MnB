@@ -115,6 +115,86 @@ namespace API.Controllers
             return NoContent();
         }
 
+        [HttpPost("IncreaseView")]
+        public async Task<IActionResult> IncreaseViewCount(int userId, int blogId)
+        {
+            var user = await _context.Users.FindAsync(userId);
+
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            var hasViewedBlog = await _context.userBlogViews
+                .AnyAsync(ubv => ubv.UserId == userId && ubv.BlogId == blogId);
+
+            if (hasViewedBlog)
+            {
+                return BadRequest("The user has already viewed the blog.");
+            }
+
+            var blog = await _context.Blogs.FindAsync(blogId);
+
+            if (blog == null)
+            {
+                return NotFound();
+            }
+
+            blog.View++;
+
+            var userBlogView = new UserBlogView
+            {
+                UserId = userId,
+                BlogId = blogId
+            };
+            _context.userBlogViews.Add(userBlogView);
+
+            await _context.SaveChangesAsync();
+
+            return Ok();
+        }
+
+        [HttpPost("IncreaseLike")]
+        public async Task<IActionResult> IncreaseLikeCount(int userId, int blogId)
+        {
+            var user = await _context.Users.FindAsync(userId);
+
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            var userBlogView = await _context.userBlogViews
+                .FirstOrDefaultAsync(ubv => ubv.UserId == userId && ubv.BlogId == blogId);
+
+            if (userBlogView == null)
+            {
+                return BadRequest("The user has not viewed the blog.");
+            }
+
+            if (userBlogView.Like > 0)
+            {
+                return BadRequest("The user has already liked the blog.");
+            }
+
+            var blog = await _context.Blogs.FindAsync(blogId);
+
+            if (blog == null)
+            {
+                return NotFound();
+            }
+
+            blog.Like++;
+            userBlogView.Like++;
+
+            await _context.SaveChangesAsync();
+
+            return Ok();
+        }
+
+
+
+
 
         public static BlogDTO toBlogDTO(Blog? blog) 
         { 

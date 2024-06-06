@@ -108,7 +108,7 @@ namespace API.Controllers
         {
             try
             {
-                var order = await _context.Orders.FirstOrDefaultAsync(o => o.OrderId == orderId);
+                var order = await _context.Orders.FirstOrDefaultAsync(o => o.OrderId == orderId && o.OrderStatus != "Canceled");
 
                 if (order == null)
                 {
