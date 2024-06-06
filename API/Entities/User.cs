@@ -35,5 +35,6 @@ namespace API.Entities
         public List<Review>? Reviews { get; set; }
         public List<Order>? Orders { get; set; }
         public List<Notification>? Notifications { get; set; }
+        public List<UserBlogView> UserBlogViews { get; set; }
     }
 }
