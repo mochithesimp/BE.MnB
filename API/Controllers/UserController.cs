@@ -23,6 +23,17 @@ namespace API.Controllers
 
         }
 
+        [HttpGet("{id}")]
+        public async Task<ActionResult<UserDTO>> GetUser(int id)
+        {
+            var user = await _context.Users.FirstOrDefaultAsync(b => b.UserId == id);
+            if (user != null) {
+            var userDTO = AccountController.toUserDTO(user);
+                return Ok(userDTO); 
+            }
+            return NotFound();
+        }
+
         [HttpPut("Update")]
         public async Task<ActionResult<UserDTO>> UpdateUser(int id, UpdateUserDTO userDto)
         {
@@ -35,23 +46,14 @@ namespace API.Controllers
 
             user.Name = userDto.Name;
             user.Email = userDto.Email;
-            user.Password = userDto.Password;
             user.PhoneNumber = userDto.PhoneNumber;
             user.Address = userDto.Address;
 
             await _context.SaveChangesAsync();
 
-            var updatedUserDto = new UserDTO
-            {
-                UserId = user.UserId,
-                RoleId = user.RoleId,
-                Name = user.Name,
-                Email = user.Email,
-                PhoneNumber = user.PhoneNumber,
-                Address = user.Address
-            };
+            var updatedUserDto = AccountController.toUserDTO(user);
 
-            return updatedUserDto;
+            return Ok(updatedUserDto);
         }
 
         [HttpGet("getOrders")]

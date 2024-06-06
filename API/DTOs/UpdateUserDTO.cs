@@ -15,10 +15,6 @@ namespace API.DTOs
 
         public string? Email { get; set; }
 
-        [Required]
-        [JsonIgnore]
-        public string Password { get; set; } = "***";
-
 
         public string? PhoneNumber { get; set; }
 
