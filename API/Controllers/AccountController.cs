@@ -318,7 +318,7 @@ namespace API.Controllers
             userDTO.Email = user.Email;
             userDTO.PhoneNumber = user.PhoneNumber;
             userDTO.Address = user.Address;
-
+            userDTO.IsActive = user.IsActive;
             return userDTO;
         }
 
