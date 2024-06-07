@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 
 namespace API.Entities
 {
@@ -15,6 +16,7 @@ namespace API.Entities
         [Required]
         public string ImageUrl { get; set; }
 
+        [JsonIgnore]
         public Product Product { get; set; }
     }
 }

@@ -65,7 +65,7 @@ namespace API.Migrations
 
                     b.HasIndex("ProductId");
 
-                    b.ToTable("Blog");
+                    b.ToTable("Blog", (string)null);
                 });
 
             modelBuilder.Entity("API.Entities.Brand", b =>
@@ -89,7 +89,7 @@ namespace API.Migrations
 
                     b.HasKey("BrandId");
 
-                    b.ToTable("Brand");
+                    b.ToTable("Brand", (string)null);
                 });
 
             modelBuilder.Entity("API.Entities.Category", b =>
@@ -113,7 +113,7 @@ namespace API.Migrations
 
                     b.HasKey("CategoryId");
 
-                    b.ToTable("Category");
+                    b.ToTable("Category", (string)null);
                 });
 
             modelBuilder.Entity("API.Entities.ForAge", b =>
@@ -130,7 +130,7 @@ namespace API.Migrations
 
                     b.HasKey("ForAgeId");
 
-                    b.ToTable("ForAge");
+                    b.ToTable("ForAge", (string)null);
                 });
 
             modelBuilder.Entity("API.Entities.ImageProduct", b =>
@@ -152,7 +152,7 @@ namespace API.Migrations
 
                     b.HasIndex("ProductId");
 
-                    b.ToTable("ImageProduct");
+                    b.ToTable("ImageProduct", (string)null);
                 });
 
             modelBuilder.Entity("API.Entities.Notification", b =>
@@ -187,7 +187,7 @@ namespace API.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Notification");
+                    b.ToTable("Notification", (string)null);
                 });
 
             modelBuilder.Entity("API.Entities.Order", b =>
@@ -228,7 +228,7 @@ namespace API.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Order");
+                    b.ToTable("Order", (string)null);
                 });
 
             modelBuilder.Entity("API.Entities.OrderDetail", b =>
@@ -257,7 +257,7 @@ namespace API.Migrations
 
                     b.HasIndex("ProductId");
 
-                    b.ToTable("OrderDetail");
+                    b.ToTable("OrderDetail", (string)null);
                 });
 
             modelBuilder.Entity("API.Entities.Product", b =>
@@ -302,7 +302,7 @@ namespace API.Migrations
 
                     b.HasIndex("ForAgeId");
 
-                    b.ToTable("Product");
+                    b.ToTable("Product", (string)null);
                 });
 
             modelBuilder.Entity("API.Entities.Review", b =>
@@ -340,7 +340,7 @@ namespace API.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Review");
+                    b.ToTable("Review", (string)null);
                 });
 
             modelBuilder.Entity("API.Entities.Role", b =>
@@ -357,7 +357,7 @@ namespace API.Migrations
 
                     b.HasKey("RoleId");
 
-                    b.ToTable("Role");
+                    b.ToTable("Role", (string)null);
                 });
 
             modelBuilder.Entity("API.Entities.ShippingMethod", b =>
@@ -377,7 +377,7 @@ namespace API.Migrations
 
                     b.HasKey("ShippingMethodId");
 
-                    b.ToTable("ShippingMethod");
+                    b.ToTable("ShippingMethod", (string)null);
                 });
 
             modelBuilder.Entity("API.Entities.User", b =>
@@ -415,7 +415,7 @@ namespace API.Migrations
 
                     b.HasIndex("RoleId");
 
-                    b.ToTable("User");
+                    b.ToTable("User", (string)null);
                 });
 
             modelBuilder.Entity("API.Entities.UserBlogView", b =>
@@ -441,7 +441,7 @@ namespace API.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("UserBlogView");
+                    b.ToTable("UserBlogView", (string)null);
                 });
 
             modelBuilder.Entity("API.Entities.Blog", b =>
