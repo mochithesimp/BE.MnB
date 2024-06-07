@@ -15,6 +15,7 @@ namespace API.Entities
         public int OrderDetailId { get; set; }
 
         [Required]
+        [ForeignKey("ProductId")]
         public int ProductId { get; set; }
 
         [Required]
@@ -23,13 +24,11 @@ namespace API.Entities
         [Required]
         public int Rating { get; set; }
 
-        [Required]
         public string Comment { get; set; }
 
         public User? User { get; set; }
         public OrderDetail OrderDetail { get; set; }
 
-        [ForeignKey("ProductId")]
         public Product Product { get; set; }
     }
 }

@@ -22,5 +22,6 @@ namespace API.Data
         public DbSet<ShippingMethod> shippingMethods { get; set; }
         public DbSet<Notification> Notifications { get; set; }
         public DbSet<UserBlogView> userBlogViews { get; set; }
+        public DbSet<Review> Reviews { get; set; }
     }
 }

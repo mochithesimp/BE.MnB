@@ -179,23 +179,25 @@ namespace API.Controllers
             product.Price = productDto.Price;
             product.Stock = productDto.Stock;
             product.IsActive = productDto.IsActive;
+            product.ImageProducts = toImage(productDto.ImageProducts);
 
             await _context.SaveChangesAsync();
 
-            var updatedProductDto = new ProductDTO
-            {
-                ProductId = product.ProductId,
-                Name = product.Name,
-                Description = product.Description,
-                Price = product.Price,
-                Stock = product.Stock,
-                CategoryId = product.CategoryId,
-                BrandId = product.BrandId,
-                ForAgeId = product.ForAgeId,
-                IsActive = product.IsActive
-            };
+            //var updatedProductDto = new ProductDTO
+            //{
+            //    ProductId = product.ProductId,
+            //    Name = product.Name,
+            //    Description = product.Description,
+            //    Price = product.Price,
+            //    Stock = product.Stock,
+            //    CategoryId = product.CategoryId,
+            //    BrandId = product.BrandId,
+            //    ForAgeId = product.ForAgeId,
+            //    IsActive = product.IsActive,
+            //    ImageProducts = product.ImageProducts,
+            //};
 
-            return updatedProductDto;
+            return productDto;
         }
 
         [HttpDelete("Delete")]
@@ -250,6 +252,20 @@ namespace API.Controllers
             imageProductDTO.ProductId = image.ProductId;
             imageProductDTO.ImageUrl = image.ImageUrl;
             return imageProductDTO;
+        }
+
+        public static List<ImageProduct> toImage(List<ImageProductDTO>? image)
+        {
+            var list = new List<ImageProduct>();
+            foreach(var imgInList in image)
+            {
+                ImageProduct imageProduct = new ImageProduct();
+                imageProduct.ImageId = imgInList.ImageId;
+                imageProduct.ProductId = imgInList.ProductId;
+                imageProduct.ImageUrl = imgInList.ImageUrl;
+                list.Add(imageProduct);
+            }
+            return list;
         }
 
     }
