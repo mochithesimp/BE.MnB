@@ -18,6 +18,29 @@ namespace API.Controllers
             _context = context;
         }
 
+        [HttpGet("GetAllRating")]
+        public async Task<ActionResult<List<Review>>> GetReviews()
+        {
+            var list = await _context.Reviews.ToListAsync();
+
+            var reviews = new List<ReviewDTO>();
+            foreach (var item in list.Select(review => review).ToList()) 
+            {
+                ReviewDTO reviewDTO = new ReviewDTO()
+                {
+                    UserId = item.UserId,
+                    OrderDetailId = item.OrderDetailId,
+                    ProductId = item.ProductId,
+                    Date = item.Date,
+                    Rating = item.Rating,
+                    Comment = item.Comment,
+                };
+                reviews.Add(reviewDTO);
+            }
+            if (reviews.Count > 0) return Ok(reviews);
+            return NotFound();
+        }
+
         [HttpPost]
         public async Task<IActionResult> CreateRating(ReviewDTO reviewDTO)
         {

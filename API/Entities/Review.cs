@@ -11,8 +11,7 @@ namespace API.Entities
 
         public int UserId { get; set; }
 
-        [Required]
-        public int OrderDetailId { get; set; }
+        public int? OrderDetailId { get; set; }
 
         [Required]
         [ForeignKey("ProductId")]

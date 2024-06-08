@@ -128,7 +128,6 @@ namespace API.Controllers
 
 
         [HttpPost("Create")]
-        [Authorize(Roles = "Staff, Admin")]
         public async Task<ActionResult<ProductDTO>> CreateProduct(CreateProductDTO productDto)
         {
             var product = new Product
@@ -140,7 +139,8 @@ namespace API.Controllers
                 Description = productDto.Description,
                 Price = productDto.Price,
                 Stock = productDto.Stock,
-                IsActive = true
+                IsActive = true,
+                ImageProducts = toCreateImage(productDto.ImageProducts)
             };
 
             _context.Products.Add(product);
@@ -261,6 +261,19 @@ namespace API.Controllers
             {
                 ImageProduct imageProduct = new ImageProduct();
                 imageProduct.ImageId = imgInList.ImageId;
+                imageProduct.ProductId = imgInList.ProductId;
+                imageProduct.ImageUrl = imgInList.ImageUrl;
+                list.Add(imageProduct);
+            }
+            return list;
+        }
+
+        public static List<ImageProduct> toCreateImage(List<CreateImageProductDTO>? image)
+        {
+            var list = new List<ImageProduct>();
+            foreach (var imgInList in image)
+            {
+                ImageProduct imageProduct = new ImageProduct();
                 imageProduct.ProductId = imgInList.ProductId;
                 imageProduct.ImageUrl = imgInList.ImageUrl;
                 list.Add(imageProduct);
