@@ -246,6 +246,23 @@ namespace API.Controllers
 
                 order.OrderStatus = "Canceled";
 
+                var staffUser = await _context.Users.Where(u => u.RoleId == 2).ToListAsync();
+
+                foreach (var user in staffUser)
+                {
+                    var notification = new Notification
+                    {
+                        UserId = user.UserId,
+                        Header = "New Order!",
+                        Content = $"Order {order.OrderId} had been canceled. Please consider contact the User to support!",
+                        IsRead = false,
+                        IsRemoved = false,
+                        CreatedDate = DateTime.Now
+                    };
+
+                    _context.Notifications.Add(notification);
+                }
+
                 foreach (var orderDetail in order.OrderDetails)
                 {
                     var product = await _context.Products.FindAsync(orderDetail.ProductId);

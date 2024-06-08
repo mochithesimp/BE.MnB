@@ -13,5 +13,7 @@
         public int Rating { get; set; }
 
         public string Comment { get; set; }
+
+        public bool IsRated { get; set; } = false;
     }
 }

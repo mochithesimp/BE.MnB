@@ -4,6 +4,8 @@ using API.Entities;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Text.Json.Serialization;
+using System.Text.Json;
 
 namespace API.Controllers
 {
@@ -34,11 +36,21 @@ namespace API.Controllers
                     Date = item.Date,
                     Rating = item.Rating,
                     Comment = item.Comment,
+                    IsRated = item.IsRated,
                 };
                 reviews.Add(reviewDTO);
             }
             if (reviews.Count > 0) return Ok(reviews);
             return NotFound();
+        }
+
+        [HttpGet("GetUserReview")]
+        public async Task<IActionResult> GetUserReviews(int userId, int orderId)
+        {
+            var reviews = await _context.Reviews
+                .Where(r => r.UserId == userId && r.OrderDetailId == orderId)
+                .ToListAsync();
+            return Ok(reviews);
         }
 
         [HttpPost]
@@ -56,12 +68,46 @@ namespace API.Controllers
                     Date = DateTime.Now,
                     Rating = reviewDTO.Rating,
                     Comment = reviewDTO.Comment,
+                    IsRated = true,
                 };
+
+                if (reviewDTO.Rating <= 2)
+                {
+                    var orderDetail = await _context.orderDetails.FindAsync(reviewDTO.OrderDetailId);
+                    if (orderDetail == null) return BadRequest("OrderDetail not found");
+
+                    var order = await _context.Orders.FindAsync(orderDetail.OrderId);
+                    if (order == null) return BadRequest("Order not found");
+
+                    var staffUser = await _context.Users.Where(u => u.RoleId == 2).ToListAsync();
+
+                    foreach (var user in staffUser)
+                    {
+                        var notification = new Notification
+                        {
+                            UserId = user.UserId,
+                            Header = "New Order!",
+                            Content = $"Order {order.OrderId} just received a bad Rating. Please consider contacting the User to support!",
+                            IsRead = false,
+                            IsRemoved = false,
+                            CreatedDate = DateTime.Now
+                        };
+
+                        _context.Notifications.Add(notification);
+                    }
+                }
 
                 _context.Reviews.Add(rating);
                 await _context.SaveChangesAsync();
 
-                return Ok(rating);
+                //var options = new JsonSerializerOptions
+                //{
+                //    ReferenceHandler = ReferenceHandler.Preserve
+                //};
+
+                //var jsonResponse = JsonSerializer.Serialize(rating, options);
+                //return Ok(jsonResponse);
+                return Ok();
             }
             catch (Exception ex)
             {
