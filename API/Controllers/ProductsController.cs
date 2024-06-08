@@ -128,8 +128,10 @@ namespace API.Controllers
 
 
         [HttpPost("Create")]
-        public async Task<ActionResult<ProductDTO>> CreateProduct(CreateProductDTO productDto)
+        public async Task<ActionResult<CreateProductDTO>> CreateProduct(CreateProductDTO productDto)
         {
+            var imageProducts = toCreateImage(productDto.ImageProducts);
+
             var product = new Product
             {
                 ForAgeId = productDto.ForAgeId,
@@ -140,7 +142,7 @@ namespace API.Controllers
                 Price = productDto.Price,
                 Stock = productDto.Stock,
                 IsActive = true,
-                ImageProducts = toCreateImage(productDto.ImageProducts)
+                ImageProducts = imageProducts
             };
 
             _context.Products.Add(product);
@@ -148,6 +150,7 @@ namespace API.Controllers
 
             var createdProductDto = new ProductDTO
             {
+                ProductId = product.ProductId,
                 Name = product.Name,
                 Description = product.Description,
                 Price = product.Price,
@@ -158,7 +161,7 @@ namespace API.Controllers
                 IsActive = product.IsActive
             };
 
-            return CreatedAtAction(nameof(GetProduct), new { id = createdProductDto.ProductId }, createdProductDto);
+            return CreatedAtAction(nameof(GetProduct), new { id = createdProductDto.ProductId }, product);
         }
 
         [HttpPut("Update")]
