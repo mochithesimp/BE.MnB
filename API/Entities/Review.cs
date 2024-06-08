@@ -25,6 +25,8 @@ namespace API.Entities
 
         public string Comment { get; set; }
 
+        public bool IsRated { get; set; }
+
         public User? User { get; set; }
         public OrderDetail OrderDetail { get; set; }
 
