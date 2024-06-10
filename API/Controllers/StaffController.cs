@@ -147,17 +147,16 @@ namespace API.Controllers
                     return NotFound("Order not found");
                 }
 
-                var preOrder = await _context.Orders
-                    .Include(o => o.OrderDetails)
-                    .FirstOrDefaultAsync(o => o.OrderId == orderId && o.OrderStatus == "Pre-Order");
-
-                if (preOrder == null)
+                if (order.OrderStatus == "Pre-Order")
                 {
-                    return NotFound("PreOrder not found");
-                }
+                    var preOrder = await _context.Orders
+                        .Include(o => o.OrderDetails)
+                        .FirstOrDefaultAsync(o => o.OrderId == orderId && o.OrderStatus == "Pre-Order");
 
-                if (preOrder.OrderStatus == "Pre-Order")
-                {
+                    if (preOrder == null)
+                    {
+                        return NotFound("PreOrder not found");
+                    }
 
                     foreach (var orderDetail in preOrder.OrderDetails)
                     {
@@ -193,26 +192,27 @@ namespace API.Controllers
                     await _context.SaveChangesAsync();
 
                     return Ok("Pre-Order submitted successfully");
-
                 }
-
-                order.OrderStatus = "Submitted";
-                await _context.SaveChangesAsync();
-
-                var notification = new Notification
+                else
                 {
-                    UserId = order.UserId,
-                    Header = "Order Submitted",
-                    Content = $"Your recent order with ID {order.OrderId} has been submitted!",
-                    IsRead = false,
-                    IsRemoved = false,
-                    CreatedDate = DateTime.Now
-                };
+                    order.OrderStatus = "Submitted";
+                    await _context.SaveChangesAsync();
 
-                _context.Notifications.Add(notification);
-                await _context.SaveChangesAsync();
+                    var notification = new Notification
+                    {
+                        UserId = order.UserId,
+                        Header = "Order Submitted",
+                        Content = $"Your recent order with ID {order.OrderId} has been submitted!",
+                        IsRead = false,
+                        IsRemoved = false,
+                        CreatedDate = DateTime.Now
+                    };
 
-                return Ok("Order submited successfully");
+                    _context.Notifications.Add(notification);
+                    await _context.SaveChangesAsync();
+
+                    return Ok("Order submitted successfully");
+                }
             }
             catch (Exception ex)
             {
