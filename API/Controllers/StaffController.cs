@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Diagnostics.Tracing;
+using System.Transactions;
 
 namespace API.Controllers
 {
@@ -84,6 +85,37 @@ namespace API.Controllers
             return NotFound();
         }
 
+        [HttpGet("GetAllRating")]
+        public async Task<ActionResult<List<Review>>> GetReviews(
+                    string? orderBy)
+        {
+            var query = _context.Reviews
+                .FilterBy(orderBy);
+
+            var list = await query.ToListAsync();
+
+            var reviews = new List<ReviewDTO>();
+            foreach (var item in list.Select(review => review).ToList())
+            {
+                ReviewDTO reviewDTO = new ReviewDTO()
+                {
+                    UserId = item.UserId,
+                    OrderDetailId = item.OrderDetailId,
+                    ProductId = item.ProductId,
+                    Date = item.Date,
+                    Rating = item.Rating,
+                    Comment = item.Comment,
+                    IsRated = item.IsRated,
+                };
+                reviews.Add(reviewDTO);
+            }
+
+            if (reviews.Count > 0) return Ok(reviews);
+            return NotFound();
+        }
+
+
+
         [HttpDelete("DeleteUser")]
         public async Task<ActionResult> DeleteUser(int id)
         {
@@ -136,6 +168,62 @@ namespace API.Controllers
             catch (Exception ex)
             {
                 return StatusCode(500, "Failed to cancel order. " + ex.InnerException?.Message);
+            }
+        }
+
+
+        [HttpPut("submitPreOrder")]
+        public async Task<IActionResult> SubmitPreOrder(int orderId)
+        {
+            try
+            {
+                var order = await _context.Orders.FirstOrDefaultAsync(o => o.OrderId == orderId && o.OrderStatus == "Pre-Order");
+
+                if (order == null)
+                {
+                    return NotFound("Order not found or it is not a pre-order");
+                }
+
+                foreach (var orderDetail in order.OrderDetails)
+                {
+                    var product = await _context.Products.FindAsync(orderDetail.ProductId);
+
+                    if (product == null)
+                    {
+                        return BadRequest("Product not found");
+                    }
+
+                    if (product.Stock < orderDetail.Quantity)
+                    {
+                        return BadRequest("Insufficient quantity in stock to fulfill the order");
+                    }
+
+                    product.Stock -= orderDetail.Quantity;
+                }
+
+                order.OrderStatus = "Submitted";
+
+
+                    var notification = new Notification
+                    {
+                        UserId = order.UserId,
+                        Header = "Pre-Order Submitted",
+                        Content = $"Your recent Pre-Order with ID {order.OrderId} has been submitted!",
+                        IsRead = false,
+                        IsRemoved = false,
+                        CreatedDate = DateTime.Now
+                    };
+
+                    _context.Notifications.Add(notification);
+                    await _context.SaveChangesAsync();
+
+                
+
+                return Ok("Order submitted successfully");
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, "Failed to submit order. " + ex.InnerException?.Message);
             }
         }
 
