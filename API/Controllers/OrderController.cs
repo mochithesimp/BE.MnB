@@ -37,7 +37,22 @@ public class OrderController : ControllerBase
                 Total = orderDto.Products.Sum(p => p.Total)
             };
 
-            _context.Orders.Add(order);
+            foreach (var productDto in orderDto.Products)
+            {
+                var product = await _context.Products.FindAsync(productDto.ProductId);
+
+                if (product == null)
+                {
+                    return BadRequest("Product not found");
+                }
+
+                if (product.Stock < productDto.Quantity)
+                {
+                    return BadRequest("Insufficient product quantity");
+                }
+            }
+
+                _context.Orders.Add(order);
             await _context.SaveChangesAsync();
 
             foreach (var productDto in orderDto.Products)
@@ -117,9 +132,6 @@ public class OrderController : ControllerBase
                 Total = orderDto.Products.Sum(p => p.Total)
             };
 
-            _context.Orders.Add(order);
-            await _context.SaveChangesAsync();
-
             foreach (var productDto in orderDto.Products)
             {
                 var product = await _context.Products.FindAsync(productDto.ProductId);
@@ -129,10 +141,17 @@ public class OrderController : ControllerBase
                     return BadRequest("Product not found");
                 }
 
-                if(product.Stock >= productDto.Quantity)
+                if (product.Stock >= productDto.Quantity)
                 {
                     return BadRequest("Quantity in Stock can satisfy required quantity! Can not Pre-order!");
                 }
+            }
+
+                _context.Orders.Add(order);
+            await _context.SaveChangesAsync();
+
+            foreach (var productDto in orderDto.Products)
+            {
 
                 var orderDetail = new OrderDetail
                 {
