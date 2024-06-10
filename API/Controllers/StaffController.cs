@@ -147,6 +147,55 @@ namespace API.Controllers
                     return NotFound("Order not found");
                 }
 
+                var preOrder = await _context.Orders
+                    .Include(o => o.OrderDetails)
+                    .FirstOrDefaultAsync(o => o.OrderId == orderId && o.OrderStatus == "Pre-Order");
+
+                if (preOrder == null)
+                {
+                    return NotFound("PreOrder not found");
+                }
+
+                if (preOrder.OrderStatus == "Pre-Order")
+                {
+
+                    foreach (var orderDetail in preOrder.OrderDetails)
+                    {
+                        var product = await _context.Products.FindAsync(orderDetail.ProductId);
+
+                        if (product == null)
+                        {
+                            return BadRequest("Product not found");
+                        }
+
+                        if (product.Stock < orderDetail.Quantity)
+                        {
+                            return BadRequest("Insufficient quantity in stock to fulfill the order");
+                        }
+
+                        product.Stock -= orderDetail.Quantity;
+                    }
+
+                    preOrder.OrderStatus = "Submitted";
+                    await _context.SaveChangesAsync();
+
+                    var notificationPre = new Notification
+                    {
+                        UserId = preOrder.UserId,
+                        Header = "Pre-Order Submitted",
+                        Content = $"Your recent Pre-Order with ID {preOrder.OrderId} has been submitted!",
+                        IsRead = false,
+                        IsRemoved = false,
+                        CreatedDate = DateTime.Now
+                    };
+
+                    _context.Notifications.Add(notificationPre);
+                    await _context.SaveChangesAsync();
+
+                    return Ok("Pre-Order submitted successfully");
+
+                }
+
                 order.OrderStatus = "Submitted";
                 await _context.SaveChangesAsync();
 
@@ -171,61 +220,63 @@ namespace API.Controllers
             }
         }
 
+        // Combined SubmitPreOrder into SubmitOrder!
+        // This function is kept in order to backup
 
-        [HttpPut("submitPreOrder")]
-        public async Task<IActionResult> SubmitPreOrder(int orderId)
-        {
-            try
-            {
-                var order = await _context.Orders.FirstOrDefaultAsync(o => o.OrderId == orderId && o.OrderStatus == "Pre-Order");
+        //[HttpPut("submitPreOrder")]
+        //public async Task<IActionResult> SubmitPreOrder(int orderId)
+        //{
+        //    try
+        //    {
+        //        var order = await _context.Orders.FirstOrDefaultAsync(o => o.OrderId == orderId && o.OrderStatus == "Pre-Order");
 
-                if (order == null)
-                {
-                    return NotFound("Order not found or it is not a pre-order");
-                }
+        //        if (order == null)
+        //       {
+        //            return NotFound("Order not found or it is not a pre-order");
+        //        }
 
-                foreach (var orderDetail in order.OrderDetails)
-                {
-                    var product = await _context.Products.FindAsync(orderDetail.ProductId);
+        //        foreach (var orderDetail in order.OrderDetails)
+        //        {
+        //            var product = await _context.Products.FindAsync(orderDetail.ProductId);
 
-                    if (product == null)
-                    {
-                        return BadRequest("Product not found");
-                    }
+        //           if (product == null)
+        //           {
+        //                return BadRequest("Product not found");
+        //            }
 
-                    if (product.Stock < orderDetail.Quantity)
-                    {
-                        return BadRequest("Insufficient quantity in stock to fulfill the order");
-                    }
+        //            if (product.Stock < orderDetail.Quantity)
+        //            {
+        //                return BadRequest("Insufficient quantity in stock to fulfill the order");
+        //            }
 
-                    product.Stock -= orderDetail.Quantity;
-                }
+        //            product.Stock -= orderDetail.Quantity;
+        //        }
 
-                order.OrderStatus = "Submitted";
+        //        order.OrderStatus = "Submitted";
 
 
-                    var notification = new Notification
-                    {
-                        UserId = order.UserId,
-                        Header = "Pre-Order Submitted",
-                        Content = $"Your recent Pre-Order with ID {order.OrderId} has been submitted!",
-                        IsRead = false,
-                        IsRemoved = false,
-                        CreatedDate = DateTime.Now
-                    };
+        //            var notification = new Notification
+        //            {
+        //                UserId = order.UserId,
+        //                Header = "Pre-Order Submitted",
+        //                Content = $"Your recent Pre-Order with ID {order.OrderId} has been submitted!",
+        //                IsRead = false,
+        //                IsRemoved = false,
+        //                CreatedDate = DateTime.Now
+        //            };
 
-                    _context.Notifications.Add(notification);
-                    await _context.SaveChangesAsync();
+        //            _context.Notifications.Add(notification);
+        //            await _context.SaveChangesAsync();
 
-                
 
-                return Ok("Order submitted successfully");
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, "Failed to submit order. " + ex.InnerException?.Message);
-            }
-        }
+
+        //        return Ok("Order submitted successfully");
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return StatusCode(500, "Failed to submit order. " + ex.InnerException?.Message);
+        //    }
+        //}
 
         [HttpDelete("cancelOrder")]
         public async Task<IActionResult> CancelOrder(int orderId)
