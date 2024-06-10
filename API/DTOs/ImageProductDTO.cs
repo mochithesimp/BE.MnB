@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace API.DTOs
 {
@@ -12,5 +13,8 @@ namespace API.DTOs
 
         [Required]
         public string ImageUrl { get; set; }
+
+        [NotMapped]
+        public IFormFile? ImageFile { get; set; } // để lấy file ảnh về
     }
 }

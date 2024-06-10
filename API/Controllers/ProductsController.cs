@@ -2,13 +2,8 @@
 using API.DTOs;
 using API.Entities;
 using API.Extensions;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Query;
-using Microsoft.OpenApi.Validations;
-using System.Linq;
 using static System.Net.Mime.MediaTypeNames;
 
 namespace API.Controllers
@@ -19,14 +14,16 @@ namespace API.Controllers
     {
 
         private readonly StoreContext _context;
+        private readonly IConfiguration _configuration;
 
-        public ProductsController(StoreContext context)
+        public ProductsController(StoreContext context, IConfiguration configuration)
         {
             _context = context;
+            _configuration = configuration;
         }
 
         [HttpGet]
-        public async Task<ActionResult<List<Product>>> GetProducts(
+        public async Task<ActionResult<List<ProductDTO>>> GetProducts(
                         string? orderBy,
                         string? search,
                         int categoryId,
@@ -44,7 +41,7 @@ namespace API.Controllers
             var listImage = await _context.ImageProducts.ToListAsync();
 
             var Images = new List<ImageProductDTO>();
-            foreach(var image in listImage)
+            foreach (var image in listImage)
             {
                 ImageProductDTO imageProductDTO = toImageDTO(image);
                 Images.Add(imageProductDTO);
@@ -59,7 +56,7 @@ namespace API.Controllers
             return Ok(products);
         }
 
-        
+
 
         [HttpGet("{id}")]
         public async Task<ActionResult<ProductDTO>> GetProduct(int id)
@@ -165,9 +162,9 @@ namespace API.Controllers
         }
 
         [HttpPut("Update")]
-        public async Task<ActionResult<ProductDTO>> UpdateProduct(int id, ProductDTO productDto)
+        public async Task<ActionResult<ProductDTO>> UpdateProduct(int id,[FromForm] ProductDTO productDto)
         {
-            var product = await _context.Products.FindAsync(id);
+            var product = await _context.Products.Include(p => p.ImageProducts).FirstOrDefaultAsync(p => p.ProductId == id);
 
             if (product == null)
             {
@@ -182,23 +179,9 @@ namespace API.Controllers
             product.Price = productDto.Price;
             product.Stock = productDto.Stock;
             product.IsActive = productDto.IsActive;
-            product.ImageProducts = toImage(productDto.ImageProducts);
+            product.ImageProducts = await toImage(productDto.ImageProducts, product.ImageProducts);
 
             await _context.SaveChangesAsync();
-
-            //var updatedProductDto = new ProductDTO
-            //{
-            //    ProductId = product.ProductId,
-            //    Name = product.Name,
-            //    Description = product.Description,
-            //    Price = product.Price,
-            //    Stock = product.Stock,
-            //    CategoryId = product.CategoryId,
-            //    BrandId = product.BrandId,
-            //    ForAgeId = product.ForAgeId,
-            //    IsActive = product.IsActive,
-            //    ImageProducts = product.ImageProducts,
-            //};
 
             return productDto;
         }
@@ -257,18 +240,19 @@ namespace API.Controllers
             return imageProductDTO;
         }
 
-        public static List<ImageProduct> toImage(List<ImageProductDTO>? image)
+        private async Task<List<ImageProduct>> toImage(List<ImageProductDTO>? image, List<ImageProduct> currentImages)
         {
-            var list = new List<ImageProduct>();
-            foreach(var imgInList in image)
+            //var list = new List<ImageProduct>();
+            foreach (var imgInList in image)
             {
-                ImageProduct imageProduct = new ImageProduct();
-                imageProduct.ImageId = imgInList.ImageId;
-                imageProduct.ProductId = imgInList.ProductId;
-                imageProduct.ImageUrl = imgInList.ImageUrl;
-                list.Add(imageProduct);
+                var existingimage = currentImages.FirstOrDefault(img => img.ImageId == imgInList.ImageId);
+                if (existingimage != null)
+                {
+                    if (imgInList.ImageFile != null)
+                        existingimage.ImageUrl = await SaveImage(imgInList.ImageFile, existingimage.ProductId, existingimage.ImageId);
+                }
             }
-            return list;
+            return currentImages;
         }
 
         public static List<ImageProduct> toCreateImage(List<CreateImageProductDTO>? image)
@@ -282,6 +266,36 @@ namespace API.Controllers
                 list.Add(imageProduct);
             }
             return list;
+        }
+
+        [NonAction]
+        public async Task<string> SaveImage(IFormFile imageFile, int ProductId, int ImageId)
+        {
+            string imageUrl = Path.GetFileNameWithoutExtension(imageFile.FileName).Replace(" ", "-");
+            imageUrl = $"{ProductId}-{ImageId}-" + imageUrl + "-" +DateTime.Now.ToString("ssfff") + Path.GetExtension(imageFile.FileName);
+
+            //thay đổi đường dẫn cho phù hợp
+            var targetDirectory = _configuration["UploadSettings:UploadDirectory"];
+            // Đảm bảo thư mục tồn tại
+            if (!Directory.Exists(targetDirectory))
+            {
+                Directory.CreateDirectory(targetDirectory);
+            }
+
+            // Tìm và xóa hình ảnh cũ
+            var oldImagePattern = $"{ProductId}-{ImageId}-*";
+            var oldImages = Directory.GetFiles(targetDirectory, oldImagePattern);
+            foreach (var oldImage in oldImages)
+            {
+                System.IO.File.Delete(oldImage);
+            }
+
+            var imagePath = Path.Combine(targetDirectory, imageUrl);
+            using (var fileStream = new FileStream(imagePath, FileMode.Create))
+            {
+                await imageFile.CopyToAsync(fileStream);
+            }
+            return $"/images/products/" + imageUrl;
         }
 
     }
