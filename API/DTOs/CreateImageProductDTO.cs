@@ -6,6 +6,7 @@ namespace API.DTOs
     {
         public int ProductId { get; set; }
 
-        public string ImageUrl { get; set; }
+        public IFormFile? ImageFile { get; set; } // để lấy file ảnh về
+
     }
 }

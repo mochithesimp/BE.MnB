@@ -26,8 +26,5 @@ namespace API.DTOs
         public int Stock { get; set; }
 
         public List<CreateImageProductDTO>? ImageProducts { get; set; }
-
-        [Required]
-        public bool IsActive { get; set; }
     }
 }
