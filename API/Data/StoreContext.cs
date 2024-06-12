@@ -23,5 +23,6 @@ namespace API.Data
         public DbSet<Notification> Notifications { get; set; }
         public DbSet<UserBlogView> userBlogViews { get; set; }
         public DbSet<Review> Reviews { get; set; }
+        public DbSet<Chat> Chats { get; set; }
     }
 }
