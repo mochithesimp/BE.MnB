@@ -125,44 +125,38 @@ namespace API.Controllers
 
 
         [HttpPost("Create")]
-        public async Task<ActionResult<CreateProductDTO>> CreateProduct(CreateProductDTO productDto)
+        public async Task<ActionResult<CreateProductDTO>> CreateProduct([FromForm] CreateProductDTO productDto)
         {
-            var imageProducts = toCreateImage(productDto.ImageProducts);
-
-            var product = new Product
+            try
             {
-                ForAgeId = productDto.ForAgeId,
-                CategoryId = productDto.CategoryId,
-                BrandId = productDto.BrandId,
-                Name = productDto.Name,
-                Description = productDto.Description,
-                Price = productDto.Price,
-                Stock = productDto.Stock,
-                IsActive = true,
-                ImageProducts = imageProducts
-            };
+                var imageProducts = await toCreateImage(productDto.ImageProducts);
 
-            _context.Products.Add(product);
-            await _context.SaveChangesAsync();
+                var product = new Product
+                {
+                    ForAgeId = productDto.ForAgeId,
+                    CategoryId = productDto.CategoryId,
+                    BrandId = productDto.BrandId,
+                    Name = productDto.Name,
+                    Description = productDto.Description,
+                    Price = productDto.Price,
+                    Stock = productDto.Stock,
+                    IsActive = true,
+                    ImageProducts = imageProducts
+                };
 
-            var createdProductDto = new ProductDTO
+                _context.Products.Add(product);
+                await _context.SaveChangesAsync();
+
+                return CreatedAtAction(nameof(GetProduct), new { id = product.ProductId }, product); ;
+            }
+            catch (Exception ex)
             {
-                ProductId = product.ProductId,
-                Name = product.Name,
-                Description = product.Description,
-                Price = product.Price,
-                Stock = product.Stock,
-                CategoryId = product.CategoryId,
-                BrandId = product.BrandId,
-                ForAgeId = product.ForAgeId,
-                IsActive = product.IsActive
-            };
-
-            return CreatedAtAction(nameof(GetProduct), new { id = createdProductDto.ProductId }, product);
+                return BadRequest(ex.Message);
+            }
         }
 
         [HttpPut("Update")]
-        public async Task<ActionResult<ProductDTO>> UpdateProduct(int id,[FromForm] ProductDTO productDto)
+        public async Task<ActionResult<ProductDTO>> UpdateProduct(int id, [FromForm] ProductDTO productDto)
         {
             var product = await _context.Products.Include(p => p.ImageProducts).FirstOrDefaultAsync(p => p.ProductId == id);
 
@@ -255,15 +249,18 @@ namespace API.Controllers
             return currentImages;
         }
 
-        public static List<ImageProduct> toCreateImage(List<CreateImageProductDTO>? image)
+        private async Task<List<ImageProduct>> toCreateImage(List<CreateImageProductDTO>? images)
         {
             var list = new List<ImageProduct>();
-            foreach (var imgInList in image)
+            int maxImg = _context.ImageProducts.Count();
+            int count = 1;
+            foreach (var imgInList in images)
             {
                 ImageProduct imageProduct = new ImageProduct();
                 imageProduct.ProductId = imgInList.ProductId;
-                imageProduct.ImageUrl = imgInList.ImageUrl;
+                imageProduct.ImageUrl = await SaveImage(imgInList.ImageFile, imgInList.ProductId, maxImg + count);
                 list.Add(imageProduct);
+                count++;
             }
             return list;
         }
@@ -272,14 +269,14 @@ namespace API.Controllers
         public async Task<string> SaveImage(IFormFile imageFile, int ProductId, int ImageId)
         {
             string imageUrl = Path.GetFileNameWithoutExtension(imageFile.FileName).Replace(" ", "-");
-            imageUrl = $"{ProductId}-{ImageId}-" + imageUrl + "-" +DateTime.Now.ToString("ssfff") + Path.GetExtension(imageFile.FileName);
+            imageUrl = $"{ProductId}-{ImageId}-" + imageUrl + "-" + DateTime.Now.ToString("ssfff") + Path.GetExtension(imageFile.FileName);
 
             //thay đổi đường dẫn cho phù hợp
             var targetDirectory = _configuration["UploadSettings:UploadDirectory"];
             // Đảm bảo thư mục tồn tại
             if (!Directory.Exists(targetDirectory))
             {
-                Directory.CreateDirectory(targetDirectory);
+                throw new DirectoryNotFoundException($"The directory '{targetDirectory}' does not exist.");
             }
 
             // Tìm và xóa hình ảnh cũ
@@ -291,9 +288,17 @@ namespace API.Controllers
             }
 
             var imagePath = Path.Combine(targetDirectory, imageUrl);
-            using (var fileStream = new FileStream(imagePath, FileMode.Create))
+            try
             {
-                await imageFile.CopyToAsync(fileStream);
+                using (var fileStream = new FileStream(imagePath, FileMode.Create))
+                {
+                    await imageFile.CopyToAsync(fileStream);
+                }
+            }
+            catch (Exception ex)
+            {
+                // Handle the exception or log it as needed
+                throw new Exception("An error occurred while saving the image.", ex);
             }
             return $"/images/products/" + imageUrl;
         }
