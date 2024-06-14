@@ -24,5 +24,6 @@ namespace API.Data
         public DbSet<UserBlogView> userBlogViews { get; set; }
         public DbSet<Review> Reviews { get; set; }
         public DbSet<Chat> Chats { get; set; }
+        public DbSet<Voucher> Vouchers { get; set; }
     }
 }
