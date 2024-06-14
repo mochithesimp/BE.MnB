@@ -39,5 +39,7 @@ namespace API.Entities
         public List<Review> Reviews { get; set; }
         public List<OrderDetail> OrderDetails { get; set; }
         public List<Blog> Blogs { get; set; }
+
+        public List<Voucher> Vouchers { get; set; }
     }
 }
