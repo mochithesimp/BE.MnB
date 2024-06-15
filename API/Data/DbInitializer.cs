@@ -2818,6 +2818,71 @@ namespace API.Data
                 context.SaveChanges();
             }
 
+            //insert voucher
+            if (!context.Vouchers.Any())
+            {
+                var vouchers = new List<Voucher>
+                {
+                    new Voucher
+                    {
+                        Name = "Giảm giá đơn 500K",
+                        Code = "500K",
+                        DiscountType = "%",
+                        DiscountValue = 30,
+                        MinimumTotal = 300000,
+                        CreatedDate = DateTime.Now,
+                        ExpDate = DateTime.Now.AddDays(7),
+                        IsActive = true,
+                        ProductId = null,
+                    },
+
+                    new Voucher
+                    {
+                        Name = "Giảm giá đơn 1M",
+                        Code = "1M",
+                        DiscountType = "K",
+                        DiscountValue = 250,
+                        MinimumTotal = 1000000,
+                        CreatedDate = DateTime.Now,
+                        ExpDate = DateTime.Now.AddDays(7),
+                        IsActive = true,
+                        ProductId = null,
+                    },
+
+                    new Voucher
+                    {
+                        Name = "Giảm giá sữa 1",
+                        Code = "MeijiS1",
+                        DiscountType = "%",
+                        DiscountValue = 40,
+                        MinimumTotal = 300000,
+                        CreatedDate = DateTime.Now,
+                        ExpDate = DateTime.Now.AddDays(7),
+                        IsActive = true,
+                        ProductId = 1,
+                    },
+
+                    new Voucher
+                    {
+                        Name = "Giảm giá sữa 2",
+                        Code = "MeijiS2",
+                        DiscountType = "%",
+                        DiscountValue = 45,
+                        MinimumTotal = 300000,
+                        CreatedDate = DateTime.Now,
+                        ExpDate = DateTime.Now.AddDays(7),
+                        IsActive = true,
+                        ProductId = 2,
+                    },
+
+                };
+                foreach (var voucher in vouchers)
+                {
+                    context.Vouchers.Add(voucher);
+                }
+                context.SaveChanges();
+            }
+
             //insert user
             if (!context.Users.Any())
             {
