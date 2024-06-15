@@ -501,9 +501,8 @@ namespace API.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("DiscountValue")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("DiscountValue")
+                        .HasColumnType("int");
 
                     b.Property<DateTime>("ExpDate")
                         .HasColumnType("datetime2");

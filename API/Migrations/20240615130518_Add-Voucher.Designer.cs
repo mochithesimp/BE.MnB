@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace API.Migrations
 {
     [DbContext(typeof(StoreContext))]
-    [Migration("20240614121433_Add-Voucher")]
+    [Migration("20240615130518_Add-Voucher")]
     partial class AddVoucher
     {
         /// <inheritdoc />
@@ -504,9 +504,8 @@ namespace API.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("DiscountValue")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("DiscountValue")
+                        .HasColumnType("int");
 
                     b.Property<DateTime>("ExpDate")
                         .HasColumnType("datetime2");

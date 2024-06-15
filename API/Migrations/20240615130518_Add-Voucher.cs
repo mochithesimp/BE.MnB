@@ -20,7 +20,7 @@ namespace API.Migrations
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Code = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     DiscountType = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    DiscountValue = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    DiscountValue = table.Column<int>(type: "int", nullable: false),
                     MinimumTotal = table.Column<double>(type: "float", nullable: false),
                     CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     ExpDate = table.Column<DateTime>(type: "datetime2", nullable: false),

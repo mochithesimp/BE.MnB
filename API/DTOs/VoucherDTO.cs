@@ -11,7 +11,7 @@ namespace API.DTOs
 
         public string DiscountType { get; set; }
 
-        public string DiscountValue { get; set; }
+        public int DiscountValue { get; set; }
 
         public double MinimumTotal { get; set; }
 

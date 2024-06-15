@@ -19,7 +19,7 @@ namespace API.Entities
         public string DiscountType { get; set; }
 
         [Required]
-        public string DiscountValue { get; set; }
+        public int DiscountValue { get; set; }
 
         [Required]
         public double MinimumTotal { get; set; }
