@@ -22,6 +22,12 @@ namespace API.Controllers
         public async Task<ActionResult<List<Brand>>> GetBrands()
         {
             var rs = await _context.Brands.ToListAsync();
+
+            if (rs.Count == 0)
+            {
+                return NotFound();
+            }
+
             return Ok(rs);
         }
 
@@ -29,7 +35,7 @@ namespace API.Controllers
         public async Task<ActionResult<Brand>> GetBrand(int id)
         {
             var rs = await _context.Brands.FirstOrDefaultAsync(b => b.BrandId == id);
-            if(rs != null) { return Ok(rs); }
+            if (rs != null) { return Ok(rs); }
             return BadRequest();
         }
 
@@ -37,7 +43,12 @@ namespace API.Controllers
         public async Task<ActionResult<Brand>> UpdateBrand(int id, BrandDTO updateBrand)
         {
             var oldBrand = await _context.Brands.FirstOrDefaultAsync(b => b.BrandId == id);
-            if(oldBrand == null) { return BadRequest(); }
+            if (oldBrand == null) { return BadRequest(); }
+
+            if (updateBrand.Name == null || updateBrand.ImageBrandUrl == null)
+            {
+                return BadRequest();
+            }
 
             oldBrand.Name = updateBrand.Name;
             oldBrand.ImageBrandUrl = updateBrand.ImageBrandUrl;
@@ -51,6 +62,12 @@ namespace API.Controllers
         [HttpPost("Create")]
         public async Task<ActionResult<Brand>> CreateBrand(BrandDTO newBrand)
         {
+
+            if (newBrand.Name == null || newBrand.ImageBrandUrl == null)
+            {
+                return BadRequest();
+            }
+
             var brand = new Brand
             {
                 Name = newBrand.Name,

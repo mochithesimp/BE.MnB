@@ -47,6 +47,11 @@ namespace API.Controllers
                     return BadRequest();
                 }
 
+                if (voucherDto.Name == null || voucherDto.Code == null || voucherDto.DiscountType == null || voucherDto.DiscountValue == 0) {
+
+                    return BadRequest();
+                }
+
                 var voucher = new Voucher
                 {
                     Name = voucherDto.Name,
@@ -67,7 +72,7 @@ namespace API.Controllers
             }
             catch (Exception ex)
             {
-                return StatusCode(500, "Failed to create voucher. " + ex.InnerException?.Message);
+                return StatusCode(400, "Failed to create voucher. " + ex.InnerException?.Message);
             }
         }
 
@@ -83,6 +88,11 @@ namespace API.Controllers
                     return NotFound("Voucher not found");
                 }
 
+                if (voucher.IsActive == false) 
+                {
+                    return BadRequest("This Voucher is already InActive");
+                }
+
                 voucher.IsActive = false;
                 await _context.SaveChangesAsync();
 
@@ -93,55 +103,6 @@ namespace API.Controllers
                 return StatusCode(500, "Failed to deactivate voucher. " + ex.InnerException?.Message);
             }
         }
-
-
-
-
-
-        //[HttpPut("UseVoucher")]
-        //public async Task<IActionResult> UseVoucher(object voucherIds)
-        //{
-        //    try
-        //    {
-        //        List<int> voucherIdList = new List<int>();
-
-        //        if (voucherIds is int singleVoucherId)
-        //        {
-        //            voucherIdList.Add(singleVoucherId);
-        //        }
-        //        else if (voucherIds is List<int> multipleVoucherIds)
-        //        {
-        //            voucherIdList = multipleVoucherIds;
-        //        }
-        //        else
-        //        {
-        //            return BadRequest("Invalid voucher ID(s) format");
-        //        }
-
-        //        var vouchers = await _context.Vouchers.Where(v => voucherIdList.Contains(v.VoucherId)).ToListAsync();
-
-        //        if (vouchers.Count != voucherIdList.Count)
-        //        {
-        //            return BadRequest("One or more vouchers not found");
-        //        }
-
-        //        foreach (var voucher in vouchers)
-        //        {
-        //            voucher.IsActive = false;
-        //        }
-
-        //        await _context.SaveChangesAsync();
-
-        //        return Ok(new { deactivatedVoucherIds = voucherIdList });
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        return StatusCode(500, "Failed to deactivate vouchers. " + ex.InnerException?.Message);
-        //    }
-        //}
-
-
-
 
         public static VoucherDTO toVoucherDTO(Voucher? voucher)
         {

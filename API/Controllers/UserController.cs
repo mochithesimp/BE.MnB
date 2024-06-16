@@ -44,6 +44,11 @@ namespace API.Controllers
                 return NotFound();
             }
 
+            if (userDto.Name == null || userDto.Email == null || userDto.PhoneNumber == null || userDto.Address == null)
+            {
+                return BadRequest();
+            }
+
             user.Name = userDto.Name;
             user.Email = userDto.Email;
             user.PhoneNumber = userDto.PhoneNumber;
@@ -214,6 +219,11 @@ namespace API.Controllers
                     return NotFound("Order not found");
                 }
 
+                if(order.OrderStatus == "Completed")
+                {
+                    return BadRequest("This Order has already Completed");
+                }
+
                 order.OrderStatus = "Completed";
                 await _context.SaveChangesAsync();
 
@@ -237,6 +247,11 @@ namespace API.Controllers
                 if (order == null)
                 {
                     return NotFound("Order not found");
+                }
+
+                if (order.OrderStatus == "Submited")
+                {
+                    return BadRequest("Order is already Submited, Cannot Cancel");
                 }
 
                 if (order.OrderStatus == "Canceled")

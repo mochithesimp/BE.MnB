@@ -50,6 +50,10 @@ namespace API.Controllers
             var reviews = await _context.Reviews
                 .Where(r => r.UserId == userId && r.OrderDetailId == orderId)
                 .ToListAsync();
+            if(reviews.Count == 0)
+            {
+                return NotFound();
+            }
             return Ok(reviews);
         }
 
@@ -78,6 +82,10 @@ namespace API.Controllers
 
                     var order = await _context.Orders.FindAsync(orderDetail.OrderId);
                     if (order == null) return BadRequest("Order not found");
+                    if(order.OrderStatus != "Completed")
+                    {
+                        return BadRequest("This Order isn't completed yet! Cannot rate!");
+                    }
 
                     var staffUser = await _context.Users.Where(u => u.RoleId == 2).ToListAsync();
 
@@ -167,7 +175,7 @@ namespace API.Controllers
 
 
 
-        private class ProductRatingDTO
+        public class ProductRatingDTO
         {
             public List<ReviewDTO> ReviewDTOs { get; set; }
             public int ReviewCount { get; set; }

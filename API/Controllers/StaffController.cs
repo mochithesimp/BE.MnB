@@ -147,6 +147,11 @@ namespace API.Controllers
                     return NotFound("Order not found");
                 }
 
+                if(order.OrderStatus == "Submited")
+                {
+                    return BadRequest("Order has already Submited");
+                }
+
                 if (order.OrderStatus == "Pre-Order")
                 {
                     var preOrder = await _context.Orders
@@ -288,6 +293,11 @@ namespace API.Controllers
                 if (order == null)
                 {
                     return NotFound("Order not found");
+                }
+
+                if(order.OrderStatus == "Canceled")
+                {
+                    return BadRequest("Order has already Canceled");
                 }
 
                 order.OrderStatus = "Canceled";
