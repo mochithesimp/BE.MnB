@@ -193,7 +193,8 @@ namespace API.Controllers
         [HttpGet("getTotalProfit")]
         public async Task<ActionResult<decimal>> getTotalProfit()
         {
-            var totalOrderCount = await _context.Orders.SumAsync(o => o.Total);
+            //var totalOrderCount = await _context.Orders.SumAsync(o => o.Total);
+            var totalOrderCount = await _context.Orders.Where(o => o.OrderStatus != "Canceled").SumAsync(o => o.Total);
             return Ok(totalOrderCount);
         }
 

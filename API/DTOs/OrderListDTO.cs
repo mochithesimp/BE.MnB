@@ -8,6 +8,7 @@
         public string Address { get; set; }
         public string PaymentMethod { get; set; }
         public int ShippingMethodId { get; set; }
+        public double Total { get; set; }
         public string OrderStatus { get; set; } 
         public List<OrderDetailDto> OrderDetails { get; set; }
     }
