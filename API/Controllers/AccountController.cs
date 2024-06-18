@@ -72,7 +72,7 @@ namespace API.Controllers
                         {
                             new Claim(ClaimTypes.NameIdentifier, user.UserId.ToString()),
                         },
-                        expires: DateTime.Now.AddDays(7), // Set a longer expiry time for the refresh token
+                        expires: DateTime.Now.AddSeconds(10), // Set a longer expiry time for the refresh token
                         signingCredentials: creds
                     );
 
@@ -120,7 +120,7 @@ namespace API.Controllers
                 var jwtToken = validatedToken as JwtSecurityToken;
                 if (jwtToken == null || !jwtToken.Header.Alg.Equals(SecurityAlgorithms.HmacSha256, StringComparison.InvariantCultureIgnoreCase))
                 {
-                    return Unauthorized(new ResponseDTO
+                    return BadRequest(new ResponseDTO
                     {
                         IsSuccess = false,
                         Message = "Invalid Token"
@@ -156,7 +156,7 @@ namespace API.Controllers
                 var refreshTokenUserId = principalRefreshToken.FindFirst(ClaimTypes.NameIdentifier)?.Value;
                 if (accessTokenUserId != refreshTokenUserId)
                 {
-                    return Unauthorized(new ResponseDTO
+                    return BadRequest(new ResponseDTO
                     {
                         IsSuccess = false,
                         Message = "token doesn't match"
@@ -170,7 +170,7 @@ namespace API.Controllers
                 var user = await _context.Users.FindAsync(int.Parse(accessTokenUserId));
                 if (user == null)
                 {
-                    return Unauthorized("not find user");
+                    return BadRequest("not find user");
                 }
 
                 // Generate a new access token with the user claims
@@ -210,7 +210,7 @@ namespace API.Controllers
             }
             catch (Exception)
             {
-                return Unauthorized(new ResponseDTO
+                return BadRequest(new ResponseDTO
                 {
                     IsSuccess = false,
                     Message = "wrong format token"
