@@ -10,6 +10,7 @@
         public int ShippingMethodId { get; set; }
         public double Total { get; set; }
         public string OrderStatus { get; set; } 
+        public int? VoucherId { get; set; }
         public List<OrderDetailDto> OrderDetails { get; set; }
     }
 }

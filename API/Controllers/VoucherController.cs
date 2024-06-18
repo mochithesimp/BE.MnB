@@ -108,6 +108,7 @@ namespace API.Controllers
         {
             VoucherDTO voucherDTO = new VoucherDTO();
 
+            voucherDTO.VoucherId = voucher.VoucherId;
             voucherDTO.Name = voucher.Name;
             voucherDTO.Code = voucher.Code;
             voucherDTO.DiscountType = voucher.DiscountType;

@@ -82,6 +82,7 @@ namespace API.Controllers
                     Address = o.Address,
                     PaymentMethod = o.PaymentMethod,
                     ShippingMethodId = o.ShippingMethodId,
+                    VoucherId = o.VoucherId,
                     Products = o.OrderDetails.Select(od => new OrderDetailDto
                     {
                     }).ToList()
@@ -148,6 +149,7 @@ namespace API.Controllers
                     ShippingMethodId = o.ShippingMethodId,
                     Total = o.Total,
                     OrderStatus = o.OrderStatus, // Map OrderStatus property
+                    VoucherId = o.VoucherId,
                     OrderDetails = o.OrderDetails.Select(od => new OrderDetailDto
                     {
                         ProductId = od.ProductId,
@@ -190,6 +192,7 @@ namespace API.Controllers
                     PaymentMethod = o.PaymentMethod,
                     ShippingMethodId = o.ShippingMethodId,
                     OrderStatus = o.OrderStatus,
+                    VoucherId = o.VoucherId,
                     OrderDetails = o.OrderDetails.Select(od => new OrderDetailDto
                     {
                         ProductId = od.ProductId,

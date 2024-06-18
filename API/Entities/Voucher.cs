@@ -36,6 +36,8 @@ namespace API.Entities
         [ForeignKey("ProductId")]
         public int? ProductId { get; set; }
 
+        public List<Order> Orders { get; set; }
+
         public Product Product { get; set; }
     }
 }
