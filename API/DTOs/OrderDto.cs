@@ -26,6 +26,8 @@ namespace API.DTOs
         public string? Address { get; set; }
         public string? PaymentMethod { get; set; }
         public int ShippingMethodId { get; set; }
+
+        public int? VoucherId { get; set; }
         public List<OrderDetailDto> Products { get; set; }
     }
 }

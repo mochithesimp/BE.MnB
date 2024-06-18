@@ -34,6 +34,7 @@ public class OrderController : ControllerBase
                 PaymentMethod = orderDto.PaymentMethod, // taken from web later
                 ShippingMethodId = orderDto.ShippingMethodId,
                 OrderStatus = "Pending",
+                VoucherId = orderDto.VoucherId,
                 Total = orderDto.Products.Sum(p => p.Total)
             };
 

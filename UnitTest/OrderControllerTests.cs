@@ -156,6 +156,7 @@ namespace UnitTest
                 Address = "123 Street",
                 PaymentMethod = "Credit Card",
                 ShippingMethodId = 1,
+                VoucherId = 1,
                 Products = new List<OrderDetailDto>
                 {
                     new OrderDetailDto
@@ -218,6 +219,7 @@ namespace UnitTest
                 Address = "123 Street",
                 PaymentMethod = "Credit Card",
                 ShippingMethodId = 1,
+                VoucherId = 1,
                 Products = new List<OrderDetailDto>
                 {
                     new OrderDetailDto

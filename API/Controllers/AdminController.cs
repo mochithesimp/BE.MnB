@@ -227,6 +227,7 @@ namespace API.Controllers
             orderDTO.Address = order.Address;
             orderDTO.PaymentMethod = order.PaymentMethod;
             orderDTO.ShippingMethodId = order.ShippingMethodId;
+            orderDTO.VoucherId = order.VoucherId;
 
             return orderDTO;
         }

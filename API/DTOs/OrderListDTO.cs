@@ -9,6 +9,7 @@
         public string PaymentMethod { get; set; }
         public int ShippingMethodId { get; set; }
         public string OrderStatus { get; set; } 
+        public int? VoucherId { get; set; }
         public List<OrderDetailDto> OrderDetails { get; set; }
     }
 }

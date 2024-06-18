@@ -5,6 +5,7 @@ namespace API.DTOs
 {
     public class VoucherDTO
     {
+        public int VoucherId { get; set; }
         public string Name { get; set; }
 
         public string Code { get; set; }

@@ -29,6 +29,10 @@ namespace API.Entities
         [Required]
         public string OrderStatus { get; set; }
 
+        [ForeignKey("VoucherId")]
+        public int? VoucherId { get; set; }
+
+        public Voucher? Voucher { get; set; }
         public User? User { get; set; }
         public ShippingMethod ShippingMethod { get; set; }
         public List<OrderDetail> OrderDetails { get; set; }
