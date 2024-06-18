@@ -147,6 +147,7 @@ namespace API.Controllers
                     Address = o.Address,
                     PaymentMethod = o.PaymentMethod,
                     ShippingMethodId = o.ShippingMethodId,
+                    Total = o.Total,
                     OrderStatus = o.OrderStatus, // Map OrderStatus property
                     VoucherId = o.VoucherId,
                     OrderDetails = o.OrderDetails.Select(od => new OrderDetailDto
