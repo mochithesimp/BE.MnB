@@ -82,7 +82,7 @@ namespace API.Controllers
 
                     TokenDTO tokenDTO = new TokenDTO()
                     {
-                        token = accessTokenString,
+                        Token = accessTokenString,
                         RefreshToken = refreshTokenString
                     };
 
@@ -113,7 +113,7 @@ namespace API.Controllers
             try
             {
                 //check accessToken valid format and refresh token
-                var principal = tokenHandler.ValidateToken(TokenDTO.token, tokenValidateParam, out SecurityToken validatedToken);
+                var principal = tokenHandler.ValidateToken(TokenDTO.Token, tokenValidateParam, out SecurityToken validatedToken);
                 var principalRefreshToken = tokenHandler.ValidateToken(TokenDTO.RefreshToken, tokenValidateParam, out SecurityToken validatedRefreshToken);
 
                 //check accessToken alg
@@ -128,20 +128,20 @@ namespace API.Controllers
                 }
 
                 //check accessToken expire?
-                var utcExpireDate = long.Parse(principal.Claims.FirstOrDefault(x => x.Type == JwtRegisteredClaimNames.Exp).Value);
-                var expireDate = ConvertUnixTimeToDateTime(utcExpireDate);
-                if (expireDate > DateTime.UtcNow)
-                {
-                    return Unauthorized(new ResponseDTO
-                    {
-                        IsSuccess = false,
-                        Message = "Access token has not yet expired"
-                    });
-                }
+                //var utcExpireDate = long.Parse(principal.Claims.FirstOrDefault(x => x.Type == JwtRegisteredClaimNames.Exp).Value);
+                //var expireDate = ConvertUnixTimeToDateTime(utcExpireDate);
+                //if (expireDate > DateTime.UtcNow)
+                //{
+                //    return Unauthorized(new ResponseDTO
+                //    {
+                //        IsSuccess = false,
+                //        Message = "Access token has not yet expired"
+                //    });
+                //}
 
                 //check refreshToken expired?
-                utcExpireDate = long.Parse(principalRefreshToken.Claims.FirstOrDefault(x => x.Type == JwtRegisteredClaimNames.Exp).Value);
-                expireDate = ConvertUnixTimeToDateTime(utcExpireDate);
+                var utcExpireDate = long.Parse(principalRefreshToken.Claims.FirstOrDefault(x => x.Type == JwtRegisteredClaimNames.Exp).Value);
+                var expireDate = ConvertUnixTimeToDateTime(utcExpireDate);
                 if (expireDate < DateTime.UtcNow)
                 {
                     return Unauthorized(new ResponseDTO
@@ -201,7 +201,7 @@ namespace API.Controllers
                     Message = "refresh token Successfully",
                     data = new TokenDTO
                     {
-                        token = accessTokenString,
+                        Token = accessTokenString,
                         RefreshToken = TokenDTO.RefreshToken
                     }
                 };
