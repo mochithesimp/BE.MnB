@@ -72,7 +72,7 @@ namespace API.Controllers
                         {
                             new Claim(ClaimTypes.NameIdentifier, user.UserId.ToString()),
                         },
-                        expires: DateTime.Now.AddSeconds(10), // Set a longer expiry time for the refresh token
+                        expires: DateTime.Now.AddDays(7), // Set a longer expiry time for the refresh token
                         signingCredentials: creds
                     );
 
