@@ -1,5 +1,6 @@
 ﻿using API.Data;
 using API.DTOs;
+using API.DTOs.DashBoardDTOs;
 using API.Entities;
 using API.Extensions;
 using Microsoft.AspNetCore.Http;
@@ -60,15 +61,6 @@ namespace API.Controllers
             return NotFound();
         }
 
-        [HttpGet("GetOrders")]
-        public async Task<ActionResult<List<Order>>> GetOrders()
-        {
-            var list = await _context.Orders.ToListAsync();
-
-            if(list.Count > 0) return Ok(list);
-            return NotFound();
-        }
-
         [HttpDelete("Delete")]
         public async Task<ActionResult> DeleteUser(int id)
         {
@@ -120,54 +112,6 @@ namespace API.Controllers
             }
         }
 
-        [HttpGet("getBestSellerProducts")]
-        public async Task<ActionResult<List<ProductDTO>>> GetBestSellerProducts()
-        {
-            var orderDetails = await _context.orderDetails.ToListAsync();
-
-            var productCounts = orderDetails
-                .GroupBy(od => od.ProductId)
-                .Select(g => new
-                {
-                    ProductId = g.Key,
-                    Count = g.Count()
-                })
-                .OrderByDescending(pc => pc.Count)
-                .ToList();
-
-            var bestSellerProductIds = productCounts
-                .Take(10)
-                .Select(pc => pc.ProductId)
-                .ToList();
-
-            var bestSellerProducts = await _context.Products
-                .Where(p => bestSellerProductIds.Contains(p.ProductId))
-                .ToListAsync();
-
-            if (bestSellerProducts.Count > 0)
-            {
-                var bestSellerProductDTOs = new List<ProductDTO>();
-
-                foreach (var product in bestSellerProducts)
-                {
-                    var imageProducts = await _context.ImageProducts
-                        .Where(ip => ip.ProductId == product.ProductId)
-                        .ToListAsync();
-
-                    var imageProductDTOs = imageProducts.Select(ip => ProductsController.toImageDTO(ip)).ToList();
-
-                    var productDTO = ProductsController.toProductDTO(product, imageProductDTOs);
-
-                    bestSellerProductDTOs.Add(productDTO);
-                }
-
-                return Ok(bestSellerProductDTOs);
-            }
-            else
-            {
-                return NotFound();
-            }
-        }
 
         [HttpGet("getTotalUser")]
         public async Task<ActionResult<int>> GetTotalUser()
@@ -193,7 +137,6 @@ namespace API.Controllers
         [HttpGet("getTotalProfit")]
         public async Task<ActionResult<decimal>> getTotalProfit()
         {
-            //var totalOrderCount = await _context.Orders.SumAsync(o => o.Total);
             var totalOrderCount = await _context.Orders.Where(o => o.OrderStatus != "Canceled").SumAsync(o => o.Total);
             return Ok(totalOrderCount);
         }
@@ -216,6 +159,175 @@ namespace API.Controllers
                 .ToListAsync();
 
             return Ok(salesByDate);
+        }
+
+        [HttpGet("GetOrders")]
+        public async Task<ActionResult> GetOrders()
+        {
+            var list = await _context.Orders
+                .Where(order => order.OrderStatus == "Completed")
+                .Select(order => new
+                {
+                    order.Total,
+                    UserName = order.User.Name,
+                    order.OrderDate
+                })
+                .ToListAsync();
+
+            if (list.Count > 0) return Ok(list);
+            return NotFound();
+        }
+        public class ProductWithOrderCountDTO
+        {
+            public ProductDTO Product { get; set; }
+            public int OrderCount { get; set; }
+        }
+
+        [HttpGet("getBestSellerProducts")]
+        public async Task<ActionResult<List<ProductWithOrderCountDTO>>> GetBestSellerProducts()
+        {
+            var orderDetails = await _context.orderDetails.ToListAsync();
+
+            var productCounts = orderDetails
+                .GroupBy(od => od.ProductId)
+                .Select(g => new
+                {
+                    ProductId = g.Key,
+                    Count = g.Count()
+                })
+                .OrderByDescending(pc => pc.Count)
+                .ToList();
+
+            var bestSellerProductIds = productCounts
+                .Take(5)
+                .Select(pc => pc.ProductId)
+                .ToList();
+
+            var bestSellerProducts = await _context.Products
+                .Where(p => bestSellerProductIds.Contains(p.ProductId))
+                .ToListAsync();
+
+            if (bestSellerProducts.Count > 0)
+            {
+                var bestSellerProductDTOs = new List<ProductWithOrderCountDTO>();
+
+                foreach (var product in bestSellerProducts)
+                {
+                    var imageProducts = await _context.ImageProducts
+                        .Where(ip => ip.ProductId == product.ProductId)
+                        .ToListAsync();
+
+                    var imageProductDTOs = imageProducts.Select(ip => ProductsController.toImageDTO(ip)).ToList();
+
+                    var productDTO = ProductsController.toProductDTO(product, imageProductDTOs);
+
+                    var orderCount = productCounts.First(pc => pc.ProductId == product.ProductId).Count;
+
+                    var productWithOrderCountDTO = new ProductWithOrderCountDTO
+                    {
+                        Product = productDTO,
+                        OrderCount = orderCount
+                    };
+
+                    bestSellerProductDTOs.Add(productWithOrderCountDTO);
+                }
+
+                return Ok(bestSellerProductDTOs);
+            }
+            else
+            {
+                return NotFound();
+            }
+        }
+
+        [HttpGet("GetTopBrandsByOrderCount")]
+        public async Task<ActionResult<List<BrandOrderCountDTO>>> GetTopBrandsByOrderCount()
+        {
+            var orderDetails = await _context.orderDetails
+                .Include(od => od.Order)
+                .Include(od => od.Product)
+                .ThenInclude(p => p.Brand)
+                .ToListAsync();
+
+            var brandOrderCounts = orderDetails
+                .GroupBy(od => new { od.Product.BrandId, od.Order.PaymentMethod })
+                .Select(g => new
+                {
+                    BrandId = g.Key.BrandId,
+                    PaymentMethod = g.Key.PaymentMethod,
+                    Count = g.Count(),
+                    BrandName = g.First().Product.Brand.Name 
+                })
+                .GroupBy(g => g.BrandId)
+                .Select(g => new BrandOrderCountDTO
+                {
+                    BrandId = g.Key,
+                    BrandName = g.First().BrandName,
+                    PaypalOrderCount = g.Where(x => x.PaymentMethod == "By Paypal").Sum(x => x.Count),
+                    CashOrderCount = g.Where(x => x.PaymentMethod == "By Cash").Sum(x => x.Count)
+                })
+                .OrderByDescending(b => b.PaypalOrderCount + b.CashOrderCount)
+                .Take(6)
+                .ToList();
+
+            if (brandOrderCounts.Count > 0)
+            {
+                return Ok(brandOrderCounts);
+            }
+            else
+            {
+                return NotFound();
+            }
+        }
+
+        [HttpGet("GetTopUsersByOrderCount")]
+        public async Task<ActionResult<TopUsersSummaryDTO>> GetTopUsersByOrderCount()
+        {
+            var sevenDaysAgo = DateTime.UtcNow.AddDays(-7);
+
+            var orders = await _context.Orders
+                .Include(o => o.User)
+                .Where(o => o.OrderDate >= sevenDaysAgo)
+                .ToListAsync();
+
+            var userOrderGroups = orders
+                .GroupBy(o => o.UserId)
+                .Select(g => new UserOrderSummaryDTO
+                {
+                    UserId = g.Key,
+                    UserName = g.First().User.Name,
+                    OrderCount = g.Count(),
+                    TotalOrderAmount = g.Sum(o => o.Total),
+                    DailyOrderSummaries = g.GroupBy(o => o.OrderDate.Date)
+                                           .Select(dg => new DailyOrderSummaryDTO
+                                           {
+                                               OrderDate = dg.Key,
+                                               OrderCount = dg.Count(),
+                                               TotalOrderAmount = dg.Sum(o => o.Total)
+                                           })
+                                           .OrderBy(d => d.OrderDate)
+                                           .ToList()
+                })
+                .OrderByDescending(u => u.OrderCount)
+                .Take(3)
+                .ToList();
+
+            var totalSumOfAllOrders = userOrderGroups.Sum(u => u.TotalOrderAmount);
+
+            var result = new TopUsersSummaryDTO
+            {
+                TopUsers = userOrderGroups,
+                TotalSumOfAllOrders = totalSumOfAllOrders
+            };
+
+            if (result.TopUsers.Count > 0)
+            {
+                return Ok(result);
+            }
+            else
+            {
+                return NotFound();
+            }
         }
 
 
