@@ -12,10 +12,12 @@ namespace API.Controllers
     public class BlogController : ControllerBase
     {
         private readonly StoreContext _context;
+        private readonly IConfiguration _configuration;
 
-        public BlogController(StoreContext context)
+        public BlogController(StoreContext context, IConfiguration configuration)
         {
             _context = context;
+            _configuration = configuration;
         }
 
         [HttpGet("getAllBlogs")]
@@ -50,48 +52,46 @@ namespace API.Controllers
         }
 
         [HttpPost("Create")]
-        public async Task<ActionResult<BlogDTO>> GetBlogs(BlogDTO blogDTO)
+        public async Task<ActionResult<BlogDTO>> CreateBlog([FromForm] BlogDTO blogDTO)
         {
             var blog = new Blog
             {
-                BlogId = blogDTO.BlogId,
                 Title = blogDTO.Title,
                 Content = blogDTO.Content,
-                ImageUrl = blogDTO.ImageUrl,
+                ImageUrl = await SaveImage(blogDTO.ImageFile, blogDTO.BlogId),
                 Author = blogDTO.Author,
                 ProductId = blogDTO.ProductId,
-                UploadDate = blogDTO.UploadDate,
-                UpdateDate = blogDTO.UpdateDate,
-                View = blogDTO.View,
-                Like = blogDTO.Like,
+                UploadDate = (DateTime)blogDTO.UploadDate,
+                UpdateDate = (DateTime)blogDTO.UploadDate,
+                View = 0,
+                Like = 0,
             };
 
             _context.Blogs.Add(blog);
             await _context.SaveChangesAsync();
 
-            return Ok(blog);
+            return Ok(blogDTO);
         }
 
         [HttpPut("Update")]
-        public async Task<ActionResult<BlogDTO>> UpdateBlog(int blogId, BlogDTO blogDTO)
+        public async Task<ActionResult<BlogDTO>> UpdateBlog(int id,[FromForm] BlogDTO blogDTO)
         {
-            var blog = await _context.Blogs.FindAsync(blogId);
+            var blog = await _context.Blogs.FindAsync(id);
 
             if (blog == null)
             {
                 return NotFound();
             }
 
-            blog.BlogId = blogId;
             blog.Title = blogDTO.Title;
             blog.Content = blogDTO.Content;
-            blog.ImageUrl = blogDTO.ImageUrl;
             blog.Author = blogDTO.Author;
             blog.ProductId = blogDTO.ProductId;
-            blog.UploadDate = blogDTO.UploadDate;
-            blog.UpdateDate = blogDTO.UpdateDate;
-            blog.View = blogDTO.View;
-            blog.Like = blogDTO.Like;
+            blog.UpdateDate = (DateTime)blogDTO.UpdateDate;
+            if(blogDTO.ImageFile != null)
+            {
+            blog.ImageUrl = await SaveImage(blogDTO.ImageFile, blogDTO.BlogId);
+            }
 
             await _context.SaveChangesAsync();
 
@@ -230,10 +230,6 @@ namespace API.Controllers
             return Ok();
         }
 
-
-
-
-
         public static BlogDTO toBlogDTO(Blog? blog) 
         { 
             BlogDTO blogDTO = new BlogDTO();
@@ -249,6 +245,46 @@ namespace API.Controllers
             blogDTO.Like = blog.Like;
 
             return blogDTO;
+        }
+
+        [NonAction]
+        public async Task<string> SaveImage(IFormFile imageFile, int blogId)
+        {
+            string imageUrl = Path.GetFileNameWithoutExtension(imageFile.FileName).Replace(" ", "-");
+            imageUrl = $"blog{blogId}-" + imageUrl + Path.GetExtension(imageFile.FileName);
+
+            //thay đổi đường dẫn cho phù hợp
+            var rootDirectory = _configuration["UploadSettings:UploadDirectory"];
+            var targetDirectory = Path.Combine(rootDirectory, "blogs");
+
+            // Đảm bảo thư mục tồn tại
+            if (!Directory.Exists(targetDirectory))
+            {
+                throw new DirectoryNotFoundException($"The directory '{targetDirectory}' does not exist.");
+            }
+
+            // Tìm và xóa hình ảnh cũ
+            var oldImagePattern = $"blog{blogId}-*";
+            var oldImages = Directory.GetFiles(targetDirectory, oldImagePattern);
+            foreach (var oldImage in oldImages)
+            {
+                System.IO.File.Delete(oldImage);
+            }
+
+            var imagePath = Path.Combine(targetDirectory, imageUrl);
+            try
+            {
+                using (var fileStream = new FileStream(imagePath, FileMode.Create))
+                {
+                    await imageFile.CopyToAsync(fileStream);
+                }
+            }
+            catch (Exception ex)
+            {
+                // Handle the exception or log it as needed
+                throw new Exception("An error occurred while saving the image.", ex);
+            }
+            return $"/images/blogs/" + imageUrl;
         }
     }
 }

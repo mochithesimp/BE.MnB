@@ -272,7 +272,9 @@ namespace API.Controllers
             imageUrl = $"{ProductId}-{ImageId}-" + imageUrl + "-" + DateTime.Now.ToString("ssfff") + Path.GetExtension(imageFile.FileName);
 
             //thay đổi đường dẫn cho phù hợp
-            var targetDirectory = _configuration["UploadSettings:UploadDirectory"];
+            var rootDirectory = _configuration["UploadSettings:UploadDirectory"];
+            var targetDirectory = Path.Combine(rootDirectory, "products");
+
             // Đảm bảo thư mục tồn tại
             if (!Directory.Exists(targetDirectory))
             {
