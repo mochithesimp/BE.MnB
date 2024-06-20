@@ -10,18 +10,20 @@ namespace API.DTOs
 
         public string Content { get; set; }
 
-        public string ImageUrl { get; set; }
+        public string? ImageUrl { get; set; }
+
+        public IFormFile? ImageFile { get; set; }
 
         public string Author { get; set; }
 
         public int ProductId { get; set; }
 
-        public DateTime UploadDate { get; set; }
+        public DateTime? UploadDate { get; set; }
 
-        public DateTime UpdateDate { get; set; }
+        public DateTime? UpdateDate { get; set; }
 
-        public int View { get; set; }
+        public int? View { get; set; }
 
-        public int Like { get; set; }
+        public int? Like { get; set; }
     }
 }
