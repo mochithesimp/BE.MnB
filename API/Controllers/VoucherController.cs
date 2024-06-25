@@ -114,35 +114,7 @@ namespace API.Controllers
 
                 if (voucher.IsActive == false)
                 {
-                    return BadRequest("This Voucher is already InActive");
-                }
-
-                voucher.IsActive = false;
-                await _context.SaveChangesAsync();
-
-                return Ok(new { voucherId = voucher.VoucherId });
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, "Failed to deactivate voucher. " + ex.InnerException?.Message);
-            }
-        }
-
-        [HttpPut("UseVoucher")]
-        public async Task<IActionResult> UseVoucher(int voucherId)
-        {
-            try
-            {
-                var voucher = await _context.Vouchers.FindAsync(voucherId);
-
-                if (voucher == null)
-                {
-                    return NotFound("Voucher not found");
-                }
-
-                if (voucher.IsActive == false) 
-                {
-                    return BadRequest("This Voucher is already InActive");
+                    return BadRequest("This Voucher is already deleted");
                 }
 
                 voucher.IsActive = false;
