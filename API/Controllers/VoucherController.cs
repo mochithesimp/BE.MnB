@@ -76,8 +76,32 @@ namespace API.Controllers
             }
         }
 
-        [HttpPut("UseVoucher")]
-        public async Task<IActionResult> UseVoucher(int voucherId)
+        [HttpPut("UpdateVoucher")]
+        public async Task<IActionResult> updateVoucher(int id, VoucherDTO voucherDTO)
+        {
+            var voucher = _context.Vouchers.FirstOrDefault(v => v.VoucherId == id);
+            if (voucher == null)
+            {
+                return NotFound("Voucher not found");
+            }
+
+            voucher.Name = voucherDTO.Name;
+            voucher.Code = voucherDTO.Code;
+            voucher.DiscountType = voucherDTO.DiscountType;
+            voucher.DiscountValue = voucherDTO.DiscountValue;
+            voucher.MinimumTotal = voucherDTO.MinimumTotal;
+            voucher.CreatedDate = voucherDTO.CreatedDate;
+            voucher.ExpDate = voucherDTO.ExpDate;
+            voucher.IsActive = voucherDTO.IsActive;
+
+            await _context.SaveChangesAsync();
+
+            voucherDTO.VoucherId = id;
+            return Ok(voucherDTO);
+        }
+
+        [HttpDelete("DeleteVoucher")]
+        public async Task<IActionResult> DeleteVoucher(int voucherId)
         {
             try
             {
@@ -88,9 +112,9 @@ namespace API.Controllers
                     return NotFound("Voucher not found");
                 }
 
-                if (voucher.IsActive == false) 
+                if (voucher.IsActive == false)
                 {
-                    return BadRequest("This Voucher is already InActive");
+                    return BadRequest("This Voucher is already deleted");
                 }
 
                 voucher.IsActive = false;
