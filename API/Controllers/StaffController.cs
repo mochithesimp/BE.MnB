@@ -140,7 +140,9 @@ namespace API.Controllers
         {
             try
             {
-                var order = await _context.Orders.FirstOrDefaultAsync(o => o.OrderId == orderId && o.OrderStatus != "Canceled");
+                var order = await _context.Orders
+                    .Include(o => o.OrderDetails)
+                    .FirstOrDefaultAsync(o => o.OrderId == orderId && o.OrderStatus != "Canceled");
 
                 if (order == null)
                 {
@@ -154,16 +156,8 @@ namespace API.Controllers
 
                 if (order.OrderStatus == "Pre-Order")
                 {
-                    var preOrder = await _context.Orders
-                        .Include(o => o.OrderDetails)
-                        .FirstOrDefaultAsync(o => o.OrderId == orderId && o.OrderStatus == "Pre-Order");
 
-                    if (preOrder == null)
-                    {
-                        return NotFound("PreOrder not found");
-                    }
-
-                    foreach (var orderDetail in preOrder.OrderDetails)
+                    foreach (var orderDetail in order.OrderDetails)
                     {
                         var product = await _context.Products.FindAsync(orderDetail.ProductId);
 
@@ -180,18 +174,11 @@ namespace API.Controllers
                         product.Stock -= orderDetail.Quantity;
                     }
 
-                    preOrder.OrderStatus = "Submitted";
+                    order.OrderStatus = "Submitted";
                     await _context.SaveChangesAsync();
 
-                    var notificationPre = new Notification
-                    {
-                        UserId = preOrder.UserId,
-                        Header = "Pre-Order Submitted",
-                        Content = $"Your recent Pre-Order with ID {preOrder.OrderId} has been submitted!",
-                        IsRead = false,
-                        IsRemoved = false,
-                        CreatedDate = DateTime.Now
-                    };
+                    var notificationPre = NotificationExtensions.createNotification(order.UserId, "Pre-Order Submitted",
+                        $"Your recent Pre-Order with ID {order.OrderId} has been submitted!");
 
                     _context.Notifications.Add(notificationPre);
                     await _context.SaveChangesAsync();
@@ -203,15 +190,8 @@ namespace API.Controllers
                     order.OrderStatus = "Submitted";
                     await _context.SaveChangesAsync();
 
-                    var notification = new Notification
-                    {
-                        UserId = order.UserId,
-                        Header = "Order Submitted",
-                        Content = $"Your recent order with ID {order.OrderId} has been submitted!",
-                        IsRead = false,
-                        IsRemoved = false,
-                        CreatedDate = DateTime.Now
-                    };
+                    var notification = NotificationExtensions.createNotification(order.UserId, "Order Submitted",
+                        $"Your recent order with ID {order.OrderId} has been submitted!");
 
                     _context.Notifications.Add(notification);
                     await _context.SaveChangesAsync();
@@ -225,70 +205,14 @@ namespace API.Controllers
             }
         }
 
-        // Combined SubmitPreOrder into SubmitOrder!
-        // This function is kept in order to backup
-
-        //[HttpPut("submitPreOrder")]
-        //public async Task<IActionResult> SubmitPreOrder(int orderId)
-        //{
-        //    try
-        //    {
-        //        var order = await _context.Orders.FirstOrDefaultAsync(o => o.OrderId == orderId && o.OrderStatus == "Pre-Order");
-
-        //        if (order == null)
-        //       {
-        //            return NotFound("Order not found or it is not a pre-order");
-        //        }
-
-        //        foreach (var orderDetail in order.OrderDetails)
-        //        {
-        //            var product = await _context.Products.FindAsync(orderDetail.ProductId);
-
-        //           if (product == null)
-        //           {
-        //                return BadRequest("Product not found");
-        //            }
-
-        //            if (product.Stock < orderDetail.Quantity)
-        //            {
-        //                return BadRequest("Insufficient quantity in stock to fulfill the order");
-        //            }
-
-        //            product.Stock -= orderDetail.Quantity;
-        //        }
-
-        //        order.OrderStatus = "Submitted";
-
-
-        //            var notification = new Notification
-        //            {
-        //                UserId = order.UserId,
-        //                Header = "Pre-Order Submitted",
-        //                Content = $"Your recent Pre-Order with ID {order.OrderId} has been submitted!",
-        //                IsRead = false,
-        //                IsRemoved = false,
-        //                CreatedDate = DateTime.Now
-        //            };
-
-        //            _context.Notifications.Add(notification);
-        //            await _context.SaveChangesAsync();
-
-
-
-        //        return Ok("Order submitted successfully");
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        return StatusCode(500, "Failed to submit order. " + ex.InnerException?.Message);
-        //    }
-        //}
-
         [HttpDelete("cancelOrder")]
         public async Task<IActionResult> CancelOrder(int orderId)
         {
             try
             {
-                var order = await _context.Orders.FirstOrDefaultAsync(o => o.OrderId == orderId);
+                var order = await _context.Orders
+                    .Include(o => o.OrderDetails)
+                    .FirstOrDefaultAsync(o => o.OrderId == orderId);
 
                 if (order == null)
                 {
@@ -298,6 +222,31 @@ namespace API.Controllers
                 if(order.OrderStatus == "Canceled")
                 {
                     return BadRequest("Order has already Canceled");
+                }
+
+                if (order.OrderStatus == "Pre-Order")
+                {
+                    var notification = NotificationExtensions.createNotification(order.UserId, "Pre-Order Canceled!",
+                            $"Your Pre-Order ID: {order.OrderId} had been canceled. Please consider contact the staff to support!");
+
+                    _context.Notifications.Add(notification);
+                }
+                else
+                {
+                    //reset product's quantity
+                    foreach (var orderDetail in order.OrderDetails)
+                    {
+                        var product = await _context.Products.FindAsync(orderDetail.ProductId);
+                        if (product != null)
+                        {
+                            product.Stock += orderDetail.Quantity;
+                        }
+                    }
+
+                    var notification = NotificationExtensions.createNotification(order.UserId, "Order Canceled!",
+                            $"Your Order ID: {order.OrderId} had been canceled. Please consider contact the staff to support!");
+
+                    _context.Notifications.Add(notification);
                 }
 
                 order.OrderStatus = "Canceled";
@@ -310,6 +259,5 @@ namespace API.Controllers
                 return StatusCode(500, "Failed to cancel order. " + ex.InnerException?.Message);
             }
         }
-
     }
 }

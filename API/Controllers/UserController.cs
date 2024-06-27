@@ -27,9 +27,10 @@ namespace API.Controllers
         public async Task<ActionResult<UserDTO>> GetUser(int id)
         {
             var user = await _context.Users.FirstOrDefaultAsync(b => b.UserId == id);
-            if (user != null) {
-            var userDTO = AccountController.toUserDTO(user);
-                return Ok(userDTO); 
+            if (user != null)
+            {
+                var userDTO = AccountController.toUserDTO(user);
+                return Ok(userDTO);
             }
             return NotFound();
         }
@@ -223,7 +224,7 @@ namespace API.Controllers
                     return NotFound("Order not found");
                 }
 
-                if(order.OrderStatus == "Completed")
+                if (order.OrderStatus == "Completed")
                 {
                     return BadRequest("This Order has already Completed");
                 }
@@ -247,7 +248,6 @@ namespace API.Controllers
                 var order = await _context.Orders
                     .Include(o => o.OrderDetails)
                     .FirstOrDefaultAsync(o => o.UserId == userId && o.OrderId == orderId);
-
                 if (order == null)
                 {
                     return NotFound("Order not found");
@@ -263,37 +263,43 @@ namespace API.Controllers
                     return BadRequest("Order is already canceled");
                 }
 
-                order.OrderStatus = "Canceled";
-
-                var staffUser = await _context.Users.Where(u => u.RoleId == 2).ToListAsync();
-
-                foreach (var user in staffUser)
+                //add notification
+                var staffs = await _context.Users.Where(u => u.RoleId == 2).ToListAsync();
+                if (order.OrderStatus == "Pre-Order")
                 {
-                    var notification = new Notification
+                    foreach (var staff in staffs)
                     {
-                        UserId = user.UserId,
-                        Header = "New Order!",
-                        Content = $"Order {order.OrderId} had been canceled. Please consider contact the User to support!",
-                        IsRead = false,
-                        IsRemoved = false,
-                        CreatedDate = DateTime.Now
-                    };
+                        var notification = NotificationExtensions.createNotification(staff.UserId, "Pre-Order Canceled!",
+                            $"Pre-Order {order.OrderId} had been canceled. Please consider contact the User to support!");
 
-                    _context.Notifications.Add(notification);
+                        _context.Notifications.Add(notification);
+                    }
                 }
-
-                foreach (var orderDetail in order.OrderDetails)
+                else
                 {
-                    var product = await _context.Products.FindAsync(orderDetail.ProductId);
-                    if (product != null)
+                    foreach (var staff in staffs)
                     {
-                        product.Stock += orderDetail.Quantity;
+                        var notification = NotificationExtensions.createNotification(staff.UserId, "Order Canceled!",
+                            $"Order {order.OrderId} had been canceled. Please consider contact the User to support!");
+
+                        _context.Notifications.Add(notification);
+                    }
+
+                    //reset product's quantity
+                    foreach (var orderDetail in order.OrderDetails)
+                    {
+                        var product = await _context.Products.FindAsync(orderDetail.ProductId);
+                        if (product != null)
+                        {
+                            product.Stock += orderDetail.Quantity;
+                        }
                     }
                 }
 
+                order.OrderStatus = "Canceled";
                 await _context.SaveChangesAsync();
 
-                return Ok("Order canceled successfully");
+                return Ok("canceled successfully");
             }
             catch (Exception ex)
             {

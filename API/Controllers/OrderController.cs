@@ -1,6 +1,7 @@
 ﻿using API.Data;
 using API.DTOs;
 using API.Entities;
+using API.Extensions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
@@ -26,121 +27,75 @@ public class OrderController : ControllerBase
                 return BadRequest();
             }
 
+            //add order
             var order = new Order
             {
                 UserId = orderDto.UserId,
                 OrderDate = orderDto.OrderDate,
-                Address = orderDto.Address,        // taken from web later
-                PaymentMethod = orderDto.PaymentMethod, // taken from web later
+                Address = orderDto.Address,
+                PaymentMethod = orderDto.PaymentMethod,
                 ShippingMethodId = orderDto.ShippingMethodId,
                 OrderStatus = "Pending",
                 VoucherId = orderDto.VoucherId,
-                //Total = orderDto.Products.Sum(p => p.Total)
                 Total = orderDto.Total,
-
             };
-
-            foreach (var productDto in orderDto.Products)
-            {
-                var product = await _context.Products.FindAsync(productDto.ProductId);
-
-                if (product == null)
-                {
-                    return BadRequest("Product not found");
-                }
-
-                if (product.Stock < productDto.Quantity)
-                {
-                    order.OrderStatus = "Pre-Order";
-
-                  
-                    _context.Orders.Add(order);
-                    await _context.SaveChangesAsync();
-
-                        var orderDetail = new OrderDetail
-                        {
-                            OrderId = order.OrderId,
-                            ProductId = productDto.ProductId,
-                            Quantity = productDto.Quantity,
-                            Price = productDto.Price
-                        };
-
-                        _context.orderDetails.Add(orderDetail);
-                        await _context.SaveChangesAsync();
-                    
-                    var staffUser1 = await _context.Users.Where(u => u.RoleId == 2).ToListAsync();
-
-                    foreach (var user in staffUser1)
-                    {
-                        var notification = new Notification
-                        {
-                            UserId = user.UserId,
-                            Header = "New Pre-Order!",
-                            Content = $"User {orderDto.UserId} has just Pre-Order with ID {order.OrderId}! Please add more Product and handle!",
-                            IsRead = false,
-                            IsRemoved = false,
-                            CreatedDate = DateTime.Now
-                        };
-
-                        _context.Notifications.Add(notification);
-                        await _context.SaveChangesAsync();
-                    }
-
-                    return Ok(new { orderId = order.OrderId });
-                }
-            }
-
-                _context.Orders.Add(order);
+            _context.Orders.Add(order);
             await _context.SaveChangesAsync();
 
-            foreach (var productDto in orderDto.Products)
+            //add order detail
+            bool checkPreOrder = false;
+            foreach (var productInOrder in orderDto.Products)
             {
-                var product = await _context.Products.FindAsync(productDto.ProductId);
-
+                var product = await _context.Products.FirstOrDefaultAsync(p => p.ProductId == productInOrder.ProductId);
                 if (product == null)
                 {
-                    return BadRequest("Product not found");
+                    return NotFound("Product not found");
                 }
-
-                if (product.Stock < productDto.Quantity)
+                if (product.Stock < productInOrder.Quantity)
                 {
-                    return BadRequest("Insufficient product quantity");
+                    checkPreOrder = true;
                 }
-
-                product.Stock -= productDto.Quantity;
-
                 var orderDetail = new OrderDetail
                 {
                     OrderId = order.OrderId,
-                    ProductId = productDto.ProductId,
-                    Quantity = productDto.Quantity,
-                    Price = productDto.Price
+                    ProductId = productInOrder.ProductId,
+                    Price = productInOrder.Price,
+                    Quantity = productInOrder.Quantity,
                 };
-
                 _context.orderDetails.Add(orderDetail);
-                await _context.SaveChangesAsync();
-            }
 
-            var staffUser = await _context.Users.Where(u => u.RoleId == 2).ToListAsync();
-
-            foreach (var user in staffUser)
-            {
-                var notification = new Notification
+                if (!checkPreOrder)
                 {
-                    UserId = user.UserId,
-                    Header = "New Order!",
-                    Content = $"User {user.UserId} has just placed an Order with ID {order.OrderId}! Please Confirm it!",
-                    IsRead = false,
-                    IsRemoved = false,
-                    CreatedDate = DateTime.Now
-                };
-
-                _context.Notifications.Add(notification);
+                    product.Stock -= productInOrder.Quantity;
+                }
             }
+            if (checkPreOrder) order.OrderStatus = "Pre-Order";
 
+            //add notification
+            var staffs = await _context.Users.Where(u => u.RoleId == 2).ToListAsync();
+            if (checkPreOrder)
+            {
+                foreach (var staff in staffs)
+                {
+                    var notification = NotificationExtensions.createNotification(staff.UserId, "New Pre-Order!",
+                        $"User {order.UserId} has placed a Pre-Order with ID {order.OrderId}! Please handle it!");
+
+                    _context.Notifications.Add(notification);
+                }
+            }
+            else
+            {
+                foreach (var staff in staffs)
+                {
+                    var notification = NotificationExtensions.createNotification(staff.UserId, "New Order!", 
+                        $"User {order.UserId} has placed a Order with ID {order.OrderId}! Please confirm it!");
+
+                    _context.Notifications.Add(notification);
+                }
+            }
             await _context.SaveChangesAsync();
 
-            return Ok(new { orderId = order.OrderId });
+            return Ok();
         }
         catch (Exception ex)
         {
@@ -148,85 +103,4 @@ public class OrderController : ControllerBase
         }
     }
 
-    // Combined PreOrder into Order!
-    // This function is kept in order to backup
-
-    //[HttpPost("PreOrder")]
-    //public async Task<IActionResult> CreatePreOrder(OrderDto orderDto)
-    //{
-    //    try
-    //    {
-    //        if (orderDto == null)
-    //        {
-    //            return BadRequest();
-    //        }
-
-    //        var order = new Order
-    //        {
-    //            UserId = orderDto.UserId,
-    //            OrderDate = orderDto.OrderDate,
-    //            Address = orderDto.Address,
-    //            PaymentMethod = orderDto.PaymentMethod,
-    //            ShippingMethodId = orderDto.ShippingMethodId,
-    //            OrderStatus = "Pre-Order",
-    //            Total = orderDto.Products.Sum(p => p.Total)
-    //        };
-
-    //        foreach (var productDto in orderDto.Products)
-    //        {
-    //            var product = await _context.Products.FindAsync(productDto.ProductId);
-
-    //            if (product == null)
-    //            {
-    //                return BadRequest("Product not found");
-    //            }
-
-    //            if (product.Stock >= productDto.Quantity)
-    //            {
-    //                return BadRequest("Quantity in Stock can satisfy required quantity! Can not Pre-order!");
-    //            }
-    //        }
-
-    //            _context.Orders.Add(order);
-    //        await _context.SaveChangesAsync();
-
-    //        foreach (var productDto in orderDto.Products)
-    //        {
-
-    //            var orderDetail = new OrderDetail
-    //            {
-    //                OrderId = order.OrderId,
-    //                ProductId = productDto.ProductId,
-    //                Quantity = productDto.Quantity,
-    //                Price = productDto.Price
-    //            };
-
-    //            _context.orderDetails.Add(orderDetail);
-    //            await _context.SaveChangesAsync();
-    //        }
-
-    //        var staffUser = await _context.Users.Where(u => u.RoleId == 2).ToListAsync();
-
-    //        foreach (var user in staffUser)
-    //        {
-    //            var notification = new Notification
-    //            {
-    //                UserId = user.UserId,
-    //                Header = "New Pre-Order!",
-    //                Content = $"User {user.UserId} has just Pre-Order with ID {order.OrderId}! Please add more Product and handle!",
-    //                IsRead = false,
-    //                IsRemoved = false,
-    //                CreatedDate = DateTime.Now
-    //            };
-
-    //            _context.Notifications.Add(notification);
-    //        }
-
-    //        return Ok(new { orderId = order.OrderId });
-    //    }
-    //    catch (Exception ex)
-    //    {
-    //        return StatusCode(500, "Failed to create pre-order. " + ex.InnerException?.Message);
-    //    }
-    //}
 }
