@@ -113,6 +113,7 @@ namespace API.Controllers
                 var orderDetails = order.OrderDetails.Select(od => new OrderDetailDto
                 {
                     ProductId = od.ProductId,
+                    NameProduct = od.NameProduct,
                     Quantity = od.Quantity,
                     Price = od.Price,
                     Total = od.Price * od.Quantity,
@@ -154,6 +155,7 @@ namespace API.Controllers
                     OrderDetails = o.OrderDetails.Select(od => new OrderDetailDto
                     {
                         ProductId = od.ProductId,
+                        NameProduct = od.NameProduct,
                         Quantity = od.Quantity,
                         Price = od.Price,
                         Total = od.Price * od.Quantity

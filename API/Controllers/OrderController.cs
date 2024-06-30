@@ -59,6 +59,7 @@ public class OrderController : ControllerBase
                 {
                     OrderId = order.OrderId,
                     ProductId = productInOrder.ProductId,
+                    NameProduct = productInOrder.NameProduct,
                     Price = productInOrder.Price,
                     Quantity = productInOrder.Quantity,
                 };
