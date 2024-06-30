@@ -14,6 +14,7 @@ namespace API.Entities
 
         [Required]
         public int OrderId { get; set; }
+        public string? NameProduct { get; set; }
 
         [Required]
         public int Quantity { get; set; }

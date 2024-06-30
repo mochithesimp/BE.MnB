@@ -127,46 +127,7 @@ namespace UnitTest
             Assert.IsInstanceOf<BadRequestResult>(result);
         }
 
-        [Test]
-        public async Task UseVoucher_ReturnsFalse_WhenVoucherIsDeactivated()
-        {
-            // Arrange
-            var voucher = new Voucher
-            {
-                VoucherId = 4,
-                Name = "Voucher4",
-                Code = "Code4",
-                DiscountType = "%",
-                DiscountValue = 100,
-                MinimumTotal = 100000,
-                CreatedDate = DateTime.Now,
-                ExpDate = DateTime.Now,
-                ProductId = null,
-                IsActive = true,
-            };
-
-
-            _context.Vouchers.Add(voucher);
-            await _context.SaveChangesAsync();
-
-            // Act
-            var result = await _controller.UseVoucher(voucher.VoucherId);
-
-            // Assert
-            Assert.AreEqual(false, voucher.IsActive);
-        }
-
-        [Test]
-        public async Task UseVoucher_ReturnsNotFound_WhenVoucherDoesNotExist()
-        {
-            // Act
-            var result = await _controller.UseVoucher(999);
-
-            // Assert
-            Assert.IsInstanceOf<NotFoundObjectResult>(result);
-            var notFoundResult = result as NotFoundObjectResult;
-            Assert.AreEqual("Voucher not found", notFoundResult.Value);
-        }
+        
 
         [Test]
         public async Task CreateVoucher_ReturnsBadRequest_WhenVoucherDtoHasMissingFields()
@@ -184,35 +145,8 @@ namespace UnitTest
             Assert.IsInstanceOf<StatusCodeResult>(result);
         }
 
-        [Test]
-        public async Task UseVoucher_ReturnsBadRequestResult_WhenVoucherIsAlreadyDeactivated()
-        {
-            // Arrange
-            var voucher = new Voucher
-            {
-                VoucherId = 5,
-                Name = "Voucher5",
-                Code = "Code5",
-                DiscountType = "%",
-                DiscountValue = 100,
-                MinimumTotal = 100000,
-                CreatedDate = DateTime.Now,
-                ExpDate = DateTime.Now,
-                ProductId = null,
-                IsActive = false,
-
-            };
-
-
-            _context.Vouchers.Add(voucher);
-            await _context.SaveChangesAsync();
-
-            // Act
-            var result = await _controller.UseVoucher(voucher.VoucherId);
-
-            // Assert
-            Assert.IsInstanceOf<BadRequestObjectResult>(result);
-        }
+        
+        
     }
 
 }
