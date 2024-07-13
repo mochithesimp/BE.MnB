@@ -39,6 +39,11 @@ namespace API.Controllers
 
                 if (user != null)
                 {
+                    if (user.IsActive == false)
+                    {
+                        return StatusCode(403, new { message = "Your account has been banned indefinitely and cannot log in." });
+                    }
+
                     var roles = await _roleService.GetRolesOfUser(user.UserId);
 
                     var userClaims = new[]
