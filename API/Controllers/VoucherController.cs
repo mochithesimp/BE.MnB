@@ -93,6 +93,7 @@ namespace API.Controllers
             voucher.CreatedDate = voucherDTO.CreatedDate;
             voucher.ExpDate = voucherDTO.ExpDate;
             voucher.IsActive = voucherDTO.IsActive;
+            voucher.ProductId = voucherDTO.ProductId;
 
             await _context.SaveChangesAsync();
 

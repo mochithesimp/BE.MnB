@@ -54,7 +54,8 @@ namespace API.Controllers
             user.Email = userDto.Email;
             user.PhoneNumber = userDto.PhoneNumber;
             user.Address = userDto.Address;
-
+            user.RoleId = userDto.RoleId;
+            user.IsActive = userDto.IsActive;
             await _context.SaveChangesAsync();
 
             var updatedUserDto = AccountController.toUserDTO(user);
