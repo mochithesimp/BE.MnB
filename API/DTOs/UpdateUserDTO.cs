@@ -6,7 +6,6 @@ namespace API.DTOs
     public class UpdateUserDTO
     {
         [Required]
-        [JsonIgnore]
         public int RoleId { get; set; }
 
 
@@ -18,7 +17,8 @@ namespace API.DTOs
 
         public string? PhoneNumber { get; set; }
 
-
         public string? Address { get; set; }
+
+        public bool IsActive { get; set; }
     }
 }
