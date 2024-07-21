@@ -186,7 +186,10 @@ namespace API.Controllers
         [HttpGet("getBestSellerProducts")]
         public async Task<ActionResult<List<ProductWithOrderCountDTO>>> GetBestSellerProducts()
         {
-            var orderDetails = await _context.orderDetails.ToListAsync();
+            var orderDetails = await _context.orderDetails
+                .Include(od => od.Order) 
+                .Where(od => od.Order.OrderStatus == "Completed") 
+                .ToListAsync();
 
             var productCounts = orderDetails
                 .GroupBy(od => od.ProductId)
@@ -247,6 +250,7 @@ namespace API.Controllers
                 .Include(od => od.Order)
                 .Include(od => od.Product)
                 .ThenInclude(p => p.Brand)
+                .Where(od => od.Order.OrderStatus == "Completed") 
                 .ToListAsync();
 
             var brandOrderCounts = orderDetails
@@ -287,7 +291,7 @@ namespace API.Controllers
 
             var orders = await _context.Orders
                 .Include(o => o.User)
-                .Where(o => o.OrderDate >= sevenDaysAgo)
+                .Where(o => o.OrderDate >= sevenDaysAgo && o.OrderStatus == "Completed") 
                 .ToListAsync();
 
             var userOrderGroups = orders
