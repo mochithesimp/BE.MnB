@@ -115,6 +115,17 @@ namespace API.Controllers
             return NoContent();
         }
 
+        [HttpGet("GetBlogLikeByUser")]
+        public async Task<ActionResult<List<int>>> GetLikedBlogsByUser(int userId)
+        {
+            var likedBlogs = await _context.userBlogViews
+                .Where(ubv => ubv.UserId == userId && ubv.Like > 0)
+                .Select(ubv => ubv.BlogId)
+                .ToListAsync();
+
+            return Ok(likedBlogs);
+        }
+
         [HttpPost("increaseView")]
         public async Task<IActionResult> IncreaseViewCount(int userId, int blogId)
         {
