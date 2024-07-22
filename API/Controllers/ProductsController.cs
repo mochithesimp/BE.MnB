@@ -265,8 +265,7 @@ namespace API.Controllers
             return list;
         }
 
-        [NonAction]
-        public async Task<string> SaveImage(IFormFile imageFile, int ProductId, int ImageId)
+        private async Task<string> SaveImage(IFormFile imageFile, int ProductId, int ImageId)
         {
             string imageUrl = Path.GetFileNameWithoutExtension(imageFile.FileName).Replace(" ", "-");
             imageUrl = $"{ProductId}-{ImageId}-" + imageUrl + "-" + DateTime.Now.ToString("ssfff") + Path.GetExtension(imageFile.FileName);

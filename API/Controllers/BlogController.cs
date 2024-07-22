@@ -258,8 +258,7 @@ namespace API.Controllers
             return blogDTO;
         }
 
-        [NonAction]
-        public async Task<string> SaveImage(IFormFile imageFile, int blogId)
+        private async Task<string> SaveImage(IFormFile imageFile, int blogId)
         {
             string imageUrl = Path.GetFileNameWithoutExtension(imageFile.FileName).Replace(" ", "-");
             imageUrl = $"blog{blogId}-" + imageUrl + Path.GetExtension(imageFile.FileName);
