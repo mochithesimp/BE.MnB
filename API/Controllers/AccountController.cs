@@ -285,6 +285,23 @@ namespace API.Controllers
             });
         }
 
+        [HttpPost("checkMailExist")]
+        public async Task<ActionResult<UserDTO>> checkMailExit(string email)
+        {
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == email);
+
+            if (user == null)
+            {
+                return BadRequest(new ResponseDTO
+                {
+                    IsSuccess = false,
+                    Message = "this mail not exist in data"
+                });
+            }
+
+            return Ok();
+        }
+
         [HttpPost("resetPassword")]
         public async Task<ActionResult<UserDTO>> GetForgetPasswordUser(string email)
         {
